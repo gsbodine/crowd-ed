@@ -1,0 +1,31 @@
+/* 
+    Document   : crowded
+    Created on : Dec 29, 2011, 1:35:21 PM
+    Author     : Garrick S. Bodine <garrick.bodine@gmail.com>
+    Description:
+
+*/
+
+fieldset { overflow: hidden; }
+
+.crowded-form-controls label, .crowded-form-controls input[type="radio"], .inlineRadio  {
+    float: left;
+    clear: none;
+    
+}
+
+label.crowded-form-controls {
+    display: inline;
+    margin: 2px 0 0 1em;
+}
+
+#crowded_login_bar {
+    color:#fff;
+    background-color: #333;
+    text-align: right;
+    padding: .5em 1em;
+}
+#crowded_login_bar a {
+    color: #fff;
+}
+

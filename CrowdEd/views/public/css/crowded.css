@@ -30,8 +30,7 @@ label.crowded-form-controls {
 
 .island {
     position: relative;
-    height: 300px;
-    overflow: hidden;
+    text-align: center;
 }
 .island:hover .island-text { 
     display: block; 
@@ -39,6 +38,11 @@ label.crowded-form-controls {
 }
 .island:hover .island {
     opacity: 30%;
+}
+.island img {
+    height: 300px;
+    width: 300px;
+    overflow: hidden;
 }
 
 .island-text {
@@ -51,6 +55,9 @@ label.crowded-form-controls {
     line-height: 150%;
     font-family: "Georgia","Times New Roman",Helvetica,Arial,sans-serif;
     color: #000;
+}
+.island-text a {
+    text-decoration: none;
 }
 
 

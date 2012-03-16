@@ -12,7 +12,8 @@ require_once 'Item.php';
 
 class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     public function init() {
-        
+       $this->_modelClass = 'Item';
+       
     }
     
     public function indexAction() {
@@ -20,32 +21,33 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     }   
     
     public function itemAction() {
-        require_once CROWDED_DIR . '/forms/Item.php';
         
-        $itemId = $this->_getParam('id');
-        $item = $this->findById($itemId, 'Item');
-        $this->view->assign(compact('item'));
-        
-        $itemForm = new CrowdEd_Form_Item;
-        
-        $this->view->form = $itemForm;
-        
-        if (!$this->getRequest()->isPost()) {
-            return;
-        }
     }
     
-     public function editAction() {
-        // From ItemsController in Omeka
-        $this->view->elementSets = $this->_getItemElementSets();
+    public function editAction() {
+        $itemId = $this->_getParam('id');
+        // TODO: is this safe?
+        $item = $this->findById($itemId, 'Item');
         
-        if ($user = $this->getCurrentUser()) {
-            $item = $this->findById();
-            if ($this->isAllowed('edit', $item)) {
-                return parent::editAction();    
-            }
+        if (!$this->getRequest()->isPost()) {
+            $elementSets = $this->_getItemElementSets($item);
+            $this->view->assign(compact('item'));
+            $this->view->assign($elementSets);
+        } else {
+            try {
+                if ($item->saveForm($_POST)) {
+                    $successMessage = $this->_getEditSuccessMessage($item);
+                    $successMessage .= "Success! Item has been updated.";
+                    if ($successMessage != '') {
+                        $this->flashSuccess($successMessage);
+                    }
+                    //$this->redirect->goto('edit', null, null,'participate', array('id'=>$item->id));
+                }
+            } catch (Omeka_Validator_Exception $e) {
+                $this->flashValidationErrors($e);
+            } 
+            $this->view->assign(compact('item'));  
         }
-        $this->forbiddenAction();
     }
     
     public function profileAction() {
@@ -94,6 +96,10 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
 		}
 		
 		$this->view->assign(compact('emailSent', 'requireTermsOfService', 'user'));
+    }
+    
+    protected function _getItemElementSets($item) {
+        return $this->getTable('ElementSet')->findForItems($item);
     }
 }
 

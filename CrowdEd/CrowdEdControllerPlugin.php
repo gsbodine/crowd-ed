@@ -3,7 +3,7 @@
 class CrowdEdControllerPlugin extends Zend_Controller_Plugin_Abstract {
     protected $_loginRequiredActions = array(
         array('participate','profile'),
-        array('participate','item')
+        array('participate','edit')
     );
     
     public function preDispatch(Zend_Controller_Request_Abstract $request) {

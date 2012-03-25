@@ -28,6 +28,11 @@ label.crowded-form-controls {
     color: #fff;
 }
 
+.dateinput > .textinput {
+    display: inline;
+}
+
+
 .island {
     position: relative;
     text-align: center;

@@ -44,7 +44,7 @@ class CrowdEd_View_Helper_ItemForm
         $html .= $this->_displayValidationErrors();
 
         $html .= '<div class="inputs">';
-        $html .= $this->_displayFormFields($extraFieldCount);
+        $html .= $this->_displayFormFields();
         $html .= '</div>'; // Close 'inputs' div
 
         $html .= $divWrap ? '</div>' : ''; // Close 'field' div
@@ -177,7 +177,7 @@ class CrowdEd_View_Helper_ItemForm
         return $texts;
     }
 
-    protected function _displayFormFields($extraFieldCount = null) {
+    protected function _displayFormFields() {
         $fieldCount = $this->_getFormFieldCount();
 
         $html = '';
@@ -213,16 +213,14 @@ class CrowdEd_View_Helper_ItemForm
 
         // Plugins should apply a filter to this blank HTML in order to display it in a certain way.
         $html = '';
-
         $filterName = $this->_getPluginFilterForFormInput();
-
         $html = apply_filters($filterName, $html, $inputNameStem, $value, $options, $this->_record, $this->_element);
-
+        
         // Short-circuit the default display functions b/c we already have the HTML we need.
         if (!empty($html)) {
             return $html;
         }
-
+        
         //Create a form input based on the element type name
         switch ($fieldDataType) {
 
@@ -332,6 +330,40 @@ class CrowdEd_View_Helper_ItemForm
 
         return $html;
     }
+    
+   /* protected function _textDateField($inputNameStem,$value,$options = array()) {
+        
+        $list = explode('-', $value);
+        
+        if (count($list) == 3) {
+            $year = $list[0];
+            $month = $list[1];
+            $day = $list[2];
+        } else if (count($list) == 2) {
+            $year = '';
+            $month = $list[0];
+            $day = $list[1];
+        } else if (count($list) == 1 && strlen($list[0]) == 4){
+            $year = $list[0];
+            $month = '';
+            $day = '';
+        } else {
+            $year = '';
+            $month = $list[0];
+            $day = '';
+        }
+        
+        //$html = '<div>value: ' . $value . '<br />list count: ' . count($list) . '<br /> first list item: ' . $list[0] . '</div>';
+        $html = '<div class="dateinput">';
+        
+        $html .= ' Month: ' . $this->view->formText($inputNameStem . '[month]', $month, array('class'=>'textinput', 'size'=>'2'));
+        $html .= ' Day: ' . $this->view->formText($inputNameStem . '[day]', $day, array('class'=>'textinput', 'size'=>'2'));
+        $html .= ' Year: ' . $this->view->formText($inputNameStem . '[year]', $year, array('class'=>'textinput', 'size'=>'4'));
+
+        $html .= '</div>';
+
+        return $html;
+    } */
 
     protected function _displayValidationErrors()
     {
@@ -344,6 +376,9 @@ class CrowdEd_View_Helper_ItemForm
         return '<label>' . __($this->_getFieldLabel()) . '</label>';
     }
 
+   
+
+    
 
     /**
      * Zend Framework wants this.

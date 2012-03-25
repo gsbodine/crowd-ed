@@ -101,5 +101,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     protected function _getItemElementSets($item) {
         return $this->getTable('ElementSet')->findForItems($item);
     }
+    
+   // protected function _filterElementText() {
+        
+   // }
 }
 

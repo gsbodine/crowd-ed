@@ -21,6 +21,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         'public_append_to_items_show',
         'define_routes',
         'after_save_item',
+        'before_save_form_item',
         'after_save_form_item',
         'after_delete_item',
         'after_validate_item'
@@ -55,6 +56,11 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         $router->addConfig(new Zend_Config_Ini(CROWDED_DIR . DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
     }
  
+    public function hookBeforeSaveFormItem($item) {
+        //echo print_r($item);
+        //break;
+    }
+    
     public function hookAfterSaveItem($item) {
  
     }
@@ -92,13 +98,10 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         return __v()->formSelect($inputNameStem . '[Date]', $date, null, array());
     }
 
-    public function crowded_description_formfield($html, $inputNameStem, $description) {
-        return __v()->formSelect($inputNameStem . '[textarea]', $description, null, array());
-    }
     
 
-    
-/* PRIVATE FUNCTIONS */    
+
+    /* PRIVATE FUNCTIONS */    
     
     
     private function crowded_participate_item() {

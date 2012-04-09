@@ -14,8 +14,8 @@ require_once CROWDED_DIR . '/helpers/CrowdedFormFunctions.php';
 require_once CROWDED_DIR . '/helpers/CrowdedItemForm.php';
 require_once 'CrowdEdPlugin.php';
 
-add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');
-add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
+//add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');
+//add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
 
 function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, $item, $element) {
  

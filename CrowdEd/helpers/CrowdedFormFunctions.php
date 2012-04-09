@@ -24,7 +24,7 @@
     }
     
     function isCrowdEdElement($element) {
-        $crowdedElements = array('Title','Description','Creator','Date');
+        $crowdedElements = array('Title','Description','Creator','Recipient','Date','Review Priority');
         if (in_array($element->name, $crowdedElements)) {
             return true;
         }

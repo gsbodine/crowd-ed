@@ -48,8 +48,8 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
     
     public function hookInitialize() {
-        require_once 'CrowdEdControllerPlugin.php';
-        Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEdControllerPlugin);
+        Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
+        Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_SelectFilter);
     }
     
     public function hookDefineRoutes($router) {

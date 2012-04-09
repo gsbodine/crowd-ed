@@ -1,6 +1,6 @@
 <?php
 
-class CrowdEdControllerPlugin extends Zend_Controller_Plugin_Abstract {
+class CrowdEd_Controller_Plugin_Security extends Zend_Controller_Plugin_Abstract {
     protected $_loginRequiredActions = array(
         array('participate','profile'),
         array('participate','edit')

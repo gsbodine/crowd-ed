@@ -4,11 +4,11 @@
 ?>
 <div class="sixteen columns">
     <div class="one-third column alpha">
-        <div>    
+        <!-- <div>    
             <?php echo item_thumbnail(); ?>
-        </div>
-        <hr />
-        <p>Additional files for this item:</p>
+        </div> 
+        <hr /> -->
+        <p>Images for this item:</p>
         <div>
             <?php 
                 echo display_files_for_item(

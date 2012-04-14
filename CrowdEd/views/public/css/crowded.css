@@ -65,7 +65,9 @@ label.crowded-form-controls {
     text-decoration: none;
 }
 
-
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    .container .one-third.column   { overflow: hidden; } 
+}
 
 /*
 #browse-island {

@@ -17,6 +17,8 @@ require_once 'CrowdEdPlugin.php';
 //add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');
 //add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
 
+add_filter('admin_navigation_main','CrowdEdPlugin::adminNavigationMain');
+
 function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, $item, $element) {
  
         $list = explode('-', $value);
@@ -43,6 +45,7 @@ function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, 
         $flatText = $year . '-' . $month . '-' . $day;
         return $flatText;
     }
+    
 
 $crowdEdPlugin = new CrowdEdPlugin;
 $crowdEdPlugin->setUp();

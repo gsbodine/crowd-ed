@@ -97,8 +97,11 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     public function crowded_date_formfield($html, $inputNameStem, $date) {
         return __v()->formSelect($inputNameStem . '[Date]', $date, null, array());
     }
-
     
+    public static function adminNavigationMain($nav) {
+        $nav['Crowd Ed'] = uri('crowd-ed');
+        return $nav;
+    }
 
 
     /* PRIVATE FUNCTIONS */    

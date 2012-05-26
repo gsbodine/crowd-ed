@@ -12,31 +12,29 @@
  * @package Omeka
  * @copyright Roy Rosenzweig Center for History and New Media, 2007-2010
  */
-class CrowdEd_View_Helper_ItemForm
-{
-    /**
-     * Element record to display the form for.
-     *
-     * @var Element
-     */
+class CrowdEd_View_Helper_ItemForm {
+    
     protected $_element;
-
     protected $_record;
 
-    public function itemForm(Element $element, Omeka_Record $record,
-        $options = array())
-    {
+    public function itemForm(Element $element, Omeka_Record $record, $options = array()) {
+        
         $divWrap = isset($options['divWrap']) ? $options['divWrap'] : true;
         $extraFieldCount = isset($options['extraFieldCount']) ? $options['extraFieldCount'] : null;
-
+        $columnNum = isset($options['columnNum']) ? $options['columnNum'] : 'three';
+        
         $this->_element = $element;
 
         // This will load all the Elements available for the record and fatal error
         // if $record does not use the ActsAsElementText mixin.
         $record->loadElementsAndTexts();
         $this->_record = $record;
-
-        $html = $divWrap ? '<div class="field" id="element-' . html_escape($element->id) . '">' : '';
+        
+        
+        
+        $html = '<div class="'. $columnNum .' columns">';
+        
+        $html .= $divWrap ? '<div class="field" id="element-' . html_escape($element->id) . '">' : '';
 
         // Put out the label for the field
         $html .= $this->_displayFieldLabel();
@@ -49,6 +47,8 @@ class CrowdEd_View_Helper_ItemForm
 
         $html .= $divWrap ? '</div>' : ''; // Close 'field' div
 
+        $html .= '</div>';
+        
         return $html;
     }
 

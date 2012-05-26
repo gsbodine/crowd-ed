@@ -3,12 +3,11 @@
     head(); 
 ?>
 <div class="sixteen columns">
-    <div class="one-third column alpha">
+    <div class="four columns alpha">
         <!-- <div>    
             <?php echo item_thumbnail(); ?>
         </div> 
         <hr /> -->
-        <p>Images for this item:</p>
         <div>
             <?php 
                 echo display_files_for_item(
@@ -18,7 +17,7 @@
             ?>
         </div>
     </div>
-    <div class="two-thirds column omega">
+    <div class="twelve columns omega">
         <h2 style="text-align: center;">Participate</h2>
         <!-- <h3>Help us curate the Martha Berry Digital Archive</h3> -->
         <hr />
@@ -28,19 +27,11 @@
             
             <?php 
                 $this->addHelperPath(CROWDED_DIR . '/helpers', 'CrowdEd_View_Helper');
-                $formDisplay = crowded_display_element_set_form($item,'Dublin Core');
-                //$formDisplay = display_element_set_form($item,'Dublin Core');
+                $formDisplay = crowded_display_element_sets_array_form($item, array('Item Type Metadata','Dublin Core','Crowdsourcing Metadata'));
                 echo $formDisplay;
-                
-                $otherElements = crowded_display_element_set_form($item, 'Item Type Metadata');
-                echo $otherElements;
-                
-                $crowdForm = crowded_display_element_set_form($item, 'Crowdsourcing Metadata');
-                echo $crowdForm;
-                
             ?>
-            <div>
-                <?php echo submit(array('name'=>'submit', 'id'=>'save-changes', 'class'=>'submit'), __('Save Changes')); ?>
+            <div class="twelve columns">
+                <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit'),__('Save Changes')); ?>
             </div>
         </form>
         

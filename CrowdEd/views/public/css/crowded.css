@@ -69,6 +69,28 @@ label.crowded-form-controls {
     .container .one-third.column   { overflow: hidden; } 
 }
 
+.success {
+    background-color: #ccff99;
+    border: 1px #006600 solid;
+    padding: 1em;
+    margin: 1em 0;
+    color: #090;
+    font-weight: bold;
+    font-size: 125%;
+    text-align: center;
+}
+
+.failure {
+    background-color: #ffcc99;
+    border: 1px solid #900;
+    padding: 1em;
+    margin: 1em 0;
+    color: #600;
+    font-weight: bold;
+    font-size: 125%;
+    text-align: center;
+}
+
 /*
 #browse-island {
     height: 300px;

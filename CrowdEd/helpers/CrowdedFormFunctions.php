@@ -97,4 +97,47 @@
         return $cols;
     }
 
-?>    
+    function appendZoomIt($item)
+    {
+        // Get valid images.
+        $images = array();
+        foreach (__v()->item->Files as $file) {
+            $extension = pathinfo($file->archive_filename, PATHINFO_EXTENSION);
+            if (!in_array(strtolower($extension), $this->_supportedExtensions)) {
+                continue;
+            }
+            $images[] = $file;
+        }
+        if (empty($images)) {
+            return;
+        }
+?>
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    var imageviewer = jQuery('#zoomit_imageviewer');
+    jQuery('.zoomit_images').click(function(event) {
+        event.preventDefault();
+        imageviewer.empty();
+        imageviewer.append(
+        '<h2>Viewing: ' + jQuery(this).text() + '</h2>' 
+      + '<iframe src="' + this.href + '" ' 
+      + 'width="<?php echo is_admin_theme() ? get_option('zoomit_width_admin') : get_option('zoomit_width_public'); ?>" ' 
+      + 'height="<?php echo is_admin_theme() ? get_option('zoomit_height_admin') : get_option('zoomit_height_public'); ?>" ' 
+      + 'style="border: none;"></iframe>');
+    });
+});
+</script>
+<div>
+    <p>Click below to view an image using the <a href="http://zoom.it/">Zoom.it</a> viewer.</p>
+    <ul>
+        <?php foreach($images as $image): ?>
+        <li><a href="<?php echo html_escape(__v()->url('zoomit/index/index/file-id/' . $image->id)); ?>" class="zoomit_images"><?php echo html_escape($image->original_filename); ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<div id="zoomit_imageviewer"></div>
+<?php
+    
+}
+
+?>

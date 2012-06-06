@@ -79,6 +79,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     
     public function hookPublicThemeHeader() {
         queue_css('crowded');
+        queue_js('crowded');
     }
 
     public function hookPublicAppendToItemsShow(){

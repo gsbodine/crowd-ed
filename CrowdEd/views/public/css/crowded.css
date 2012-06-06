@@ -13,9 +13,13 @@ fieldset { overflow: hidden; }
     clear: none;
 }
 
+.fieldheader {
+    display: block;
+}
+
 label.crowded-form-controls {
     display: inline;
-    margin: 2px 0 0 1em;
+    margin: 1em 0;
 }
 
 #crowded_login_bar {
@@ -89,6 +93,27 @@ label.crowded-form-controls {
     font-weight: bold;
     font-size: 125%;
     text-align: center;
+}
+
+.explanation { 
+    display:none;
+    position:absolute; 
+    margin-left:20px; 
+    z-index:100; 
+    width:200px; 
+    padding:0.5em; 
+    background:#fff; 
+    border:1px solid #000;
+}
+
+.help_icon {
+    display:inline; 
+    margin-left:2px; 
+    cursor:help;
+}
+
+.help_icon img {
+    display:inline;
 }
 
 /*

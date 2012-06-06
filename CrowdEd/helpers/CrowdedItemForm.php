@@ -38,12 +38,13 @@ class CrowdEd_View_Helper_ItemForm {
 
         // Put out the label for the field
         $html .= $this->_displayFieldLabel();
-
+        
         $html .= $this->_displayValidationErrors();
 
         $html .= '<div class="inputs">';
         $html .= $this->_displayFormFields();
         $html .= '</div>'; // Close 'inputs' div
+        
 
         $html .= $divWrap ? '</div>' : ''; // Close 'field' div
 
@@ -371,13 +372,21 @@ class CrowdEd_View_Helper_ItemForm {
     }
 
 
-    protected function _displayFieldLabel()
-    {
-        return '<label>' . __($this->_getFieldLabel()) . '</label>';
+    protected function _displayFieldLabel() {
+        $html = '<div class="fieldheader"><label class="crowded-form-controls">' . __($this->_getFieldLabel()) . '</label>';
+        $html .= $this->_displayTooltip();
+        $html .= '</div';
+        return $html;
     }
 
    
+    protected function _displayTooltip() {
+        // Tooltips should be in a <span class="tooltip">
+        $html = '<p class="explanation">';
+        $html .= __($this->_getFieldDescription()) .'</p>';
 
+        return $html;
+    }
     
 
     /**
@@ -388,4 +397,7 @@ class CrowdEd_View_Helper_ItemForm {
     {
         $this->view = $view;
     }
+    
+
+    
 }

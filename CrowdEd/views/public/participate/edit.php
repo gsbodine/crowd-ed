@@ -1,11 +1,20 @@
 <?php 
     set_current_item($item);
-    head(); 
+    head();
+    
+    require_once 'plugins/Zoomit/ZoomitPlugin.php';
+    
 ?>
 <div class="sixteen columns">
     <div class="four columns alpha">
         <!-- <div>    
-            <?php echo item_thumbnail(); ?>
+            <?php 
+                echo item_thumbnail(); 
+               // TODO: Implement ZoomIt plugin hook here...
+               $zoomer = new ZoomitPlugin;
+               //$zoomer.setUp();
+               //$zoomer.append(item_thumbnail);
+            ?>
         </div> 
         <hr /> -->
         <div>

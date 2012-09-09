@@ -96,6 +96,16 @@
         
         return $cols;
     }
+    
+    function crowded_item_tags($item) {
+        $tagArray = get_tags($item);
+        $tagJson = '[';
+        foreach ($tagArray as $tag) {
+            $tagJson .= '"'.$tag.'",';
+        }
+        $tagJson .= ']';
+        return $tagJson;
+    }
 
     function appendZoomIt($item)
     {

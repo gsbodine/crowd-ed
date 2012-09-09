@@ -32,15 +32,27 @@
         <hr />
         <?php echo flash(); ?>
         <p><strong>Current Item Identification #: <?php echo item('Dublin Core','Identifier'); ?></strong></p>
-        <form method="post" enctype="multipart/form-data" id="item-form" action="">
+        <form method="post" enctype="multipart/form-data" id="item-form" action="" class="ui-widget">
             
             <?php 
                 $this->addHelperPath(CROWDED_DIR . '/helpers', 'CrowdEd_View_Helper');
-                $formDisplay = crowded_display_element_sets_array_form($item, array('Item Type Metadata','Dublin Core','Crowdsourcing Metadata'));
+                $formDisplay = crowded_display_element_sets_array_form($item, array('Item Type Metadata','Dublin Core','Crowdsourcing Metadata','Tags'));
                 echo $formDisplay;
             ?>
-            <div class="twelve columns">
-                <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit'),__('Save Changes')); ?>
+                <script>
+	$(function() {
+            var availableTags = <?php echo crowded_item_tags($item) ?>
+
+		$( "#tagList" ).autocomplete({
+			source: availableTags
+		});
+	});
+	</script>
+            <div class="twelve columns omega"><input id="tagList" /></div>
+            <div class="twelve columns omega">
+                <div class="buttonbar">
+                    <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit'),__('Save Changes')); ?>
+                </div>
             </div>
         </form>
         

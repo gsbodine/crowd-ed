@@ -13,7 +13,6 @@ require_once 'Item.php';
 class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     public function init() {
        $this->_modelClass = 'Item';
-       
     }
     
     public function indexAction() {

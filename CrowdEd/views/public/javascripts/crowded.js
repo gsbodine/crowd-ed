@@ -4,8 +4,34 @@
  */
 
 jQuery(document).ready(function($) {
-    $(".explanation").before("<div class='help_icon'><img src='/plugins/CrowdEd/views/public/images/info_icon.png' alt='help' /></div>");
+    $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info'></span>").addClass("ui-widget");
     $(".help_icon").bind("mouseover mouseout", function() {
         $(this).next(".explanation").toggle();
     });
+    $("input:submit, a, button", ".buttonbar").button();
+    
+    $(".fieldheader").addClass("ui-widget")
+    
+    $(".success").addClass("ui-state-highlight ui-corner-all");
+    $(".failure").addClass("ui-state-error ui-corner-all");
+    
+    var cache = {}, lastXhr;
+    $("#tags").autocomplete({
+            minLength: 2,
+            source: function( request, response ) {
+                    var term = request.term;
+                    if ( term in cache ) {
+                            response( cache[ term ] );
+                            return;
+                    }
+
+                    lastXhr = $.getJSON( "tags-search.php", request, function( data, status, xhr ) {
+                            cache[ term ] = data;
+                            if ( xhr === lastXhr ) {
+                                    response( data );
+                            }
+                    });
+            }
+    });
+    
 });

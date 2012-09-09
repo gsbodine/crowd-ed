@@ -78,8 +78,8 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
     
     public function hookPublicThemeHeader() {
-        queue_css('crowded');
-        queue_js('crowded');
+        queue_css(array('crowded','pepper-grinder/jquery-ui-1.8.23.custom'));
+        queue_js(array('jquery-ui-1.8.23.custom.min','crowded'));
     }
 
     public function hookPublicAppendToItemsShow(){
@@ -100,7 +100,9 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
     
     public static function adminNavigationMain($nav) {
-        $nav['Crowd Ed'] = uri('crowd-ed');
+        // if (has_permission('CrowdEd_Index','index')) {
+            $nav['Crowd Ed'] = uri(array('module'=>'crowd-ed', 'controller'=>'index', 'action'=>'index'), 'default');
+        // }
         return $nav;
     }
 

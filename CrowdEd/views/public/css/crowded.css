@@ -9,7 +9,7 @@
 fieldset { overflow: hidden; }
 
 .crowded-form-controls label, .crowded-form-controls input[type="radio"], .inlineRadio  {
-    float: left;
+    float: left; 
     clear: none;
 }
 
@@ -74,24 +74,16 @@ label.crowded-form-controls {
 }
 
 .success {
-    background-color: #ccff99;
-    border: 1px #006600 solid;
     padding: 1em;
     margin: 1em 0;
-    color: #090;
     font-weight: bold;
-    font-size: 125%;
     text-align: center;
 }
 
 .failure {
-    background-color: #ffcc99;
-    border: 1px solid #900;
     padding: 1em;
     margin: 1em 0;
-    color: #600;
     font-weight: bold;
-    font-size: 125%;
     text-align: center;
 }
 

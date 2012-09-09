@@ -1,6 +1,6 @@
 <?php $tags = $item -> getTags(); ?>
         <input type="hidden" name="tags-to-delete" size="30" id="tags-to-delete" value="" />
-        <div id="add-tags">
+        <div id="add-tags" class="six columns">
             <h5><?php echo __('Add Tags'); ?></h5>           
             <input type="text" name="tags" size="20" id="tags" class="textinput" value="" />
             <input type="button" name="add-tags-button" id="add-tags-button" value="<?php echo __('Add Tags'); ?>" />

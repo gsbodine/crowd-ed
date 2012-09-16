@@ -4,7 +4,7 @@
  */
 
 jQuery(document).ready(function($) {
-    $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info'></span>").addClass("ui-widget");
+    $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info' style='float: left; margin-right: .3em;'></span>").addClass("ui-widget");
     $(".help_icon").bind("mouseover mouseout", function() {
         $(this).next(".explanation").toggle();
     });
@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
     
     $(".fieldheader").addClass("ui-widget")
     
-    $(".success").addClass("ui-state-highlight ui-corner-all");
+    $(".success").addClass("ui-state-highlight ui-corner-all").append("<span class='ui-icon ui-icon-circle-check'></span>");
     $(".failure").addClass("ui-state-error ui-corner-all");
     
     var cache = {}, lastXhr;

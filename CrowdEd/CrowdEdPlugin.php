@@ -78,8 +78,8 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
     
     public function hookPublicThemeHeader() {
-        queue_css(array('crowded','pepper-grinder/jquery-ui-1.8.23.custom'));
-        queue_js(array('jquery-ui-1.8.23.custom.min','crowded'));
+        queue_css(array('crowded'));
+        queue_js(array('crowded'));
     }
 
     public function hookPublicAppendToItemsShow(){

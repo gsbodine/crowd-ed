@@ -6,14 +6,12 @@
       } ?>
 
 <?php // echo flash(); ?>
-    <div class="sixteen columns">
-        <div class="eight columns alpha">
-            <h1>Participate!</h1>
-            <h2>Create your user profile</h2>
-            <h3><em>Help us curate the Martha Berry Digital Archive</em></h3>
-            <p>Here are some other statements related to getting people to do something helpful -- like creating a user profile.</p>
+    <div class="row">
+        <div class="span6 offset1">
+            <div class="site-title"><h1>Participate! <small>Create your user profile</small></h1></div>
+            <h3><em>Help us curate <?php echo settings('site_title'); ?></em></h3>
         </div>
-        <div class="eight columns omega">
+        <div class="span5">
         <fieldset>
         <div class="field">
             <?php echo label('username','Choose a username'); ?>
@@ -54,7 +52,7 @@
             </div>
             <?php echo form_error('email'); ?>
         </div>
-        <input type="submit" class="submit" value="Join!" />
+        <input type="submit" class="submit btn btn-inverse" value="Create My Profile!" />
     </div>
     </fieldset>
 </form>

@@ -118,14 +118,15 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     private function crowded_user_bar() {
 
         $user = current_user();
-
+        echo '<div class="container"><div class="navbar navbar-static-top"><div class="navbar-inner"><div class="brand">Crowd-Ed</div><ul class="nav pull-right">';
+        
         if ($user) {
-            $content = "<div id=\"crowded_login_bar\"><a href=\"/participate/profile/". $user->id . "\">" . $user->username . "</a> | <a href=\"" . uri(array('action'=>'logout', 'controller'=>'users'), 'default') . "\">Logout</a></div>";
+            $content = "<li><a href=\"/participate/profile/". $user->id . "\"><i class=\"icon-user\"></i> " . $user->username . "</a></li><li><a href=\"" . uri(array('action'=>'logout', 'controller'=>'users'), 'default') . "\"><i class=\"icon-off\"></i> Logout</a></li>";
         } else {
-            $content = "<div id=\"crowded_login_bar\"><a href=\"/participate/login\">Log in</a> | <a href=\"/participate/join\">Create Account</a></div>";
+            $content = "<li><a href=\"/participate/login\"><i class=\"icon-user\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
         }
-
-        echo($content);
+        
+        echo($content . '</ul></div></div></div>');
     }
 }
 

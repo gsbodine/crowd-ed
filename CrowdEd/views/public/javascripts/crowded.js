@@ -9,11 +9,9 @@ jQuery(document).ready(function($) {
         $(this).next(".explanation").toggle();
     });
     $("input:submit, a, button", ".buttonbar").button();
-    
-    $(".fieldheader").addClass("ui-widget")
-    
-    $(".success").addClass("ui-state-highlight ui-corner-all").append("<span class='ui-icon ui-icon-circle-check'></span>");
-    $(".failure").addClass("ui-state-error ui-corner-all");
+     
+    $(".success").addClass("alert alert-success").prepend("<i class='icon-ok-sign'></i> ");
+    $(".failure").addClass("alert alert-error").prepend("<i class='icon-remove-sign'></i> ");
     
     var cache = {}, lastXhr;
     $("#tags").autocomplete({

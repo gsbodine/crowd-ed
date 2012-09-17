@@ -6,36 +6,9 @@
 
 */
 
-fieldset { overflow: hidden; }
-
-.crowded-form-controls label, .crowded-form-controls input[type="radio"], .inlineRadio  {
-    float: left; 
-    clear: none;
-}
-
-.fieldheader {
-    display: block;
-}
-
-label.crowded-form-controls {
-    display: inline;
-    margin: 1em 0;
-}
-
-#crowded_login_bar {
-    color:#fff;
-    background-color: #333;
-    text-align: right;
-    padding: .5em 1em;
-}
-#crowded_login_bar a {
-    color: #fff;
-}
-
 .dateinput > .textinput {
     display: inline;
 }
-
 
 .island {
     position: relative;
@@ -69,17 +42,6 @@ label.crowded-form-controls {
     text-decoration: none;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 959px) {
-    .container .one-third.column   { overflow: hidden; } 
-}
-
-/* .success {
-    padding: 1em;
-    margin: 1em 0;
-    font-weight: bold;
-    text-align: center;
-} */
-
 .failure {
     padding: 1em;
     margin: 1em 0;
@@ -108,23 +70,8 @@ label.crowded-form-controls {
     display:inline;
 }
 
-/*
-#browse-island {
-    height: 300px;
-    background: url('/plugins/CrowdEd/views/public/images/BrowseImage.jpg') no-repeat;
+/* Bootstrap Adjustments and/or Overrides */
+.input-prepend, .input-append {
+    white-space: nowrap;
+    -webkit-padding-end: 27px;
 }
-#browse-island-text {
-    display: none;
-}
-#search-island {
-    height: 300px;
-    background: url('/plugins/CrowdEd/views/public/images/MBRoanie.jpg') no-repeat;
-    overflow: hidden;
-}
-
-#contribute-island {
-    height: 300px;
-    background: url('/plugins/CrowdEd/views/public/images/1950GrandMarch.jpg');
-}
-
-*/

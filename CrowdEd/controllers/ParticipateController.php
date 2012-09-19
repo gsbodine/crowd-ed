@@ -27,11 +27,12 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
         $itemId = $this->_getParam('id');
         // TODO: is this safe?
         $item = $this->findById($itemId, 'Item');
-        
+        $this->view->addHelperPath(CROWDED_DIR . '/helper','CrowdEd_View_Helper');
         if (!$this->getRequest()->isPost()) {
             $elementSets = $this->_getItemElementSets($item);
             $this->view->assign(compact('item'));
             $this->view->assign($elementSets);
+            
         } else {
             try {
                 if ($item->saveForm($_POST)) {
@@ -40,12 +41,12 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
                     if ($successMessage != '') {
                         $this->flashSuccess($successMessage);
                     }
-                    //$this->redirect->goto('edit', null, null,'participate', array('id'=>$item->id));
+                    $this->redirect->goto('edit', null,null, array('id'=>$item->id));
                 }
             } catch (Omeka_Validator_Exception $e) {
                 $this->flashValidationErrors($e);
             } 
-            $this->view->assign(compact('item'));  
+            $this->view->assign(compact('item'));
         }
     }
     

@@ -11,9 +11,10 @@ define('CROWDED_USER_ROLE','crowd-editor');
 
 //require_once CROWDED_DIR . '/helpers/CrowdedElementFormFunctions.php';
 require_once CROWDED_DIR . '/helpers/CrowdedFormFunctions.php';
-require_once CROWDED_DIR . '/helpers/CrowdedItemForm.php';
+require_once CROWDED_DIR . '/helpers/CrowdedElementForm.php';
 require_once 'CrowdEdPlugin.php';
 
+//TODO: clean up these filters -- don't think they're used anymore...
 add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');
 add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
 

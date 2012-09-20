@@ -14,39 +14,37 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     protected $_record;
 
     public function elementForm(Element $element, Omeka_Record $record, $options = array()) {
-        
+        $columnSpan = isset($options['columnSpan']) ? $options['columnSpan'] : '6';
+        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';
         $this->_element = $element;
         $record->loadElementsAndTexts(); 
         $this->_record = $record;
         
-        $html .= '<div class="field" id="element-' . html_escape($element->id) . '">';
-
+        $html .= '<div class="field span'. $columnSpan .'" id="element-' . html_escape($element->id) . '">';
         $html .= $this->_displayFieldLabel();
         $html .= $this->_displayValidationErrors();
-        $html .= $this->_displayFormFields();
+        $html .= $this->_displayFormFields($options=array('fieldColumnSpan'=>$fieldColumnSpan));
         $html .= '</div>';
 
-        //$html = 'fired child elementForm';
         return $html;
     }
     
-    protected function _displayFormFields($extraFieldCount = null) {
+    protected function _displayFormFields($options = array(), $extraFieldCount = null) {
+        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
         $fieldCount = $this->_getFormFieldCount() + (int) $extraFieldCount;
         $html = '';
 
         for ($i=0; $i < $fieldCount; $i++) {
             $fieldStem = $this->_getFieldNameStem($i);
 
-            $html .= '<div class="input">';
-            $html .= $this->_displayFormInput($fieldStem, $this->_getValueForField($i));
-            $html .= '</div>';
+            $html .= $this->_displayFormInput($fieldStem, $this->_getValueForField($i),$options=array('fieldColumnSpan'=>$fieldColumnSpan));
 
         }
-        //$html = 'fired the child _displayFormFields';
         return $html;
     }
     
     protected function _displayFormInput($inputNameStem, $value, $options=array()) {
+        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
         $fieldDataType = $this->_getElementDataType();
         $elementName = $this->_element['name'];
         
@@ -54,7 +52,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
         $html = '';
         $filterName = $this->_getPluginFilterForFormInput();
 
-        //$html = apply_filters($filterName, $html, $inputNameStem, $value, $options, $this->_record, $this->_element);
+        $html = apply_filters($filterName, $html, $inputNameStem, $value, $options, $this->_record, $this->_element);
 
         // Short-circuit the default display functions b/c we already have the HTML we need.
         if (!empty($html)) {
@@ -64,17 +62,17 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
         // Create a form input based on the element type name
         switch ($fieldDataType) {
             case 'Tiny Text':
-                return $this->_dateField(
+                return $this->view->formText(
                     $inputNameStem . '[text]',
                     $value,
-                    array());
-                    //array('class'=>'textinput', 'rows'=>2, 'cols'=>50));
+                    //array());
+                    array('class'=>'span'.$fieldColumnSpan));
                 break;
             case 'Text':
                 return $this->view->formTextarea(
                     $inputNameStem . '[text]',
                     $value,
-                    array('class'=>'textinput', 'rows'=>15, 'cols'=>50));
+                    array('class'=>'span'.$fieldColumnSpan, 'rows'=>5));
                 break;
             case 'Date':
                 return $this->view->_dateField(
@@ -91,7 +89,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
                 return $this->view->formText(
                     $inputNameStem . '[text]',
                     $value,
-                    array('class' => 'textinput', 'size' => 40));
+                    array('class' => 'span'.$formColumnSpan, 'size' => 40));
             case 'Date Time':
                 return $this->_dateField(
                     $inputNameStem,
@@ -109,9 +107,6 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
         switch ($fieldDataType) {
             case 'Date':
                 $html .= '<i class="icon-calendar"></i> ';
-            case 'Tiny Text':
-                $html .= '<i class="icon-calendar"></i> '; //TODO: smarten this up -- tiny text won't always be a calendar...
-         
         }
         $html .= '<strong>' . __($this->_getFieldLabel()) . '</strong></label>';
         //$html = $fieldDataType;

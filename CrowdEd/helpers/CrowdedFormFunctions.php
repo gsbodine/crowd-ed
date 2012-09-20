@@ -12,34 +12,6 @@
 	return $html;
     }
     
-    function crowded_display_element_sets_array_form($record, $arrayElementSetNames) {
-        
-        foreach ($arrayElementSetNames as $key => $elementSetName) {
-            $elementsInSetsArray[] = get_db()->getTable('Element')->findBySet($elementSetName);
-        } 
-        
-        foreach ($elementsInSetsArray as $key => $elementSet) {
-            foreach ($elementSet as $key => $element) {
-                $elements[] = $element;
-            }  
-        }
-        $sortedElements = customArraySort($elements,'order');
-        foreach ($sortedElements as $key => $element) { 
-            $cols = crowded_element_columns_width($element);
-            $html .= crowded_display_form_input_for_element($element, $record,array('columnNum'=>$cols));
-        }    
-        return $html;
-    }
-    
-    function crowded_display_element_set_form($record, $elementSetName) {
-        $elements = get_db()->getTable('Element')->findBySet($elementSetName);
-        $html = '';
-        $sortedElements = customArraySort($elements,'order');
-        foreach ($sortedElements as $key => $element) {
-            $html .= crowded_display_form_input_for_element($element, $record);
-        }
-        return $html;
-    }
     
     function isCrowdEdElement($element) {
         // TODO: Change this from hardcoded to a linked table ala SimpleVocab or similar
@@ -79,22 +51,6 @@
         return $sorted;
     }
     
-    function crowded_element_columns_width($element) {
-        switch ($element['name']) {
-        case "Script Type":
-        case "Type":
-        case "Creator":
-        case "Recipient":
-            $cols = "five";
-            break;
-        default : 
-            $cols = "twelve";
-            break;
-        }
-        
-        return $cols;
-    }
-    
     function crowded_item_tags($item) {
         $tagArray = get_tags($item);
         $tagJson = '[';
@@ -104,5 +60,7 @@
         $tagJson .= ']';
         return $tagJson;
     }
+    
+    
 
 ?>

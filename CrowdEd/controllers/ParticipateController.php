@@ -37,11 +37,10 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
             try {
                 if ($item->saveForm($_POST)) {
                     $successMessage = $this->_getEditSuccessMessage($item);
-                    $successMessage .= "Success! Item has been updated.";
-                    if ($successMessage != '') {
+                   if ($successMessage != '') {
                         $this->flashSuccess($successMessage);
                     }
-                    $this->redirect->goto('edit', null,null, array('id'=>$item->id));
+                    $this->redirect->gotoSimple('show','items', '', array('id'=>$itemId));
                 }
             } catch (Omeka_Validator_Exception $e) {
                 $this->flashValidationErrors($e);
@@ -101,9 +100,11 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     protected function _getItemElementSets($item) {
         return $this->getTable('ElementSet')->findForItems($item);
     }
+
     
-   // protected function _filterElementText() {
-        
-   // }
+    protected function _getEditSuccessMessage() {
+         $successMessage = __('Your changes to the item have been saved.');
+         return $successMessage;     
+    }
 }
 

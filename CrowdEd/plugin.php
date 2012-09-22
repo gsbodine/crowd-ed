@@ -38,13 +38,24 @@ function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, 
             $month = $list[0];
             $day = '';
         }
+        
+        $years = array();
+        for ( $i = 1900; $i < 2012; $i++) {
+            $years[$i] = $i;  
+        }
+        
+        $days = array();
+        for ( $i = 1; $i < 32; $i++) {
+            $days[$i] = $i;
+        }
+        
         //$html = '<div>value: ' . $value . '<br />list count: ' . count($list) . '<br /> first list item: ' . $list[0] . '</div>';
         $html = '<div class="form-inline dateinput">';
         //$html .= ' Month: ' . $this->view->formText($inputNameStem . '[month]', $month, array('class'=>'textinput input-mini', 'maxlength'=>'2'));
-        $html .= 'Month: ' . __v()->formSelect($inputNameStem . '[text][month]',$month, array('class'=>'input-medium'), array('' => '','1'=>'January','2'=>'February','5'=>'May'));
-        $html .= ' Day: ' . __v()->formSelect($inputNameStem . '[text][day]', $day, array('class'=>'textinput input-mini'), array(''=>'','1'=>'1','25'=>'25','31'=>'31'));
-        $html .= ' Year: ' . __v()->formSelect($inputNameStem . '[text][year]', $year, array('class'=>'textinput input-small'), array(''=>'','2000'=>'2000','1941'=>'1941','1928'=>'1928'));
-
+        $html .= 'Month: ' . __v()->formSelect($inputNameStem . '[text][month]',$month, array('class'=>'input-medium'), array('' => '','1'=>'January','2'=>'February','3'=>'March','4'=>'April','5'=>'May','6'=>'June','7'=>'July','8'=>'August','9'=>'September','10'=>'October','11'=>'November','12'=>'December'));
+        $html .= ' Day: ' . __v()->formSelect($inputNameStem . '[text][day]', $day, array('class'=>'textinput input-mini'), $days);
+        $html .= ' Year: ' . __v()->formSelect($inputNameStem . '[text][year]', $year, array('class'=>'textinput input-small'), $years);
+        
         $html .= '</div>';
         return $html;
     }

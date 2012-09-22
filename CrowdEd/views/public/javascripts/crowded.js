@@ -10,8 +10,8 @@ jQuery(document).ready(function($) {
     });*/
     $("input:submit, a, button", ".buttonbar").button();
     
-    $(".success").addClass("alert alert-success").prepend("<i class='icon-ok-sign'></i> ");
-    $(".failure").addClass("alert alert-error").prepend("<i class='icon-remove-sign'></i> ");
+    $('.success').addClass("alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
+    $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Sorry!</h4>");
     
     var cache = {}, lastXhr;
     $("#tags").autocomplete({

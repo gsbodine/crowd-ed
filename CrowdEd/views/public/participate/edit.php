@@ -20,7 +20,10 @@
         ?>
     </div>
     <div class="span6">
-        <div class="site-title" style="text-align:center"><h1>Participate <small> Help us curate this item!</small></h1></div>
+        <div style="text-align:center;"><?php echo link_to_item($text='<i class="icon-arrow-left"></i> return to item display page',$props=array(),$action='show',$item) ?></div>
+        <div class="site-title" style="text-align:center">
+            <h1>Participate <small> Help us curate this item!</small></h1>
+        </div>
         <hr />
         <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="">    
         <?php echo flash(); ?>
@@ -76,41 +79,46 @@
         <hr />
         
         <div class="row">
-            <div class="span6">
-                <div><i class="icon-tags"></i> <strong>Current Tags</strong></div>
-                <div class="tags well well-small">
-                    <?php echo item_tags_as_string(); ?>
+            <div class="span3">
+                <div class="row">
+                    <div><label for="tag-search" class="span3"><i class="icon-tags"></i> Add Tags</label></div>  
                 </div>
-                <label for="tag-search"><strong>Add Tags:</strong></label>
-                <div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span><?php 
-                    $tagList = tag_string(get_tags(),$link=false,$delimiter=",");
-                    $quotedTags = str_replace(",", "\",\"", $tagList);
-                    echo text(array(
-                        'name' => 'tags',
-                        'size' => '40',
-                        'id' => 'tag-search',
-                        'class'=>'span2',
-                        'placeholder'=>'Add a tag...',
-                        'data-provide'=>'typeahead',
-                        'data-source'=>'["'.$quotedTags.'"]',
-                        'data-items'=>'12',
-                        'data-minLength' => '2',
-                        ),
-                    @$_REQUEST['tags']); 
-                    ?>
+                <div class="row">
+                    <div class="input-prepend span3"><span class="add-on"><i class="icon-tag"></i></span><?php 
+                        $tagList = tag_string(get_tags(),$link=false,$delimiter=",");
+                        $quotedTags = str_replace(",", "\",\"", $tagList);
+                        echo text(array(
+                            'name' => 'tags',
+                            'size' => '40',
+                            'id' => 'tag-search',
+                            'class'=>'span2',
+                            'placeholder'=>'Add a tag...',
+                            'data-provide'=>'typeahead',
+                            'data-source'=>'["'.$quotedTags.'"]',
+                            'data-items'=>'12',
+                            'data-minLength' => '2',
+                            ),
+                        @$_REQUEST['tags']); 
+                        ?>
+                    </div>
                 </div>
             </div>
+            <div class="span3">
+                <div class="tags well well-small">
+                    <div><i class="icon-tags"></i> <strong>Current Tags</strong></div>
+                    <?php echo item_tags_as_string(); ?>
+                </div>
+            </div>
+            
         </div>
         <hr />
         
         <div class="row">
-        <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemFlag = crowded_display_form_element($item->getElementByNameAndSetName('Flag for Review','Crowdsourcing Metadata'),$item);
-            echo $itemFlag;
-        ?> 
+            <?php // todo: fix this to only do recipient for the right kind of document 
+                $itemFlag = crowded_display_form_element($item->getElementByNameAndSetName('Flag for Review','Crowdsourcing Metadata'),$item);
+                echo $itemFlag;
+            ?> 
         </div>
-            
-        <hr />
         <div class="row">
             <div class="buttonbar span6" style="text-align:center;">
                 <hr />

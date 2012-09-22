@@ -119,6 +119,8 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             case 'Recipient':
                 $html .= '<i class="icon-envelope"></i> ';
                 break;
+            case 'Flag for Review':
+                $html .= '<i class="icon-flag"></i> ';
         }
        // endswitch;
         $html .=  __($this->_getFieldLabel()) . '</label>';

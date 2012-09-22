@@ -32,4 +32,45 @@ jQuery(document).ready(function($) {
             }
     });
     
+ // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.
+    var blackListGroups = [
+        "Item Type Metadata",
+        "Contribution Form"
+    ];
+    var blackListElements = [
+        "Contributor",
+        "Coverage",
+        "Format",
+        "Language",
+        "Relation",
+        "Rights",
+        "Source",
+        "Type",
+        "Publisher",
+        "Subject"
+    ];
+    var blackListItemTypes = [
+        "Moving Image",
+        "Oral History",
+        "Sound",
+        "Moving Image",
+        "Website",
+        "Event",
+        "Email",
+        "Lesson Plan",
+        "Hyperlink",
+        "Interactive Resource",
+        "Person"
+    ];
+    jQuery.each(blackListGroups, function (index, value) {
+        jQuery("#advanced-0-element_id optgroup[label='" + value + "']").remove();
+    });
+    jQuery.each(blackListElements, function (index, value) {
+        jQuery("#advanced-0-element_id option[label='" + value + "']").remove();
+    });
+    jQuery.each(blackListItemTypes, function (index, value) {
+        jQuery("#item-type-search option[label='" + value + "']").remove();
+    });
+    
+    
 });

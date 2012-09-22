@@ -10,38 +10,6 @@
     display: inline;
 }
 
-.island {
-    position: relative;
-    text-align: center;
-}
-.island:hover .island-text { 
-    display: block; 
-    background-color: #cccab7;
-}
-.island:hover .island {
-    opacity: 30%;
-}
-.island img {
-    height: 300px;
-    width: 300px;
-    overflow: hidden;
-}
-
-.island-text {
-    display: none; 
-    position: absolute; 
-    top: 2em;
-    font-size: large;
-    font-weight: bold;
-    padding: 1.5em;
-    line-height: 150%;
-    font-family: "Georgia","Times New Roman",Helvetica,Arial,sans-serif;
-    color: #000;
-}
-.island-text a {
-    text-decoration: none;
-}
-
 .failure {
     padding: 1em;
     margin: 1em 0;

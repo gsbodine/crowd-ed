@@ -4,12 +4,12 @@
  */
 
 jQuery(document).ready(function($) {
-    $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info' style='float: left; margin-right: .3em;'></span>").addClass("ui-widget");
-    $(".help_icon").bind("mouseover mouseout", function() {
+    // $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info' style='float: left; margin-right: .3em;'></span>").addClass("ui-widget");
+    /* $(".help_icon").bind("mouseover mouseout", function() {
         $(this).next(".explanation").toggle();
-    });
+    });*/
     $("input:submit, a, button", ".buttonbar").button();
-     
+    
     $(".success").addClass("alert alert-success").prepend("<i class='icon-ok-sign'></i> ");
     $(".failure").addClass("alert alert-error").prepend("<i class='icon-remove-sign'></i> ");
     

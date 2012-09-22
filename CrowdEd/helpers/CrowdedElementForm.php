@@ -102,14 +102,35 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     }
     
     protected function _displayFieldLabel() {
-        $html = '<label>';
-        $fieldDataType = $this->_getElementDataType();
-        switch ($fieldDataType) {
-            case 'Date':
+        $html = '<div class="form-inline"><label>';
+        switch ($this->_getFieldLabel()) {
+            case 'Date': 
                 $html .= '<i class="icon-calendar"></i> ';
+                break;
+            case 'Type':
+                $html .= '<i class="icon-file"></i> ';
+                break;
+            case 'Script Type':
+                $html .= '<i class="icon-pencil"></i> ';
+                break;
+            case 'Creator':
+                $html .= '<i class="icon-user"></i> ';
+                break;
+            case 'Recipient':
+                $html .= '<i class="icon-envelope"></i> ';
+                break;
         }
-        $html .= '<strong>' . __($this->_getFieldLabel()) . '</strong></label>';
-        //$html = $fieldDataType;
+       // endswitch;
+        $html .=  __($this->_getFieldLabel()) . '</label>';
+        $html .= $this->_displayExplanation();
+        $html .= '</div>';
+        return $html;
+    }
+    
+    protected function _displayExplanation() {
+        $html = ' <a href="#" rel="tooltip" class="tooltipper" title="';
+        $html .= $this->_getFieldDescription() .'"><i class="icon-info-sign"></i></a>';
+
         return $html;
     }
     

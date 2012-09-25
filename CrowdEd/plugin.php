@@ -43,12 +43,13 @@ function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, 
             $day = '';
         }
         
-        $years = array();
-        for ( $i = 1900; $i < 2012; $i++) {
+        $years = array(''=>'');
+        $curYear = date('Y');
+        for ( $i = 1900; $i <= $curYear; $i++) {
             $years[$i] = $i;  
         }
         
-        $days = array();
+        $days = array(''=>'');
         for ( $i = 1; $i < 32; $i++) {
             $days[$i] = $i;
         }

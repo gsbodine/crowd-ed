@@ -1,5 +1,6 @@
 <?php 
     set_current_item($item);
+    
     head();
     
     // TODO: Clean up this page and ensure that non-built-in data items aren't included by default...
@@ -22,7 +23,7 @@
     <div class="span6">
         <div style="text-align:center;"><?php echo link_to_item($text='<i class="icon-arrow-left"></i> return to item display page',$props=array(),$action='show',$item) ?></div>
         <div class="site-title" style="text-align:center">
-            <h1>Participate <small> Help us curate this item!</small></h1>
+            <h1>Participate <small> Help us catalog this item!</small></h1>
         </div>
         <hr />
         <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="">    
@@ -84,15 +85,15 @@
                     <div><label for="tag-search" class="span3"><i class="icon-tags"></i> Add Tags</label></div>  
                 </div>
                 <div class="row">
-                    <div class="input-prepend span3"><span class="add-on"><i class="icon-tag"></i></span><?php 
+                    <div class="add-tags span3"><?php 
                         $tagList = tag_string(get_tags(),$link=false,$delimiter=",");
                         $quotedTags = str_replace(",", "\",\"", $tagList);
-                        echo text(array(
+                        echo textarea(array(
                             'name' => 'tags',
-                            'size' => '40',
-                            'id' => 'tag-search',
-                            'class'=>'span2',
-                            'placeholder'=>'Add a tag...',
+                            'id' => 'search-tags',
+                            'class'=>'span3',
+                            'rows'=>'2',
+                            'placeholder'=>'Add tags, separated by commas...',
                             'data-provide'=>'typeahead',
                             'data-source'=>'["'.$quotedTags.'"]',
                             'data-items'=>'12',
@@ -105,7 +106,7 @@
             </div>
             <div class="span3">
                 <div class="tags well well-small">
-                    <div><i class="icon-tags"></i> <strong>Current Tags</strong></div>
+                    <div><i class="icon-tags"></i> Current Tags</div>
                     <?php echo item_tags_as_string(); ?>
                 </div>
             </div>

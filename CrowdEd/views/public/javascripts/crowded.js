@@ -4,10 +4,7 @@
  */
 
 jQuery(document).ready(function($) {
-    // $(".explanation").before("<span class='help_icon ui-widget ui-icon ui-icon-info' style='float: left; margin-right: .3em;'></span>").addClass("ui-widget");
-    /* $(".help_icon").bind("mouseover mouseout", function() {
-        $(this).next(".explanation").toggle();
-    });*/
+    
     $("input:submit, a, button", ".buttonbar").button();
     
     $('.success').addClass("alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
@@ -72,5 +69,11 @@ jQuery(document).ready(function($) {
         jQuery("#item-type-search option[label='" + value + "']").remove();
     });
     
+    /* $('#add-tags').on('submit', function(e) {
+            e.preventDefault(); 
+            $(this).ajaxSubmit({
+                target: '#output'
+            });
+        });*/
     
 });

@@ -25,9 +25,10 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     
     public function editAction() {
         $itemId = $this->_getParam('id');
-        // TODO: is this safe?
         $item = $this->findById($itemId, 'Item');
+        $user = Omeka_Context::getInstance()->getCurrentUser();
         $this->view->addHelperPath(CROWDED_DIR . '/helper','CrowdEd_View_Helper');
+        
         if (!$this->getRequest()->isPost()) {
             $elementSets = $this->_getItemElementSets($item);
             $this->view->assign(compact('item'));
@@ -36,7 +37,8 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
         } else {
             try {
                 if ($item->saveForm($_POST)) {
-                    $successMessage = $this->_getEditSuccessMessage($item);
+                   $item->addTags($_POST["tags"],$user);
+                   $successMessage = $this->_getEditSuccessMessage($item);
                    if ($successMessage != '') {
                         $this->flashSuccess($successMessage);
                     }

@@ -1,15 +1,8 @@
 <?php 
     set_current_item($item);
-    
     head();
     
-    // TODO: Clean up this page and ensure that non-built-in data items aren't included by default...
 ?>
-<div class="row">
-    <div class="span12">
-        
-    </div>
-</div>
 <div class="row">
     <div class="span6">
         <p class="lead" style="text-align:center;">Item Identification #: <?php echo item('Dublin Core','Identifier'); ?></p>

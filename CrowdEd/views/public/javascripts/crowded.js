@@ -8,7 +8,8 @@ jQuery(document).ready(function($) {
     $("input:submit, a, button", ".buttonbar").button();
     
     $('.success').addClass("alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
-    $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Sorry!</h4>");
+    $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh-oh!</h4>");
+    $('.error').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     
     var cache = {}, lastXhr;
     $("#tags").autocomplete({

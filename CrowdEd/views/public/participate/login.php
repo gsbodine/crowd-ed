@@ -22,7 +22,7 @@
                 </div>
                 </div>
                 <input type="submit" class="btn btn-inverse" value="Log in" />
-                <?php // TODO: fix this log in form! Also, add a 'forgot password' action/link ?>
+                <?php // TODO: add a 'forgot password' action/link ?>
             </form>
         </div>
     </fieldset>

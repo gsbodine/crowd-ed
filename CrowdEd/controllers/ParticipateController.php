@@ -3,6 +3,9 @@
 
 /**
  * Description of ParticipateController
+ * 
+ * Almost all of the user-related stuff here is from the MyOmeka plug-in 
+ * codebase (at least for the time being) to make it functional.
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
@@ -11,6 +14,7 @@ require_once 'User.php';
 require_once 'Item.php';
 
 class CrowdEd_ParticipateController extends Omeka_Controller_Action {
+    
     public function init() {
        $this->_modelClass = 'Item';
     }
@@ -18,10 +22,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     public function indexAction() {
         
     }   
-    
-    public function itemAction() {
-        
-    }
     
     public function editAction() {
         $itemId = $this->_getParam('id');
@@ -67,37 +67,33 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
     }
     
    public function joinAction() {
-       // TODO: this will be the 'create profile' action
-   }
-    
-    public function createUserAction() {
-        // uses registerAction() from MyOmeka plugin code for now -- at least until I get to go over it...
-        $emailSent = false; //true only if an registration email has been sent 
+       // uses registerAction() from MyOmeka plugin code
+        $emailSent = false;
 		
-		$user = new User();
-		$user->role = CROWDED_USER_ROLE; // TODO: create/verify user roles for Crowd-Ed
-		
-                $requireTermsOfService = get_option('crowded_require_terms_of_service');
+        $user = new User();
+        $user->role = CROWDED_USER_ROLE; // TODO: create/verify user roles for Crowd-Ed
 
-		try {
-		    if ($this->getRequest()->isPost()) {		        
-		        if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
-		            // Do not allow anyone to manipulate the role on this form.
-		            unset($_POST['role']);
-    				$user->saveForm($_POST);
-					$this->sendActivationEmail($user);
-					$this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
-					$emailSent = true;
-    			} else {
-    			 	$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
-    			}
-		    }			
-		} catch (Omeka_Validator_Exception $e) {
-			$this->flashValidationErrors($e);
-		}
-		
-		$this->view->assign(compact('emailSent', 'requireTermsOfService', 'user'));
-    }
+        $requireTermsOfService = get_option('crowded_require_terms_of_service');
+
+        try {
+            if ($this->getRequest()->isPost()) {		        
+                if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
+                    unset($_POST['role']);
+                        $user->saveForm($_POST);
+                                $this->sendActivationEmail($user);
+                                $this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
+                                $emailSent = true;
+                } else {
+                        $this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
+                }
+            }			
+        } catch (Omeka_Validator_Exception $e) {
+                $this->flashValidationErrors($e);
+        }
+        
+        $this->view->assign(compact('emailSent', 'requireTermsOfService', 'user'));
+       
+   }
     
     protected function _getItemElementSets($item) {
         return $this->getTable('ElementSet')->findForItems($item);
@@ -108,5 +104,25 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
          $successMessage = __('Your changes to the item have been saved.');
          return $successMessage;     
     }
+    
+    public function sendActivationEmail($user) {
+        $ua = new UsersActivations;
+        $ua->user_id = $user->id;
+        $ua->save();
+		
+        $toEmail = $user->Entity->email;
+        $toName = $user->Entity->first_name . ' ' . $user->Entity->last_name;
+
+        $this->view->user = $user;
+        $this->view->activationSlug = $ua->url;
+        $this->view->siteTitle = get_option('site_title');
+
+        $mail = new Zend_Mail();
+        $mail->setBodyText($this->view->render('participate/join-email.php'));
+        $mail->setFrom(get_option('administrator_email'), $this->view->siteTitle . ' Administrator');
+        $mail->addTo($toEmail, $toName);
+        $mail->setSubject("Activate your account with the {$this->view->siteTitle}");
+        $mail->send();
+	}
 }
 

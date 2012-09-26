@@ -7,7 +7,7 @@
        <p></p>
     </div>
     <div class="thirteen columns omega">
-        <h3>gsbodine</h3>
+        <h3><?php echo $user->username; ?></h3>
     </div>
 </div>
 

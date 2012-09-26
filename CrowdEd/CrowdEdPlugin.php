@@ -31,7 +31,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     public function hookInstall() {
         set_option('crowded_plugin_version', CROWDED_PLUGIN_VERSION);
         $db = get_db();
-        // TODO: Set up DB tables for all the Crowd-Ed specific junk
+        // TODO: Set up DB tables for all the Crowd-Ed specific junk, if there is gonna be any...
     }
     
     public function hookUninstall() {

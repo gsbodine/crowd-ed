@@ -114,9 +114,11 @@
             ?> 
         </div>
         <div class="row">
-            <div class="buttonbar span6" style="text-align:center;">
+            <div class="span6" style="text-align:center">
                 <hr />
-                <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit btn btn-primary','style'=>'text-align:center'),__('Save Changes')); ?>
+                <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit btn btn-primary pull-left'),__('Save Changes')); ?>
+                <?php echo link_to_item($text='<i class="icon-remove-sign"></i> Cancel and return to item',$props=array('class'=>'text-warning pull-right'),$action='show',$item) ?>
+            
             </div>
         </div>
         </form>

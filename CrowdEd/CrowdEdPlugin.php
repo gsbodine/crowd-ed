@@ -24,7 +24,8 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         'before_save_form_item',
         'after_save_form_item',
         'after_delete_item',
-        'after_validate_item'
+        'after_validate_item',
+        'define_acl'
     );
     
     public function hookInstall() {
@@ -90,9 +91,12 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         $this->crowded_user_bar();
     }
     
-    public function crowded_setup_acl($acl) {
-        $acl->addRole(new Omeka_Acl(CROWDED_USER_ROLE));
-        $acl->loadResourceList(); // TODO: Finish up the resource list for Crowd-Ed users
+    public function hookDefineAcl($acl) {
+        $acl->addResource(new Zend_Acl_Resource('participate'));
+        $crowdEditor = new Zend_Acl_Role(CROWDED_USER_ROLE);
+        $acl->addRole($crowdEditor);
+        $acl->allow($crowdEditor, 'participate', array('edit','profile'));
+        
     }
 
     public function crowded_date_formfield($html, $inputNameStem, $date) {

@@ -126,7 +126,4 @@
         
     </div>
     
-</div>
-    
-</div>
 <?php foot(); ?>

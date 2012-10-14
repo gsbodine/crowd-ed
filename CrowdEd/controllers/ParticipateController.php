@@ -12,8 +12,9 @@
 
 require_once 'User.php';
 require_once 'Item.php';
+require_once APP_DIR . '/controllers/UsersController.php';
 
-class CrowdEd_ParticipateController extends Omeka_Controller_Action {
+class CrowdEd_ParticipateController extends UsersController {
     
     public function init() {
        $this->_modelClass = 'Item';
@@ -49,6 +50,10 @@ class CrowdEd_ParticipateController extends Omeka_Controller_Action {
             } 
             $this->view->assign(compact('item'));
         }
+    }
+    
+    public function forgotAction(){
+        
     }
     
     public function profileAction() {

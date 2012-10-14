@@ -57,7 +57,7 @@
                 <?php echo form_error('email'); ?>
             </div>
             <div style="text-align:center">
-                <input type="submit" class="submit btn btn-inverse" value="Create My Profile!" />
+                <input type="submit" class="submit btn btn-primary" value="Create My Profile!" /> <a href="forgot-password" class="text-warning">Forgot password?</a>
             </div>
         </fieldset>
         </form>

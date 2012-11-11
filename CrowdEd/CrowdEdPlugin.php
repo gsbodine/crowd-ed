@@ -58,16 +58,15 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
  
     public function hookBeforeSaveFormItem($item) {
-        //echo print_r($item);
-        //break;
+       
     }
     
     public function hookAfterSaveItem($item) {
- 
+
     }
     
     public function hookAfterSaveFormItem($item) {
-        
+       
     }
     
     public function hookAfterDeleteItem($item) {
@@ -84,7 +83,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
 
     public function hookPublicAppendToItemsShow(){
-        $this->crowded_participate_item();
+       $this->crowded_participate_item();
     }
 
     public function hookPublicThemeBody() {

@@ -8,27 +8,11 @@ jQuery(document).ready(function($) {
     $("input:submit, a, button", ".buttonbar").button();
     
     $('.success').addClass("alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
-    $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh-oh!</h4>");
+    $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.error').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     
-    var cache = {}, lastXhr;
-    $("#tags").autocomplete({
-            minLength: 2,
-            source: function( request, response ) {
-                    var term = request.term;
-                    if ( term in cache ) {
-                            response( cache[ term ] );
-                            return;
-                    }
-
-                    lastXhr = $.getJSON( "tags-search.php", request, function( data, status, xhr ) {
-                            cache[ term ] = data;
-                            if ( xhr === lastXhr ) {
-                                    response( data );
-                            }
-                    });
-            }
-    });
+    //$('#search-tags').Typeahead({minLength:2,mode:"multiple"});
+    
     
  // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.
     var blackListGroups = [
@@ -70,11 +54,6 @@ jQuery(document).ready(function($) {
         jQuery("#item-type-search option[label='" + value + "']").remove();
     });
     
-    /* $('#add-tags').on('submit', function(e) {
-            e.preventDefault(); 
-            $(this).ajaxSubmit({
-                target: '#output'
-            });
-        });*/
+     
     
 });

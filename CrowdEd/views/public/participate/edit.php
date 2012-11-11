@@ -3,6 +3,9 @@
     head();
     
 ?>
+
+
+<h1><?php echo $this->itemType .'<br />Item ID: '. $this->id ?></h1>
 <div class="row">
     <div class="span6">
         <p class="lead" style="text-align:center;">Item Identification #: <?php echo item('Dublin Core','Identifier'); ?></p>
@@ -26,13 +29,13 @@
         <?php $itemType = crowded_display_form_element($item->getElementByNameAndSetName('Type','Dublin Core'),$item,$options=array('columnSpan'=>'3'));
             echo $itemType;
         ?>
-            
+            <div class="btn-group">
         <?php 
             // FIXME: if ($item->getElementByNameAndSetName('ScriptType','Item Type Metadata')) {
-                $itemType = crowded_display_form_element($item->getElementByNameAndSetName('Script Type','Item Type Metadata'),$item,$options=array('columnSpan'=>'3'));
-                echo $itemType; 
+                $scriptType = crowded_display_form_element($item->getElementByNameAndSetName('Script Type','Item Type Metadata'),$item,$options=array('columnSpan'=>'3'));
+                echo $scriptType; 
             //}
-        ?>
+        ?>  </div>
         </div>
         
         <hr />
@@ -45,7 +48,7 @@
         <hr />
         
         <div class="row">
-        <?php  $itemTitle = crowded_display_form_element( $item->getElementByNameAndSetName('Title','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
+        <?php  $itemTitle = crowded_display_form_element($item->getElementByNameAndSetName('Title','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
                echo $itemTitle; 
         ?>
         </div>
@@ -53,7 +56,7 @@
         <hr />
         
         <div class="row">
-        <?php  $itemDescription = crowded_display_form_element( $item->getElementByNameAndSetName('Description','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
+        <?php  $itemDescription = crowded_display_form_element($item->getElementByNameAndSetName('Description','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
                echo $itemDescription; 
         ?>
         </div>
@@ -61,11 +64,16 @@
         <hr />
         
         <div class="row">
-        <?php $itemCreator = crowded_display_form_element($item->getElementByNameAndSetName('Creator','Dublin Core'),$item,$options=array('columnSpan'=>'3'));
+        <?php $itemCreator = crowded_display_form_element($item->getElementByNameAndSetName('Creator','Dublin Core'),$item,$options=array('columnSpan'=>'6'));
             echo $itemCreator;
         ?>
+        </div>
+        
+        <hr />
+        
+        <div class="row">  
         <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemRecipient = crowded_display_form_element($item->getElementByNameAndSetName('Recipient','Item Type Metadata'),$item,$options=array('columnSpan'=>'3'));
+            $itemRecipient = crowded_display_form_element($item->getElementByNameAndSetName('Recipient','Item Type Metadata'),$item,$options=array('columnSpan'=>'6'));
             echo $itemRecipient;
         ?>
         </div> 
@@ -108,7 +116,7 @@
         <hr />
         
         <div class="row">
-            <?php // todo: fix this to only do recipient for the right kind of document 
+            <?php //TODO: this should appear somewhere else, probably cuz even those without being logged in should be able to flag items?
                 $itemFlag = crowded_display_form_element($item->getElementByNameAndSetName('Flag for Review','Crowdsourcing Metadata'),$item);
                 echo $itemFlag;
             ?> 

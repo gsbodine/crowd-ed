@@ -12,7 +12,6 @@
 	return $html;
     }
     
-    
     function isCrowdEdElement($element) {
         // TODO: Change this from hardcoded to a linked table ala SimpleVocab or similar
         $crowdedElements = array('Title','Description','Creator','Recipient','Date','Type','Flag for Review','Script Type');
@@ -21,7 +20,7 @@
         }
     }
     
-    function customArraySort($array, $index, $order='asc', $natsort=TRUE, $case_sensitive=FALSE) {
+    /* function customArraySort($array, $index, $order='asc', $natsort=TRUE, $case_sensitive=FALSE) {
         // most of this came from the PHP documentation's comments
         if(is_array($array) && count($array)>0) {
             foreach(array_keys($array) as $key)
@@ -50,7 +49,9 @@
         }
         return $sorted;
     }
-    
+     * 
+     */
+    /*
     function crowded_item_tags($item) {
         $tagArray = get_tags($item);
         $tagJson = '[';
@@ -59,8 +60,7 @@
         }
         $tagJson .= ']';
         return $tagJson;
-    }
-    
+    }*/
     
 
 ?>

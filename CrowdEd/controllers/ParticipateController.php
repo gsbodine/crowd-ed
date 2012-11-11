@@ -25,7 +25,6 @@ class CrowdEd_ParticipateController extends ItemsController {
     public function editAction() {
         $itemId = $this->_getParam('id');
         $item = $this->findById($itemId, 'Item');
-        if ($item instanceof CrowdEdItem) { $itemType = 'CrowdEdItem'; } else { $itemType = 'Not CrowdEdItem'; }
         $user = Omeka_Context::getInstance()->getCurrentUser();
         $this->view->addHelperPath(CROWDED_DIR . '/helper','CrowdEd_View_Helper');
         

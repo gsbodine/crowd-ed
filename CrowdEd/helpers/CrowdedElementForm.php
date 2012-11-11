@@ -14,18 +14,39 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     protected $_record;
 
     public function elementForm(Element $element, Omeka_Record $record, $options = array()) {
+        $extraFieldCount = isset($options['extraFieldCount']) ? $options['extraFieldCount'] : null;
+
         $columnSpan = isset($options['columnSpan']) ? $options['columnSpan'] : '6';
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';
         $this->_element = $element;
         $record->loadElementsAndTexts(); 
         $this->_record = $record;
         
+        $personMixin = new PersonNameElementText($this->_record);
+        $isPersonName = $personMixin->isPersonNameElement($element);
+        
+        $html = '';
         $html .= '<div class="field span'. $columnSpan .'" id="element-' . html_escape($element->id) . '">';
         $html .= $this->_displayFieldLabel();
         $html .= $this->_displayValidationErrors();
-        $html .= $this->_displayFormFields($options=array('fieldColumnSpan'=>$fieldColumnSpan));
+        if ($isPersonName){
+            $elementTexts = $this->_record->getTextsByElement($this->_element);
+            if ($elementTexts) {
+                foreach ($elementTexts as $key => $value) {
+                    if ($value['element_id'] == $this->_element->id) {
+                        $elementTextId = $value['id']; 
+                        $html.= $this->_displayPersonNameFields($record->id,$element->id,$elementTextId,$extraFieldCount);
+                    }
+                }
+            } else {
+                $html .= $this->_displayPersonNameFields($record->id,'0', $extraFieldCount);
+            }
+            
+        } else {
+            $html .= $this->_displayFormFields($options=array('fieldColumnSpan'=>$fieldColumnSpan),$extraFieldCount); 
+        }
         $html .= '</div>';
-
+        
         return $html;
     }
     
@@ -38,8 +59,41 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             $fieldStem = $this->_getFieldNameStem($i);
 
             $html .= $this->_displayFormInput($fieldStem, $this->_getValueForField($i),$options=array('fieldColumnSpan'=>$fieldColumnSpan));
-
+            $html .= $this->_displayFormControls();
         }
+        return $html;
+    }
+    
+    protected function _displayPersonNameFields($extraFieldCount = NULL) {
+        $fieldCount = $this->_getFormFieldCount() + (int) $extraFieldCount;
+        $html = '';
+        
+        
+        for ($i=0; $i < $fieldCount; $i++) {
+            $fieldStem = $this->_getFieldNameStem($i);
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][title]', $personName->title,$options=array('class'=>'span1','placeholder'=>'Title'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][firstname]', $personName->firstname,$options=array('class'=>'span2','placeholder'=>'First Name'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][middlename]', $personName->middlename,$options=array('class'=>'span2','placeholder'=>'Middle Name'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][lastname]', $personName->lastname,$options=array('class'=>'span2','placeholder'=>'Last Name'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][suffix]', $personName->suffix,$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
+            //$html .= '<input type="hidden" name="PersonNames['. $personName->id .'][element_text_id]" value="'.  .'" />';
+            //$html .= 'Record ID ='.$this->_record->id;
+            $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][element_id]" value="'. $element_id .'" />';
+            $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][element_text_id]" value="'. $elementTextId .'" />';
+            $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][record_id]" value="'. $record_id .'" />';
+            
+            $html .= $this->_displayFormControls();
+        }
+        
+        return $html;
+    }
+    
+    protected function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
+        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
+        $fieldDataType = $this->_getElementDataType();
+        $elementName = $this->_element['name'];
+        $html = '';
+        $html .= $this->view->formText($inputNameStem, $value, $options);
         return $html;
     }
     
@@ -165,5 +219,17 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
 
         $html .= '</div>';
         return $html;
+    }
+    
+    public function getPersonNamesByElementTexts($index=null) {
+        $personNames = $this->_record->getPersonNames($this->_element);
+        if ($index !== null) {
+            if (array_key_exists($index, $texts)) {
+                return $texts[$index];
+            } else {
+                return null;
+            }
+        }
+        return $texts;
     }
 }

@@ -109,11 +109,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     protected function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
         $fieldDataType = $this->_getElementDataType();
-        if ($this->_element['name'] == 'Creator') {
-            $elementName = 'Author';
-        } else {
-            $elementName = $this->_element['name'];
-        }
+        $elementName = $this->_element['name'];
         $html = '';
         $html .= $this->view->formText($inputNameStem, $value, $options);
         return $html;
@@ -122,7 +118,12 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     protected function _displayFormInput($inputNameStem, $value, $options=array()) {
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
         $fieldDataType = $this->_getElementDataType();
-        $elementName = $this->_element['name'];
+        if ($this->_element['name'] == 'Creator') {
+            $elementName = 'Author';
+        } else {
+            $elementName = $this->_element['name'];
+        }
+        
         $html = '';
         $filterName = $this->_getPluginFilterForFormInput();
         $html = apply_filters($filterName, $html, $inputNameStem, $value, $options, $this->_record, $this->_element);
@@ -195,12 +196,8 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             case 'Flag for Review':
                 $html .= '<i class="icon-flag"></i> ';
         }
-        if ($this->_getFieldLabel() == 'Creator') {
-            $label = 'Author';
-        } else {
-            $label = $this->_getFieldLabel();
-        }
-        $html .=  __($label) . '</label>';
+       // endswitch;
+        $html .=  __($this->_getFieldLabel()) . '</label>';
         $html .= $this->_displayExplanation();
         $html .= '</div>';
         return $html;

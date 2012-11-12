@@ -33,6 +33,22 @@ class PersonName extends Omeka_Record {
         }
     }
     
+    public function setRecord_id($record_id) {
+        if (is_int($record_id)) {
+            $this->id = $record_id;
+        } else {
+            throw new Omeka_Record_Exception(__("Record IDs must be integers, of course!"));
+        }
+    }
+    
+    public function setElement_id($element_id) {
+        if (is_int($element_id)) {
+            $this->id = $element_id;
+        } else {
+            throw new Omeka_Record_Exception(__("Element IDs must be integers, of course!"));
+        }
+    }
+    
     public function setFirstname($firstname) {
         $this->firstname = trim($firstname);
     }
@@ -75,6 +91,12 @@ class PersonName extends Omeka_Record {
                         break;
                     case 'suffix':
                         $this->setSuffix($value);
+                        break;
+                    case 'record_id':
+                        $this->setRecord_id($record_id);
+                        break;
+                    case 'element_id':
+                        $this->setElement_id($element_id);
                         break;
                     default:
                         $this->$key = $value;

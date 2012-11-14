@@ -47,7 +47,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             $fieldStem = $this->_getFieldNameStem($i);
 
             $html .= $this->_displayFormInput($fieldStem, $this->_getValueForField($i),$options=array('fieldColumnSpan'=>$fieldColumnSpan));
-            $html .= $this->_displayFormControls();
+            //$html .= $this->_displayFormControls();
         }
         return $html;
     }
@@ -69,7 +69,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
                     $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][id]" value="'. $personName->id .'" />';
 
-                    $html .= $this->_displayFormControls();
+                   // $html .= $this->_displayFormControls();
                 } else {
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title'));
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name'));
@@ -78,7 +78,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
-                    $html .= $this->_displayFormControls();
+                   // $html .= $this->_displayFormControls();
                 }
             }
         } else if ($personNames instanceof PersonName && $personNames['element_id'] == $element->id) {
@@ -91,7 +91,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             $html .= '<input type="hidden" name="PersonNames['. $personNames->id .'][record_id]" value="'. $record->id .'" />';
             $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][id]" value="'. $personName->id .'" />';
 
-            $html .= $this->_displayFormControls();
+           // $html .= $this->_displayFormControls();
         } else {
             $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title'));
             $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name'));
@@ -100,7 +100,7 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
             $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
             $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
             $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
-            $html .= $this->_displayFormControls();
+           // $html .= $this->_displayFormControls();
         }
  
         return $html;

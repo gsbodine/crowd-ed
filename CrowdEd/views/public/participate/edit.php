@@ -3,9 +3,57 @@
     head();
     
 ?>
-
-
-<h1><?php echo $this->itemType .'<br />Item ID: '. $this->id ?></h1>
+<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><i class="icon-question-sign"></i> Help and Editing Guidelines</h3>
+    </div>
+    <div class="modal-body">
+        <h4 class="lead"><i class="icon-info-sign"></i> Instructions</h4>
+        <ol>
+            <li>Complete the fields using the document contents to guide your responses.</li>
+            <li>Click on the document to increase its size and make the text easier to decipher. </li>
+            <li>Accuracy is important. Please do your best to provide precise and accurate descriptions. </li>
+            <li>Try to complete all fields. If the document does not contain enough information for you to do so, edit as much as you can and leave fields blank if necessary.</li>
+            <li>When you've finished editing, review your responses for accuracy. Then click <span class="btn btn-primary btn-mini">Save Changes</span>. </li>
+            <li>If the document is too difficult to read, click <span class="text-warning"><i class="icon-remove-sign"></i>Cancel and return to item</span> and proceed to the next item to edit. </li>
+        </ol>
+        <hr />
+        
+        <h4 class="lead"><i class="icon-question-sign"></i> What if...</h4>
+        <dl>
+            <dt>I can’t read the document:</dt>
+            <dd>Take your time and try to decipher the text. If you can’t, simply scroll down and click <span class="text-warning"><i class="icon-remove-sign"></i> Cancel and return to item</span> to edit a different document. </dd>
+        </dl>
+        <dl>
+            <dt>The document contains more than one date:</dt>
+            <dd>Use the date written by the document’s main author. Some documents contain a typed date in addition to the date written by the author. We’re interested in the date written by the document’s main author. </dd>
+        </dl>
+        <dl>
+            <dt>The document contains more than one author or recipient:</dt>
+            <dd>Click on XXX to add additional author and/or recipient fields. </dd>
+        </dl>
+        <dl>
+            <dt>A title or name is typed or written in by someone other than the author: </dt>
+            <dd>Use the name written by the author. Some documents contain a title or name in addition to that used by the author. We’re interested in the name as written by the document’s main author. </dd>
+        </dl>
+        <dl>
+            <dt>The author signed the letter and typed his/her name but the names are not identical:</dt>
+            <dd>Some authors sign a letter by hand (e.g. Margaret Dunham) above the formal name and title typed in the closing (e.g. Mrs. Carroll Dunham). Use the signature. If you can’t read the signature, then using the formal name is an acceptable alternative.</dd>
+        </dl>
+        <dl>
+            <dt>One or more of the fields contains editing errors, graffiti, or inappropriate language:</dt>
+            <dd>Please help us correct these by editing the document immediately. If you're not sure how to correct the problem, flag it for review and we'll be sure to review and correct the problem ASAP. </dd>
+        </dl>
+        <dl>
+            <dt>I don’t know what a <span class="label label-inverse"><i class="icon-tag"></i> Tag</span> is: </dt>
+            <dd>A tag is a keyword or label that describes a document's subject. Tags can help readers and editors identify and sort similar documents. If you’re not sure what tag to use, feel free to leave the tags field blank.</dd>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 <div class="row">
     <div class="span6">
         <p class="lead" style="text-align:center;">Item Identification #: <?php echo item('Dublin Core','Identifier'); ?></p>
@@ -18,8 +66,8 @@
     </div>
     <div class="span6">
         <div style="text-align:center;"><?php echo link_to_item($text='<i class="icon-arrow-left"></i> return to item display page',$props=array(),$action='show',$item) ?></div>
-        <div class="site-title" style="text-align:center">
-            <h1>Participate <small> Help us catalog this item!</small></h1>
+        <div class="site-title">
+            <h1>Participate <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
         </div>
         <hr />
         <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="">    

@@ -108,6 +108,11 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         // }
         return $nav;
     }
+    
+    public static function publicNavigationMain($nav) {
+        $nav['Community'] = uri(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
+        return $nav;
+    }
 
 
     /* PRIVATE FUNCTIONS */    

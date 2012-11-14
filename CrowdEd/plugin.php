@@ -11,15 +11,17 @@ define('CROWDED_USER_ROLE','crowd-editor');
 
 require_once CROWDED_DIR . '/helpers/CrowdedFormFunctions.php';
 require_once CROWDED_DIR . '/helpers/CrowdedElementForm.php';
+require_once CROWDED_DIR . '/helpers/CrowdedCommunityFunctions.php';
 require_once 'CrowdEdPlugin.php';
 
 add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');
 add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
+add_filter('public_navigation_main','CrowdEdPlugin::publicNavigationMain');
 add_filter('admin_navigation_main','CrowdEdPlugin::adminNavigationMain');
 add_plugin_hook('public_theme_footer', 'crowded_public_theme_footer');
 
 function crowded_public_theme_footer() {
-    echo '<p class="pull-right"><small>Crowdsourcing provided by the <a href="http://gsbodine.github.com/crowd-ed">Crowd-Ed plugin</a></small></p>';
+    echo '<p class="pull-right"><small>Crowdsourcing provided by the <a href="http://gsbodine.github.com/crowd-ed"><i class="icon-github"></i> Crowd-Ed plugin</a></small></p>';
 }
 
 function crowded_form_item_date_filter($html, $inputNameStem, $value, $options, $item, $element) {

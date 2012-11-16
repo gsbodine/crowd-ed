@@ -18,6 +18,7 @@ add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_
 add_filter(array('Flatten','Item','Dublin Core','Date'),'crowded_element_item_date_filter');
 add_filter('public_navigation_main','CrowdEdPlugin::publicNavigationMain');
 add_filter('admin_navigation_main','CrowdEdPlugin::adminNavigationMain');
+add_filter('item_citation','crowded_item_citation');
 add_plugin_hook('public_theme_footer', 'crowded_public_theme_footer');
 
 function crowded_public_theme_footer() {

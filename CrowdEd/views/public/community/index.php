@@ -26,7 +26,7 @@ head(); ?>
         <div class="well">
             <h3><i class="icon-trophy"></i> Top Editors </h3>
             <ol>
-              <?php echo getEditorsByVolume($this->_db,10); ?>
+              <?php echo getEditorsByVolume($this->_db,9); ?>
             </ol>
         </div>
     </div>
@@ -34,15 +34,9 @@ head(); ?>
         <div class="well">
             <h3><i class="icon-time"></i> Latest Editors</h3>
             <ol>
-                <li><span class="label label-inverse"><i class="icon-user"></i> gsbodine</span></li>
-                <li><span class="label label-info"><i class="icon-user"></i> sschlitz</span></li>
+                <?php echo getMostRecentEditors($this->_db,9); ?>
             </ol>
         </div>
     </div>
 </div>
-<div class="row">
-    
-</div>
-
-
 <?php foot(); ?>

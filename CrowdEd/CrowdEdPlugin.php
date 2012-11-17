@@ -120,7 +120,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     
     private function crowded_participate_item() {
         $item = get_current_item();
-        echo("<h4>Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
+        echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     }
     
     private function crowded_user_bar() {

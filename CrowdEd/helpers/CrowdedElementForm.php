@@ -71,10 +71,10 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
 
                    // $html .= $this->_displayFormControls();
                 } else {
-                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'span2','placeholder'=>'Last Name'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
@@ -82,10 +82,10 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
                 }
             }
         } else if ($personNames instanceof PersonName && $personNames['element_id'] == $element->id) {
-            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][title]', $personNames->title,$options=array('class'=>'span1','placeholder'=>'Title'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][firstname]', $personNames->firstname,$options=array('class'=>'span2','placeholder'=>'First Name'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][middlename]', $personNames->middlename,$options=array('class'=>'span2','placeholder'=>'Middle Name'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][lastname]', $personNames->lastname,$options=array('class'=>'span2','placeholder'=>'Last Name'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][title]', $personNames->title,$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][firstname]', $personNames->firstname,$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][middlename]', $personNames->middlename,$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][lastname]', $personNames->lastname,$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
             $html .= $this->_displayPersonNameFormInput('PersonNames['. $personNames->id .'][suffix]', $personNames->suffix,$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
             $html .= '<input type="hidden" name="PersonNames['. $personNames->id .'][element_id]" value="'. $element->id .'" />';
             $html .= '<input type="hidden" name="PersonNames['. $personNames->id .'][record_id]" value="'. $record->id .'" />';
@@ -93,10 +93,10 @@ class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
 
            // $html .= $this->_displayFormControls();
         } else {
-            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name'));
-            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'span2','placeholder'=>'Last Name'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+            $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
             $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
             $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
             $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 

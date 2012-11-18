@@ -9,7 +9,7 @@
 ?>
     <div class="row">
         <div class="span5 offset1">
-            <div class="site-header" style="text-align:center"><h1>Participate! <small>Create a profile</small></h1></div>
+            <div class="site-header" style="text-align:center"><h1><i class="icon-group"></i> Participate! <small>Create an account</small></h1></div>
             <p class="lead" style="text-align:center"><em>Be a part of the <?php echo settings('site_title'); ?></em></p>
             <?php echo flash(); ?>
         </div>
@@ -57,7 +57,7 @@
                 <?php echo form_error('email'); ?>
             </div>
             <div style="text-align:center">
-                <input type="submit" class="submit btn btn-primary" value="Create My Profile!" /> <a href="forgot-password" class="text-warning">Forgot password?</a>
+                <input type="submit" class="submit btn btn-primary pull-left" value="Create My Account!" /> <a href="forgot-password" class="text-warning pull-right"><b><i class="icon-question-sign"></i> Forgot password?</b></a>
             </div>
         </fieldset>
         </form>

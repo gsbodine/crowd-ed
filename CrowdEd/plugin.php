@@ -12,6 +12,7 @@ define('CROWDED_USER_ROLE','crowd-editor');
 require_once CROWDED_DIR . '/helpers/CrowdedFormFunctions.php';
 require_once CROWDED_DIR . '/helpers/CrowdedElementForm.php';
 require_once CROWDED_DIR . '/helpers/CrowdedCommunityFunctions.php';
+require_once CROWDED_DIR . '/helpers/CrowdedParticipateFunctions.php';
 require_once 'CrowdEdPlugin.php';
 
 add_filter(array('Form', 'Item', 'Dublin Core', 'Date'),'crowded_form_item_date_filter');

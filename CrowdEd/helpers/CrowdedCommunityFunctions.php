@@ -31,7 +31,8 @@ function getEditorsByVolume($db,$limit=10){
             ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
             ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
             ->group('u.username')
-            ->order('count(u.username) DESC');
+            ->order('count(u.username) DESC')
+            ->limit($limit);
     
     $stmt = $select->query();
     while ($row = $stmt->fetch()) {
@@ -48,7 +49,8 @@ function getMostRecentEditors($db,$limit=10) {
             ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
         ->where("time <> '0000-00-00 00:00:00'")
         ->group('u.username')
-        ->order('max(time) DESC');
+        ->order('max(time) DESC')
+        ->limit($limit);
     $stmt = $select->query();
     while ($row = $stmt->fetch()) {
         $html .= '<li><span class="label"><i class="icon-user"></i> '. $row['username'] .'</span></li>';

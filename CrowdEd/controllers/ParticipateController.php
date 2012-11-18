@@ -22,6 +22,10 @@ class CrowdEd_ParticipateController extends ItemsController {
         
     }   
     
+    public function randomAction() {
+        
+    }
+    
     public function editAction() {
         $itemId = $this->_getParam('id');
         $item = $this->findById($itemId, 'Item');

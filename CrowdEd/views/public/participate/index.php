@@ -11,7 +11,7 @@
         <div class="well">
             <h2><i class="icon-user"></i> Become an Editor</h2>
             <p class="lead"><a href="/participate/join"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo settings('site_title'); ?></b></a></p>
-            <p class="alert alert-info">If you already have an account: <a href="/participate/login"><strong><i class="icon-key"></i> Log In!</strong></a></p>
+            <p class="alert alert-info"><i class="icon-key"></i> If you already have an account: <a href="/participate/login"><strong>Log In!</strong></a></p>
         </div>
     </div>
     <div class="span4">
@@ -19,7 +19,7 @@
             <h2><i class="icon-book"></i> Learn How to Edit</h2>
             <p class="lead">Visit our <a href="/getting-started"><em><b>Getting Started</b></em></a> page or view our 
                 simple <a href="/getting-started#editing"><em><b>Editing Guidelines</b></em></a>.</p>
-            <p class="alert alert-warning"><strong>Don't worry!</strong> Help is available on every page when you're editing!</p>
+            <p class="alert alert-warning"><strong><i class="icon-asterisk"></i> Don't worry!</strong> Help is available on every page when you're editing!</p>
         </div>
     </div>
     <div class="span4">

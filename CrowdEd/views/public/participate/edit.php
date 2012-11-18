@@ -2,6 +2,7 @@
     set_current_item($item);
     head();
     
+    
 ?>
 <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -161,6 +162,18 @@
             </div>
             
         </div>
+        <?php if (is_plugin_installed('Geolocation')): ?>
+        <hr />
+        <div class="row">
+            <div class="span6">
+                <?php 
+                    echo geolocation_scripts();
+                    echo geolocation_append_crowded_form(get_current_item());
+                    // echo geolocation_google_map_for_item(get_current_item()); ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        
         <hr />
         
         <div class="row">

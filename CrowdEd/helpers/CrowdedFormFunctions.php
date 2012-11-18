@@ -2,6 +2,7 @@
    
     function crowded_display_form_element($element, $record, $options = array()) {
         $html = '';
+        __v()->addHelperPath(CROWDED_DIR . '/helpers','Crowded_View_Helper');
         if (is_array($element)) {
                 foreach ($element as $key => $e) {
                     $html .= __v()->elementForm($e, $record, $options);
@@ -19,5 +20,12 @@
             return true;
         }
     }
+    
+    function is_plugin_installed($name) {
+        $plugin = Zend_Registry::get('pluginloader')->getPlugin($name);
+        if ($plugin && $plugin->isInstalled()) {
+            return true;
+        }
+    } 
 
 ?>

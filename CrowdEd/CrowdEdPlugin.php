@@ -114,7 +114,6 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         return $nav;
     }
 
-
     /* PRIVATE FUNCTIONS */    
     
     

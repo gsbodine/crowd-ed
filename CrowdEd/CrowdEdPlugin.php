@@ -6,9 +6,9 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-require_once 'Omeka/Plugin/Abstract.php';
+//require_once 'Omeka/Plugin/Abstract.php';
 
-class CrowdEdPlugin extends Omeka_Plugin_Abstract {
+class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     protected $_hooks = array(
         'install',
@@ -18,7 +18,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         'initialize',
         'public_theme_header',
         'public_theme_body',
-        'public_append_to_items_show',
+        'public_items_show',
         'define_routes',
         'after_save_item',
         'before_save_form_item',
@@ -53,7 +53,12 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_SelectFilter);
     }
     
-    public function hookDefineRoutes($router) {
+    public function hookDefineRoutes() {
+        /* if (is_admin()) {
+            return;
+        } */
+
+        $router = Zend_Controller_Front::getInstance()->getRouter();
         $router->addConfig(new Zend_Config_Ini(CROWDED_DIR . DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
     }
  
@@ -82,7 +87,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
         queue_js(array('crowded'));
     }
 
-    public function hookPublicAppendToItemsShow(){
+    public function hookPublicItemsShow(){
        $this->crowded_participate_item();
     }
 
@@ -91,7 +96,11 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
     
     public function hookDefineAcl($acl) {
-        $acl->addResource(new Zend_Acl_Resource('participate'));
+        $acl = new Zend_Acl();
+        
+        $participateResource = new Zend_Acl_Resource('participate');
+        $acl->addResource($participateResource);
+        
         $crowdEditor = new Zend_Acl_Role(CROWDED_USER_ROLE);
         $acl->addRole($crowdEditor);
         $acl->allow($crowdEditor, 'participate', array('edit','profile'));
@@ -99,18 +108,18 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     }
 
     public function crowded_date_formfield($html, $inputNameStem, $date) {
-        return __v()->formSelect($inputNameStem . '[Date]', $date, null, array());
+        return get_view()->formSelect($inputNameStem . '[Date]', $date, null, array());
     }
     
     public static function adminNavigationMain($nav) {
         // if (has_permission('CrowdEd_Index','index')) {
-            $nav['Crowd Ed'] = uri(array('module'=>'crowd-ed', 'controller'=>'index', 'action'=>'index'), 'default');
+        //    $nav['Crowd Ed'] = url(array('module'=>'crowd-ed', 'controller'=>'index', 'action'=>'index'), 'default');
         // }
         return $nav;
     }
     
     public static function publicNavigationMain($nav) {
-        $nav['Community'] = uri(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
+        // $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
         return $nav;
     }
 
@@ -118,7 +127,7 @@ class CrowdEdPlugin extends Omeka_Plugin_Abstract {
     
     
     private function crowded_participate_item() {
-        $item = get_current_item();
+        $item = get_current_record('item');
         echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     }
     

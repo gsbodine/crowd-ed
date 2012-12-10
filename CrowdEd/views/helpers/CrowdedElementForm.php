@@ -6,7 +6,7 @@
  * @package CrowdEd
  */
 
-require_once APP_DIR . '/helpers/ElementForm.php';
+//require_once APP_DIR . '/views/helpers/ElementForm.php';
 
 class CrowdEd_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm {
     

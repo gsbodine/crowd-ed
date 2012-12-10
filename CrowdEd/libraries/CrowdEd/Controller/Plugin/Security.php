@@ -13,7 +13,7 @@ class CrowdEd_Controller_Plugin_Security extends Zend_Controller_Plugin_Abstract
     
     protected function _forceLogin($request) {
         if ('crowd-ed' == $request->getModuleName()) {
-            $user = Omeka_Context::getInstance()->getCurrentUser();
+            $user = current_user();
             
             if (!$user and in_array(array($request->getControllerName(), $request->getActionName()), $this->_loginRequiredActions)) {
                 
@@ -28,7 +28,7 @@ class CrowdEd_Controller_Plugin_Security extends Zend_Controller_Plugin_Abstract
     }
     
     protected function _preventAdminAccess($request) {
-        $user = Omeka_Context::getInstance()->getCurrentUser();
+        $user = current_user();
         if ($user and $user->role == CROWDED_USER_ROLE and is_admin_theme()) {
             exit;
         }

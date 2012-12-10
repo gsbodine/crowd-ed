@@ -1,13 +1,13 @@
 <?php 
-    set_current_item($item);
-    head();
+    set_current_record('item', $item);
+    echo head();
     
     
 ?>
-<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"><i class="icon-question-sign"></i> Help and Editing Guidelines</h3>
+        <h3 id="modalLabel"><i class="icon-question-sign"></i> Help and Editing Guidelines</h3>
     </div>
     <div class="modal-body">
         <h4 class="lead"><i class="icon-info-sign"></i> Instructions</h4>
@@ -57,9 +57,9 @@
 </div>
 <div class="row">
     <div class="span6">
-        <p class="lead" style="text-align:center;">Item Identification #: <?php echo item('Dublin Core','Identifier'); ?></p>
+        <p class="lead" style="text-align:center;">Item Identification #: <?php echo metadata($item,array('Dublin Core','Identifier')); ?></p>
         <?php 
-            echo display_files_for_item(
+            echo files_for_item(
             array('imageSize'=>'fullsize'),
             array('class'=>'image','style'=>'text-align:center'), 
             null);
@@ -195,4 +195,4 @@
         
     </div>
     
-<?php foot(); ?>
+<?php echo foot(); ?>

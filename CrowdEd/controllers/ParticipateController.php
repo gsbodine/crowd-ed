@@ -28,13 +28,13 @@ class CrowdEd_ParticipateController extends ItemsController {
     
     public function editAction() {
         $itemId = $this->_getParam('id');
-        $item = $this->findById($itemId, 'Item');
-        $user = Omeka_Context::getInstance()->getCurrentUser();
-        
+        $item = get_record_by_id('item', $itemId);
+       // $item = $this->findById($itemId, 'Item');
+        $user = current_user();
         if (!$this->getRequest()->isPost()) {
-            $elementSets = $this->_getItemElementSets($item);
+            //$elementSets = $this->_getItemElementSets($item);
             $this->view->assign(compact('item'));
-            $this->view->assign($elementSets);
+            //$this->view->assign($elementSets);
             $this->view->itemType = $itemType;
             
         } else {
@@ -184,7 +184,7 @@ class CrowdEd_ParticipateController extends ItemsController {
     } 
    
    protected function _getItemElementSets($item) {
-        return $this->getTable('ElementSet')->findForItems($item);
+        //return $this->getTable('ElementSet')->findForItems($item);
     }
 
     

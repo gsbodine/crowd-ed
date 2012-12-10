@@ -79,17 +79,16 @@ function getUsersForCitation($item) {
 }
 
 function crowded_item_citation($cite=null,$item) {
-    // this will likely be moved into Crowd-Ed, but this will allow for the configuration via the theme configurator :)
     if(!$item) {
-        $item = get_current_item();
+        $item = get_current_record('item');
     }
 
-    $creator    = trim(strip_formatting(item('Dublin Core', 'Creator', array(), $item)));
-    $title      = trim(strip_formatting(item('Dublin Core', 'Title', array(), $item)));
-    $siteTitle  = trim(strip_formatting(settings('site_title')));
-    $itemId     = item('id', null, array(), $item);
+    $creator    = trim(strip_formatting(metadata('item',array('Dublin Core', 'Creator'))));
+    $title      = trim(strip_formatting(metadata('item',array('Dublin Core', 'Title'))));
+    $siteTitle  = trim(strip_formatting(option('site_title')));
+    $itemId     = metadata('item','id');
     $accessDate = date('F j, Y');
-    $uri        = html_escape(abs_item_uri($item));
+    $uri        = html_escape(record_url($item,'show',true));
     $siteEditor = trim(strip_formatting(get_theme_option('Site Editor')));
     $siteLocation = trim(strip_formatting(get_theme_option('Site Location')));
     $siteInstitution = trim(strip_formatting(get_theme_option('Site Institution')));

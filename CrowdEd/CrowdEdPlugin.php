@@ -6,42 +6,71 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-//require_once 'Omeka/Plugin/Abstract.php';
+defined('CROWDED_DIR') or define('CROWDED_DIR',dirname(__FILE__));
+defined('CROWDED_PLUGIN_VERSION') or define('CROWDED_PLUGIN_VERSION', get_plugin_ini(CROWDED_DIR, 'version'));
+defined('CROWDED_USER_ROLE') or define('CROWDED_USER_ROLE','crowd-editor');
 
 class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     protected $_hooks = array(
         'install',
         'uninstall',
-        'upgrade',
         'config_form',
         'initialize',
-        'public_theme_header',
+        'public_head',
+        'public_footer',
         'public_theme_body',
         'public_items_show',
         'define_routes',
-        'after_save_item',
-        'before_save_form_item',
-        'after_save_form_item',
-        'after_delete_item',
-        'after_validate_item',
         'define_acl'
     );
     
+    protected $_filters = array(
+        'public_navigation_items',
+        'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
+        
+        'crowdedType' => array('ElementForm','Item','Dublin Core','Type'),
+        'crowdedTypeInputs' => array('ElementInput','Item','Dublin Core','Type'),
+        
+        'crowdedScriptType' => array('ElementForm','Item','Item Type Metadata','Script Type'),
+        'crowdedScriptTypeInputs' => array('ElementInput','Item','Item Type Metadata','Script Type'),
+        
+        'crowdedDate' => array('ElementForm','Item','Dublin Core','Date'),
+        'crowdedDateInputs' => array('ElementInput','Item','Dublin Core','Date'),
+        
+        'crowdedTitle' => array('ElementForm','Item','Dublin Core','Title'),
+        'crowdedTitleInputs' => array('ElementInput','Item','Dublin Core','Title'),
+        
+        'crowdedDescription' => array('ElementForm','Item','Dublin Core','Description'),
+        'crowdedDescriptionInputs' => array('ElementInput','Item','Dublin Core','Description'),
+        
+        'crowdedCreator' => array('ElementForm','Item','Dublin Core','Creator'),
+        'crowdedCreatorInputs' => array('ElementInput','Item','Dublin Core','Creator'),
+        
+        'crowdedRecipient' => array('ElementForm','Item','Item Type Metadata','Recipient'),
+        'crowdedRecipientInputs' => array('ElementInput','Item','Item Type Metadata','Recipient'),
+        
+        'crowdedFlag' => array('ElementForm','Item','Crowdsourcing Metadata','Flag for Review'),
+        'crowdedFlagInputs' => array('ElementInput','Item','Crowdsourcing Metadata','Flag for Review')    
+    );
+    
+    public function setUp() {
+        parent::setUp();
+    }
+    
+    // Removed following [temporarily] due to the fact that Omeka 2.0 trashed all the entities tables :(
+    // add_filter('item_citation','crowded_item_citation'); 
+    
     public function hookInstall() {
         set_option('crowded_plugin_version', CROWDED_PLUGIN_VERSION);
-        $db = get_db();
-        // TODO: Set up DB tables for all the Crowd-Ed specific junk, if there is gonna be any...
+        //$db = get_db();
+        // TODO: Set up DB tables for all the Crowd-Ed specific junk
     }
     
     public function hookUninstall() {
         delete_option('crowded_plugin_version');
-        $db = get_db();
+        //$db = get_db();
         // TODO: DROP all tables created for the purpose of Crowd-ed
-    }
-    
-    public function hookUpgrade() {
-        
     }
     
     public function hookConfigForm() {
@@ -51,6 +80,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function hookInitialize() {
         Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
         Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_SelectFilter);
+        get_view()->addHelperPath(dirname(__FILE__) . '/views/helpers', 'CrowdEd_View_Helper_');
     }
     
     public function hookDefineRoutes() {
@@ -61,30 +91,27 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $router = Zend_Controller_Front::getInstance()->getRouter();
         $router->addConfig(new Zend_Config_Ini(CROWDED_DIR . DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
     }
- 
-    public function hookBeforeSaveFormItem($item) {
-       
+  
+    public function hookAdminHead($args) {
+        queue_css_file('crowded');
+        queue_js_file('crowded');
     }
     
-    public function hookAfterSaveItem($item) {
-
-    }
-    
-    public function hookAfterSaveFormItem($item) {
-       
-    }
-    
-    public function hookAfterDeleteItem($item) {
+    public function hookPublicHead($args) {
+        $view = $args['view'];
         
-    }
-    
-    public function hookAfterValidateItem($item) {
+        queue_css_file('crowded');
+        queue_js_file('crowded');
         
-    }
-    
-    public function hookPublicThemeHeader() {
-        queue_css(array('crowded'));
-        queue_js(array('crowded'));
+        if (plugin_is_active('Geolocation')) {
+            $view = $args['view'];
+            $view->addHelperPath(GEOLOCATION_PLUGIN_DIR . '/helpers', 'Geolocation_View_Helper_');
+            queue_css_file('geolocation-items-map');
+            queue_css_file('geolocation-marker');
+            queue_js_url("http://maps.google.com/maps/api/js?sensor=false");
+            queue_js_file('map');        
+        }
+        
     }
 
     public function hookPublicItemsShow(){
@@ -93,6 +120,10 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
 
     public function hookPublicThemeBody() {
         $this->crowded_user_bar();
+    }
+    
+    public function hookPublicFooter($args) {
+        echo '<p class="pull-right"><small>Crowdsourcing provided by the <a href="http://gsbodine.github.com/crowd-ed"><i class="icon-github"></i> Crowd-Ed plugin</a></small></p>';
     }
     
     public function hookDefineAcl($acl) {
@@ -106,25 +137,178 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $acl->allow($crowdEditor, 'participate', array('edit','profile'));
         
     }
+    
+    public function crowdedTypeInputs($components,$args) {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedType($components,$args) {
+        $components['label'] = 'Item Type';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,3,'<i class="icon-file"></i> ');
+        return $components;
+    }
+    
+    public function crowdedScriptTypeInputs($components,$args) {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedScriptType($components,$args) {
+        $components['label'] = 'Document Script Type';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,3,'<i class="icon-pencil"></i> ');
+        return $components;
+    }
+    
+    public function crowdedDateInputs($components,$args) {
+        $list = explode('-', $args['value']);
+        
+        if (count($list) == 3) {
+            $year = $list[0];
+            $month = $list[1];
+            $day = $list[2];
+        } else if (count($list) == 2) {
+            $year = '';
+            $month = $list[0];
+            $day = $list[1];
+        } else if (count($list) == 1 && strlen($list[0]) == 4){
+            $year = $list[0];
+            $month = '';
+            $day = '';
+        } else {
+            $year = '';
+            $month = $list[0];
+            $day = '';
+        }
+        
+        $years = array(''=>'');
+        $curYear = date('Y');
+        for ( $i = 1900; $i <= $curYear; $i++) {
+            $years[$i] = $i;  
+        }
+        
+        $days = array(''=>'');
+        for ( $i = 1; $i < 32; $i++) {
+            $days[$i] = $i;
+        }
+        
+        $html = '<div class="form-inline dateinput">';
+        $html .= 'Month: ' . get_view()->formSelect($args['input_name_stem'] . '[text][month]',$month, array('class'=>'input-medium'), array('' => '','1'=>'January','2'=>'February','3'=>'March','4'=>'April','5'=>'May','6'=>'June','7'=>'July','8'=>'August','9'=>'September','10'=>'October','11'=>'November','12'=>'December'));
+        $html .= ' Day: ' . get_view()->formSelect($args['input_name_stem'] . '[text][day]', $day, array('class'=>'textinput input-mini'), $days);
+        $html .= ' Year: ' . get_view()->formSelect($args['input_name_stem'] . '[text][year]', $year, array('class'=>'textinput input-small'), $years);
+        
+        $html .= '</div>';
+        
+        $components['html'] = $html;
+        return $components;
+    }
+    
+    public function crowdedDate($components,$args) { 
+        $components['label'] = 'Document Date';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,6);
+        return $components;
+    }
 
-    public function crowded_date_formfield($html, $inputNameStem, $date) {
+    public function crowdedTitleInputs($components,$args) {
+        $components['html'] = get_view()->formText($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6'));
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components;
+    }
+    
+    public function crowdedTitle($components,$args) {
+        $components['label'] = 'Document Title';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args);
+        return $components;
+    }
+    
+    public function crowdedDescription($components,$args) {
+        $components['label'] = 'General Description';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,6);
+        return $components;
+    }
+    
+    public function crowdedDescriptionInputs($components,$args) {
+        $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6','rows'=>'3'));
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedCreator($components,$args) {
+        $components['label'] = 'Document Author(s)';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        return $components;
+    }
+    
+    public function crowdedCreatorInputs($components,$args) {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedRecipient($components,$args) {
+        $components['label'] = 'Document Recipient(s)';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        return $components;
+    }
+    
+    public function crowdedRecipientInputs($components,$args) {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedFlagInputs($components,$args) {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components; 
+    }
+    
+    public function crowdedFlag($components,$args) {
+        $components['label'] = 'Flag Document for Review';
+        $components['description'] = trim($components['description']);
+        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-flag"></i> ');
+        return $components;
+    }
+
+    /*public function crowded_date_formfield($html, $inputNameStem, $date) {
         return get_view()->formSelect($inputNameStem . '[Date]', $date, null, array());
-    }
+    }*/
     
-    public static function adminNavigationMain($nav) {
-        // if (has_permission('CrowdEd_Index','index')) {
-        //    $nav['Crowd Ed'] = url(array('module'=>'crowd-ed', 'controller'=>'index', 'action'=>'index'), 'default');
-        // }
+    public function filterPublicNavigationItems($nav) {
+       // $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
         return $nav;
     }
     
-    public static function publicNavigationMain($nav) {
-        // $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
-        return $nav;
-    }
-
+    public function crowdedDateFlatten($flatText,$postArray, $element) {
+        $day = $postArray['text']['day'];
+        $month = $postArray['text']['month'];
+        $year = $postArray['text']['year'];
+        
+        $flatText = $year . '-' . $month . '-' . $day;
+        return $flatText;
+    }                   
+    
     /* PRIVATE FUNCTIONS */    
     
+    private function _setUpFormElement($components,$args,$columns=3,$labelIcon='') {
+        $html = '';
+        $html .= '<div class="span'. $columns .'">';
+        $html .= '<div class="form-inline"><label>'.$labelIcon.' '.$components['label'].'</label> ';
+        //$html .= '<a href="#" rel="tooltip" class="tooltipper" data-title="Element description will go here"><i class="icon-info-sign"></i></a>';
+        $html .= '</div>'. $components['inputs'] .'</div>';
+        return $html;
+    }
     
     private function crowded_participate_item() {
         $item = get_current_record('item');
@@ -141,9 +325,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         } else {
             $content = "<li><a href=\"/participate/login\"><i class=\"icon-user\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
         }
-        
         echo($content . '</ul></div></div></div>');
     }
 }
-
 ?>

@@ -1,8 +1,7 @@
 <?php 
     set_current_record('item', $item);
     echo head();
-    
-    
+    $elements = $item->getAllElements();
 ?>
 <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -75,21 +74,20 @@
         <?php echo flash(); ?>
         
         <div class="row">
-        <?php $itemType = crowded_display_form_element($item->getElementByNameAndSetName('Type','Dublin Core'),$item,$options=array('columnSpan'=>'3'));
-            echo $itemType;
+        <?php  
+            $itemType = element_form($elements['Dublin Core']['Type'], $item, $options=array('columnSpan'=>'3'));
+            echo $itemType; 
         ?>
             <div class="btn-group">
         <?php 
-            // FIXME: if ($item->getElementByNameAndSetName('ScriptType','Item Type Metadata')) {
-                $scriptType = crowded_display_form_element($item->getElementByNameAndSetName('Script Type','Item Type Metadata'),$item,$options=array('columnSpan'=>'3'));
-                echo $scriptType; 
-            //}
+            $scriptType = element_form($elements['Item Type Metadata']['Script Type'], $item, $options=array('columnSpan'=>'3'));
+            echo $scriptType; 
         ?>  </div>
         </div>
         
         <hr />
         <div class="row">
-        <?php  $itemDate = crowded_display_form_element( $item->getElementByNameAndSetName('Date','Dublin Core'),$item);
+        <?php  $itemDate = element_form($elements['Dublin Core']['Date'], $item);
                echo $itemDate; 
         ?>
         </div>
@@ -97,7 +95,7 @@
         <hr />
         
         <div class="row">
-        <?php  $itemTitle = crowded_display_form_element($item->getElementByNameAndSetName('Title','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
+        <?php  $itemTitle = element_form($elements['Dublin Core']['Title'], $item, $options=array('fieldColumnSpan'=>'6'));
                echo $itemTitle; 
         ?>
         </div>
@@ -105,7 +103,7 @@
         <hr />
         
         <div class="row">
-        <?php  $itemDescription = crowded_display_form_element($item->getElementByNameAndSetName('Description','Dublin Core'),$item,$options=array('fieldColumnSpan'=>'6'));
+        <?php  $itemDescription = element_form($elements['Dublin Core']['Description'], $item, $options=array('fieldColumnSpan'=>'6'));
                echo $itemDescription; 
         ?>
         </div>
@@ -113,7 +111,7 @@
         <hr />
         
         <div class="row">
-        <?php $itemCreator = crowded_display_form_element($item->getElementByNameAndSetName('Creator','Dublin Core'),$item,$options=array('columnSpan'=>'6'));
+        <?php $itemCreator = element_form($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
             echo $itemCreator;
         ?>
         </div>
@@ -122,7 +120,7 @@
         
         <div class="row">  
         <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemRecipient = crowded_display_form_element($item->getElementByNameAndSetName('Recipient','Item Type Metadata'),$item,$options=array('columnSpan'=>'6'));
+            $itemRecipient = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
             echo $itemRecipient;
         ?>
         </div> 
@@ -136,14 +134,12 @@
                 </div>
                 <div class="row">
                     <div class="add-tags span3"><?php 
-                        $tagList = tag_string(get_tags(),$link=false,$delimiter=",");
+                        $tagList = tag_string($link=null,$delimiter=",");
                         $quotedTags = str_replace(",", "\",\"", $tagList);
-                        echo textarea(array(
-                            'name' => 'tags',
+                        echo get_view()->formText('tags', null, array(
                             'id' => 'search-tags',
                             'class'=>'span3',
-                            'rows'=>'2',
-                            'placeholder'=>'Add tags, separated by commas...',
+                            'placeholder'=>'Add tags separated by commas',
                             'data-provide'=>'typeahead',
                             'data-source'=>'["'.$quotedTags.'"]',
                             'data-items'=>'12',
@@ -157,19 +153,19 @@
             <div class="span3">
                 <div class="tags well well-small">
                     <div><i class="icon-tags"></i> Current Tags</div>
-                    <?php echo item_tags_as_string(); ?>
+                    <?php echo tag_string('item'); ?>
                 </div>
             </div>
             
         </div>
-        <?php if (is_plugin_installed('Geolocation')): ?>
+        <?php if (plugin_is_active('Geolocation')): ?>
         <hr />
         <div class="row">
             <div class="span6">
                 <?php 
-                    echo geolocation_scripts();
-                    echo geolocation_append_crowded_form(get_current_item());
-                    // echo geolocation_google_map_for_item(get_current_item()); ?>
+                    $geo = new GeolocationPlugin();
+                    echo $geo->displayMapForm($item);
+                ?>
             </div>
         </div>
         <?php endif; ?>
@@ -178,14 +174,14 @@
         
         <div class="row">
             <?php //TODO: this should appear somewhere else, probably cuz even those without being logged in should be able to flag items?
-                $itemFlag = crowded_display_form_element($item->getElementByNameAndSetName('Flag for Review','Crowdsourcing Metadata'),$item);
+                $itemFlag = element_form($elements['Crowdsourcing Metadata']['Flag for Review'], $item);
                 echo $itemFlag;
             ?> 
         </div>
         <div class="row">
             <div class="span6" style="text-align:center">
                 <hr />
-                <?php echo submit(array('name'=>'submit','id'=>'save-changes','class'=>'submit btn btn-primary pull-left'),__('Save Changes')); ?>
+                <?php echo $this->formSubmit(array('name'=>'submit','id'=>'save-changes','class'=>'submit btn btn-primary pull-left'),__('Save Changes')); ?>
                 <?php echo link_to_item($text='<i class="icon-remove-sign"></i> Cancel and return to item',$props=array('class'=>'text-warning pull-right'),$action='show',$item) ?>
             
             </div>

@@ -9,10 +9,10 @@
  * Description of PersonNameElementText
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
+
  */
 
-
-class PersonNameElementText extends ActsAsElementText {
+class Mixin_PersonNameElementText extends Mixin_ElementText {
     
     protected $_personNamesOnForm = array();
     

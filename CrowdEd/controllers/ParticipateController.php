@@ -10,12 +10,12 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-require_once APP_DIR . '/controllers/ItemsController.php';
+//require_once APP_DIR . '/controllers/ItemsController.php';
 
-class CrowdEd_ParticipateController extends ItemsController {
+class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionController {
     
     public function init() {
-       $this->_modelClass = 'Item';
+       $this->_helper->db->setDefaultModelName('Item');
     }
     
     public function indexAction() {
@@ -27,9 +27,12 @@ class CrowdEd_ParticipateController extends ItemsController {
     }
     
     public function editAction() {
-        $itemId = $this->_getParam('id');
-        $item = get_record_by_id('item', $itemId);
-       // $item = $this->findById($itemId, 'Item');
+        
+        
+        $item = $this->_helper->db->findById();
+        
+        /*
+        
         $user = current_user();
         if (!$this->getRequest()->isPost()) {
             //$elementSets = $this->_getItemElementSets($item);
@@ -40,20 +43,24 @@ class CrowdEd_ParticipateController extends ItemsController {
         } else {
             try {
                 $this->_updatePersonElements($item);
-                if ($item->saveForm($_POST)) {
+                if ($item->save($_POST)) {
                    $this->_savePersonNames($item);
                    $item->addTags($_POST["tags"],$user);
                    $successMessage = $this->_getEditSuccessMessage($item);
                    if ($successMessage != '') {
-                        $this->flashSuccess($successMessage);
+                        $this->_helper->flashMessenger($successMessage,'success');
                     }
-                    $this->redirect->gotoSimple('show','items', '', array('id'=>$itemId));
+                    //$this->redirect('show','items', '', array('id'=>$itemId));
+                    $this->_helper->redirector('show', 'items', '', array('id'=>$item->id));
                 }
             } catch (Omeka_Validator_Exception $e) {
                 $this->flashValidationErrors($e);
-            } 
+            } */
+            // $this->view->setHelperPath('/helpers', 'CrowdEd_View_Helper');
+            $this->view->elementSets = $this->_getItemElementSets($item);
             $this->view->assign(compact('item'));
-        }
+            parent::editAction();
+        //}
     }
     
     private function _updatePersonElements($item) {
@@ -183,14 +190,19 @@ class CrowdEd_ParticipateController extends ItemsController {
         return $this->getTable('PersonName')->findByRecordId($item->id);
     } 
    
-   protected function _getItemElementSets($item) {
+    protected function _getItemElementSets($item) {
+        return $this->_helper->db->getTable('ElementSet')->findByRecordType('Item');
         //return $this->getTable('ElementSet')->findForItems($item);
     }
 
     
-    protected function _getEditSuccessMessage() {
+    protected function _getEditSuccessMessage($record) {
          $successMessage = __('Your changes to the item have been saved.');
          return $successMessage;     
+    }
+    
+    protected function _redirectAfterEdit($record) {
+        $this->_helper->redirector('show', 'items', '', array('id'=>$record->id));
     }
     
     public function sendActivationEmail($user) {

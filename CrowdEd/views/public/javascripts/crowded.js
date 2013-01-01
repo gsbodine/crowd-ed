@@ -7,6 +7,8 @@ jQuery(document).ready(function($) {
     
     $("input:submit, a, button", ".buttonbar").button();
     
+    //$('#flash').addClass("modal hide fade").modal('show');
+    $('#flash ul').addClass("unstyled");
     $('.success').addClass("alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
     $('.failure').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.error').addClass("alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");

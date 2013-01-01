@@ -9,8 +9,8 @@
  * Description of PersonNameTable
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
- */
-class PersonNameTable extends Omeka_Db_Table {
+
+class Table_PersonName extends Omeka_Db_Table {
     
     public function findByRecordId($id) {
         return $this->getTable('PersonName')->findBySql('record_id = ?',array($id), true);
@@ -18,5 +18,5 @@ class PersonNameTable extends Omeka_Db_Table {
     
     
 }
-
+ */
 ?>

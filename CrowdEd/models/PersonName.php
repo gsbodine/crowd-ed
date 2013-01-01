@@ -10,7 +10,7 @@
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
-class PersonName extends Omeka_Record {
+class PersonName extends Omeka_Record_AbstractRecord {
     
     public $firstname = '';
     public $middlename = '';
@@ -21,8 +21,10 @@ class PersonName extends Omeka_Record {
     public $record_id = '';
     public $element_id = '';
     
+
+
     protected function _initializeMixins() {
-        $this->_mixins[] = new PersonNameElementText($this);
+        $this->_mixins[] = new Mixin_PersonNameElementText($this);
     }
     
     public function setId($id) {

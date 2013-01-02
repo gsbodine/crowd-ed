@@ -27,34 +27,32 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function editAction() {
-        
         $record = $this->_helper->db->findById();
         $user = current_user();
         
         if ($this->getRequest()->isPost()) {
             $this->_updatePersonElements();
-                $record->setPostData($_POST);
-                if ($record->save(false)) {
-                   $this->_savePersonNames($item);
-                   //$item->addTags($_POST["tags"],$user);
-                   $successMessage = $this->_getEditSuccessMessage($record);
-                    if ($successMessage != '') {
-                        $this->_helper->flashMessenger($successMessage, 'success');
-                    }
-                    $this->_redirectAfterEdit($record);
-                } else {
-                    $this->_helper->flashMessenger($record->getErrors());
-                } 
-            //$this->view->elementSets = $this->_getItemElementSets($item);
-            $this->view->assign(compact('item'));
-            parent::editAction();
+            $record->setPostData($_POST);
+            if ($record->save(false)) {
+               $this->_savePersonNames($item);
+               $record->addTags($_POST['tags']);
+               $successMessage = $this->_getEditSuccessMessage($record);
+                if ($successMessage != '') {
+                    $this->_helper->flashMessenger($successMessage, 'success');
+                }
+                $this->_redirectAfterEdit($record);
+            } else {
+                $this->_helper->flashMessenger($record->getErrors());
+            } 
         }
+        // $this->view->elementSets = $this->_getItemElementSets($item);
+        $this->view->assign(compact('item'));
+        parent::editAction();
     }
     
     private function _updatePersonElements() {
         
         $post = $_POST;    
-
         if (!$post['PersonNames']) {
             return;
         }

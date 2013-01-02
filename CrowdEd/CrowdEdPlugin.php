@@ -290,13 +290,14 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $nav;
     }
     
-    public function crowdedDateFlatten($flatText,$postArray, $element) {
-        $day = $postArray['text']['day'];
-        $month = $postArray['text']['month'];
-        $year = $postArray['text']['year'];
+    public function crowdedDateFlatten($components,$args) {
+        $day = $args['post_array']['text']['day'];
+        $month = $args['post_array']['text']['month'];
+        $year = $args['post_array']['text']['year'];
         
         $flatText = $year . '-' . $month . '-' . $day;
         return $flatText;
+        
     }                   
     
     /* PRIVATE FUNCTIONS */    

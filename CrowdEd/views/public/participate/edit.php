@@ -111,7 +111,7 @@
         <hr />
         
         <div class="row">
-        <?php $itemCreator = element_form($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
+        <?php $itemCreator = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
             echo $itemCreator;
         ?>
         </div>

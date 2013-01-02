@@ -71,11 +71,8 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     protected function _displayPersonNameFields($record,$element,$newIndex=0) {
         $html = '';
         $pn = new PersonName;
-        $html = 'FIRED AGAIN';
-        return $html;
-        
         $personNames = $pn->getPersonNamesByRecordAndElementIds($record->id,$element->id);
-
+        
         if (is_Array($personNames) && count($personNames) >= 1) { 
             foreach ($personNames as $personName) {
                 if ($personName['element_id'] == $element->id) {
@@ -154,7 +151,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             $label = $this->_getFieldLabel();
         }
         $html .=  __($label) . '</label>';
-        $html .= $this->_displayExplanation();
+        //$html .= $this->_displayExplanation();
         $html .= '</div>';
         return $html;
     }
@@ -166,15 +163,5 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         return $html;
     }
     
-    public function getPersonNamesByElementTexts($index=null) {
-        $personNames = $this->_record->getPersonNames($this->_element);
-        if ($index !== null) {
-            if (array_key_exists($index, $texts)) {
-                return $texts[$index];
-            } else {
-                return null;
-            }
-        }
-        return $texts;
-    }
+    
 }

@@ -28,42 +28,31 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     
     public function editAction() {
         
-        
-        $item = $this->_helper->db->findById();
-        
-        /*
-        
+        $record = $this->_helper->db->findById();
         $user = current_user();
-        if (!$this->getRequest()->isPost()) {
-            //$elementSets = $this->_getItemElementSets($item);
-            $this->view->assign(compact('item'));
-            //$this->view->assign($elementSets);
-            $this->view->itemType = $itemType;
-            
-        } else {
-            try {
-                $this->_updatePersonElements($item);
-                if ($item->save($_POST)) {
+        
+        if ($this->getRequest()->isPost()) {
+            $this->_updatePersonElements();
+                $record->setPostData($_POST);
+                if ($record->save(false)) {
                    $this->_savePersonNames($item);
-                   $item->addTags($_POST["tags"],$user);
-                   $successMessage = $this->_getEditSuccessMessage($item);
-                   if ($successMessage != '') {
-                        $this->_helper->flashMessenger($successMessage,'success');
+                   //$item->addTags($_POST["tags"],$user);
+                   $successMessage = $this->_getEditSuccessMessage($record);
+                    if ($successMessage != '') {
+                        $this->_helper->flashMessenger($successMessage, 'success');
                     }
-                    //$this->redirect('show','items', '', array('id'=>$itemId));
-                    $this->_helper->redirector('show', 'items', '', array('id'=>$item->id));
-                }
-            } catch (Omeka_Validator_Exception $e) {
-                $this->flashValidationErrors($e);
-            } */
-            // $this->view->setHelperPath('/helpers', 'CrowdEd_View_Helper');
-            $this->view->elementSets = $this->_getItemElementSets($item);
+                    $this->_redirectAfterEdit($record);
+                } else {
+                    $this->_helper->flashMessenger($record->getErrors());
+                } 
+            //$this->view->elementSets = $this->_getItemElementSets($item);
             $this->view->assign(compact('item'));
             parent::editAction();
-        //}
+        }
     }
     
-    private function _updatePersonElements($item) {
+    private function _updatePersonElements() {
+        
         $post = $_POST;    
 
         if (!$post['PersonNames']) {
@@ -71,24 +60,22 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         }
         
         $ppn = $post['PersonNames'];
-        $i = 0;
         foreach ($ppn as $key => $pnValues) {
-            if (is_array($pnValues[0])) {
-                 foreach ($pnValues as $ppnValues) {
-                    $elementId = $ppnValues['element_id'];
-                    $catName = $ppnValues['title'].' '.$ppnValues['firstname'].' '.$ppnValues['middlename'].' '.$ppnValues['lastname'].' '.$ppnValues['suffix'];
-                    $_POST['Elements'][$elementId][$i]['text'] = $catName;
+           /* if (is_array($pnValues)) {
+                 foreach ($pnValues as $pn => $values) {
+                    $elementId = $pn['element_id'];
+                    $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
+                    $post['Elements'][$elementId][$i]['text'] = $catName;
                 }
-            } else {
+            } else {*/
                 $elementId = $pnValues['element_id'];
                 $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
-                $_POST['Elements'][$elementId][$i]['text'] = $catName;
-            }
-            $i++;
+                $_POST['Elements'][$elementId][0]['text'] = $catName;
+           // }
+            //var_dump($_POST['Elements']);
         }
-        
-        //return $_POST['Elements'][$elementId];
-        
+       
+        return $_POST; 
     }
     
     private function _savePersonNames($item) {
@@ -96,8 +83,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         if (!$post['PersonNames']) {
             return;
         }
-        //var_dump($post['PersonNames']);
-        //die();
         foreach ($post['PersonNames'] as $key => $ppn) {
             $personName = new PersonName;
             
@@ -197,7 +182,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
 
     
     protected function _getEditSuccessMessage($record) {
-         $successMessage = __('Your changes to the item have been saved.');
+         $successMessage = __('Your changes have been saved.');
          return $successMessage;     
     }
     

@@ -19,7 +19,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'initialize',
         'public_head',
         'public_footer',
-        'public_theme_body',
+        'public_body',
         'public_items_show',
         'define_routes',
         'define_acl'
@@ -27,6 +27,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     protected $_filters = array(
         'public_navigation_items',
+        'public_navigation_admin_bar',
+        
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
         'crowdedType' => array('ElementForm','Item','Dublin Core','Type'),
@@ -115,11 +117,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function hookPublicItemsShow(){
-       $this->crowded_participate_item();
+       $this->_crowded_participate_item();
     }
 
-    public function hookPublicThemeBody() {
-        $this->crowded_user_bar();
+    public function hookPublicBody() {
+        $this->_crowded_user_bar();
     }
     
     public function hookPublicFooter($args) {
@@ -290,6 +292,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $nav;
     }
     
+    
     public function crowdedDateFlatten($components,$args) {
         $day = $args['post_array']['text']['day'];
         $month = $args['post_array']['text']['month'];
@@ -298,9 +301,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $flatText = $year . '-' . $month . '-' . $day;
         return $flatText;
         
-    }                   
-    
-    /* PRIVATE FUNCTIONS */    
+    }                    
     
     private function _setUpFormElement($components,$args,$columns=3,$labelIcon='') {
         $html = '';
@@ -311,22 +312,27 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $html;
     }
     
-    private function crowded_participate_item() {
+    public function filterPublicNavigationAdminBar($args) {
+        $args = null;
+        return $args;
+        
+    }
+    
+    private function _crowded_participate_item() {
         $item = get_current_record('item');
         echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     }
     
-    private function crowded_user_bar() {
-
+    private function _crowded_user_bar() {
         $user = current_user();
-        echo '<div class="container"><div class="navbar navbar-static-top"><div class="navbar-inner"><div class="brand">Crowd-Ed</div><ul class="nav pull-right">';
-        
+        $content = '<div class="container"><div class="navbar navbar-static-top"><div class="navbar-inner"><div class="brand">Crowd-Ed</div><ul class="nav pull-right">';
         if ($user) {
-            $content = "<li><a href=\"/participate/profile/". $user->id . "\"><i class=\"icon-user\"></i> " . $user->username . "</a></li><li><a href=\"" . uri(array('action'=>'logout', 'controller'=>'users'), 'default') . "\"><i class=\"icon-off\"></i> Logout</a></li>";
+            $content .= "<li><a href=\"/participate/profile/". $user->id . "\"><i class=\"icon-user\"></i> " . $user->username . "</a></li><li><a href=\"" . url(array('action'=>'logout', 'controller'=>'users'), 'default') . "\"><i class=\"icon-off\"></i> Logout</a></li>";
         } else {
-            $content = "<li><a href=\"/participate/login\"><i class=\"icon-user\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
+            $content .= "<li><a href=\"/participate/login\"><i class=\"icon-user\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
         }
-        echo($content . '</ul></div></div></div>');
+        $content .= '</ul></div></div></div>';
+        echo $content;
     }
 }
 ?>

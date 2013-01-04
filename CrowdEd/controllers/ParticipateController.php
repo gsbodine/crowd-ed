@@ -125,13 +125,12 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function profileAction() {
-        $user = Omeka_Context::getInstance()->getCurrentUser();
+        $user = current_user();
         $this->view->assign(compact('user'));
     }
     
     public function loginAction() {
-        // TODO: Finish login method
-        $current = Omeka_Context::getInstance()->getCurrentUser();
+        $current = current_user();
         $this->view->assign(compact($current));
 
     }

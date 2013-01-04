@@ -1,8 +1,8 @@
-<?php head(); ?>
+<?php echo head(); ?>
 
 <div class="row">
     <fieldset>
-        <div class="span12"><legend><h1>Log in to <?php echo settings('site_title'); ?></h1></legend></div>
+        <div class="span12"><legend><h1>Log in to <?php echo get_theme_option('site_title'); ?></h1></legend></div>
         <div class="span4">
             <p class="lead"><strong>Your participation will help to improve the information on this site.</strong></p>
         </div>
@@ -34,4 +34,4 @@
     </fieldset>
 </div>
 
-<?php foot(); ?>
+<?php echo foot(); ?>

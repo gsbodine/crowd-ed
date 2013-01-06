@@ -14,6 +14,20 @@
     </div>
 </div>
 <div class="row">
+    <div class="span8">
+        <h3>You're an editor.</h3>
+        <p class="lead"><a href="/community"><i class="icon-eye-open"></i> See what others have contributed and where <em>you</em> could help most.</a> 
+            If you you're not sure where to go from here, <a href="/participate">take a look at the <i class="icon-group"></i> Participate page</a>.</p>
+    </div>
+    <div class="span4">
+        <h3>Profile Information<small> <a href=""><i class="icon-edit"></i> Edit</a></small></h3>
+        <h4>Username:</h4><?php echo $user->username; ?>
+        <h4>Name:</h4><?php echo $user->name; ?><br />
+        <h4>Email:</h4><?php echo $user->email; ?>
+        <h4></h4>
+    </div>
+</div>
+<div class="row">
     <div class="span6">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>

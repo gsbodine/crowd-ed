@@ -21,8 +21,8 @@ class CrowdEd_View_Helper_CompletionMeter {
         $totalCompletionPercent = number_format($totallyDoneItems / $totalItems * 100);
         $uneditedPercent = number_format(100 - $partialCompletionPercent - $totalCompletionPercent);
    
-        $html = '<div><small><span class="pull-left">'. $potentiallyDoneItems + $totallyDoneItems .' Edited Documents</span>';
-        $html .= '<span class="pull-right">'. $totalItems .' Documents in Collection</small></div>';
+        $html = '<div><small class="pull-left">'. $potentiallyDoneItems + $totallyDoneItems .' Edited Documents</small>';
+        $html .= '<small class="pull-right">'. $totalItems .' Documents in Collection</small>';
         $html .= '<div class="progress progress-striped active">';
         $html .= '<div class="bar bar-success" style="width: '. $totalCompletionPercent .'%;"></div>';
         $html .= '<div class="bar bar-warning" style="width: ' . $partialCompletionPercent . '%;"></div>';

@@ -11,7 +11,7 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
-    public function profile($user,$entity) {
+    public function profile() {
         return $this;
     }
     

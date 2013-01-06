@@ -26,7 +26,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     );
     
     protected $_filters = array(
-        'public_navigation_items',
+        'public_navigation_main',
         'public_navigation_admin_bar',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
@@ -283,15 +283,21 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-flag"></i> ');
         return $components;
     }
-
-    /*public function crowded_date_formfield($html, $inputNameStem, $date) {
-        return get_view()->formSelect($inputNameStem . '[Date]', $date, null, array());
-    }*/
     
-    public function filterPublicNavigationItems($nav) {
-       // $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
-        return $nav;
+    public function filterPublicNavigationMain($navArray) {
+        $navArray[] = array('label'=> __('Community'),
+                       'uri' => url('community')
+                      );
+        $navArray[] = array('label'=> __('Participate'),
+                        'uri' => url('participate')
+                      );
+        return $navArray;
     }
+    
+    /*public function filterPublicNavigationItems($nav) {
+        $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
+        return $nav;
+    }*/
     
     
     public function crowdedDateFlatten($components,$args) {

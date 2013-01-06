@@ -170,11 +170,11 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                 $entity->user_id = $newUser->id;
                 $entity->save();
                 if ($this->sendActivationEmail($user)) {
-                    $this->_helper->flashMessenger(__('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.'),'success');
+                    $this->_helper->flashMessenger(__('Thanks for creating a user account.  To complete your registration, please check your email and click the provided link to activate your account.'),'success');
                 } else {
-                    $this->_helper->flashMessenger(__('There was an issue trying to register your account. Please contact the site administrator'),'error');
+                    $this->_helper->flashMessenger(__('There was an issue trying to create your account. Please contact the site administrator'),'error');
                 }
-                $this->_helper->redirector();
+                $this->_helper->redirector('index', 'participate', '', array());
             } else {
                $this->_helper->flashMessenger($user->getErrors());
             }

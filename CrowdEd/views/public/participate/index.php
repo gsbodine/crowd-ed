@@ -3,7 +3,7 @@
     <div class="span12">
         <div class="site-title"><h1><i class="icon-group"></i> Participate <small>Help us edit the collection</small></h1></div>
         <hr />
-        <?php flash(); ?>
+        <?php echo flash(); ?>
     </div>
 </div>
 
@@ -27,7 +27,7 @@
         <div class="well">
             <h2><i class="icon-edit"></i> Begin Editing</h2>
             <ul class="lead unstyled">
-                <li><a href="/items/advanced-search"><i class="icon-search"></i> Search</a> for items<br /><br /></li>
+                <li><a href="/items/search"><i class="icon-search"></i> Search</a> for items<br /><br /></li>
                 <li><a href="/items/browse"><i class="icon-eye-open"></i> Browse</a> the collection<br /><br /></li>
                 <li><a href="/participate/random"><i class="icon-question-sign"></i> Edit a randomly-chosen item</a><br /><br /></li>
             </ul>

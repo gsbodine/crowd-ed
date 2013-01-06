@@ -28,7 +28,7 @@ echo head();
         <div class="well">
             <h3><i class="icon-trophy"></i> Top Editors </h3>
             <ol>
-              <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,9); ?>
+              <?php echo $this->profile()->featureUnavailable();//getEditorsByVolume($this->_db,9); ?>
             </ol>
         </div>
     </div>
@@ -36,7 +36,7 @@ echo head();
         <div class="well">
             <h3><i class="icon-time"></i> Latest Editors</h3>
             <ol>
-                <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,9); ?>
+                <?php echo $this->profile()->featureUnavailable();//crowdEditors()->getMostRecentEditors($this->_db,9); ?>
             </ol>
         </div>
     </div>

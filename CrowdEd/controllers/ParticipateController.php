@@ -10,7 +10,7 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-//require_once APP_DIR . '/controllers/ItemsController.php';
+require_once CROWDED_DIR . '/forms/UserEntity.php';
 
 class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionController {
     
@@ -126,7 +126,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     
     public function profileAction() {
         $user = current_user();
-        $this->view->assign(compact('user'));
+        $entity = new Entity();
+        $entity->getEntityByUser($user);
+        $this->view->assign(compact('user','entity'));
     }
     
     public function loginAction() {
@@ -140,31 +142,47 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
    public function joinAction() {
-       // uses registerAction() from MyOmeka plugin code
-        $emailSent = false;
-		
+        
         $user = new User();
-        $user->role = CROWDED_USER_ROLE; // TODO: create/verify user roles for Crowd-Ed
-
+        $entity = new Entity();
         $requireTermsOfService = get_option('crowded_require_terms_of_service');
 
-        try {
-            if ($this->getRequest()->isPost()) {		        
-                if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
-                    unset($_POST['role']);
-                        $user->saveForm($_POST);
-                                $this->sendActivationEmail($user);
-                                $this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
-                                $emailSent = true;
-                } else {
-                        $this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
-                }
-            }			
-        } catch (Omeka_Validator_Exception $e) {
-                $this->flashValidationErrors($e);
-        }
+        $form = $this->_getUserEntityForm($user,$entity);
+        $form->setSubmitButtonText(__('Create Account'));
+        $this->view->form = $form;
         
-        $this->view->assign(compact('emailSent', 'requireTermsOfService', 'user'));
+        if (!$this->getRequest()->isPost() || !$form->isValid($_POST)) {
+            return;
+        }		        
+                
+        if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
+            
+            unset($_POST['role']);
+            
+            $entity->setPostData($_POST);
+            
+            $user->setPostData($_POST);
+            $user->name = $entity->getName();
+            $user->role = CROWDED_USER_ROLE; // TODO: create/verify user roles for Crowd-Ed
+
+            if ($user->save()) {
+                $newUser = $this->_helper->db->getTable('User')->findByEmail($user->email);
+                $entity->user_id = $newUser->id;
+                $entity->save();
+                if ($this->sendActivationEmail($user)) {
+                    $this->_helper->flashMessenger(__('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.'),'success');
+                } else {
+                    $this->_helper->flashMessenger(__('There was an issue trying to register your account. Please contact the site administrator'),'error');
+                }
+                $this->_helper->redirector();
+            } else {
+               $this->_helper->flashMessenger($user->getErrors());
+            }
+        } else {
+            $this->_helper->flashMessenger(__('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.'),'warning');
+        }		
+        
+        $this->view->assign(compact('emailSent', 'requireTermsOfService', 'user', 'entity'));
        
    }
     
@@ -191,20 +209,44 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $ua = new UsersActivations;
         $ua->user_id = $user->id;
         $ua->save();
-		
-        $toEmail = $user->Entity->email;
-        $toName = $user->Entity->first_name . ' ' . $user->Entity->last_name;
-
-        $this->view->user = $user;
-        $this->view->activationSlug = $ua->url;
-        $this->view->siteTitle = get_option('site_title');
-
+        
+        // send the user an email telling them about their new user account
+        $siteTitle  = get_option('site_title');
+        $from       = get_option('administrator_email');
+        $body       = __('Welcome!')
+                    ."\n\n"
+                    . __('Your account for the %s repository has been created. Please click the following link to activate your account:',$siteTitle)."\n\n"
+                    . WEB_ROOT . "/admin/users/activate?u={$ua->url}\n\n"
+                    . __('%s Administrator', $siteTitle);
+        $subject    = __('Activate your account with the %s repository', $siteTitle);
+        
         $mail = new Zend_Mail();
-        $mail->setBodyText($this->view->render('participate/join-email.php'));
-        $mail->setFrom(get_option('administrator_email'), $this->view->siteTitle . ' Administrator');
-        $mail->addTo($toEmail, $toName);
-        $mail->setSubject("Activate your account with the {$this->view->siteTitle}");
-        $mail->send();
-	}
+        $mail->setBodyText($body);
+        $mail->setFrom($from, "$siteTitle Administrator");
+        $mail->addTo($user->email, $user->name);
+        $mail->setSubject($subject);
+        $mail->addHeader('X-Mailer', 'PHP/' . phpversion());
+        try {
+            $mail->send();
+            return true;
+        } catch (Zend_Mail_Transport_Exception $e) {
+            $logger = $this->getInvokeArg('bootstrap')->getResource('Logger');
+            if ($logger) {
+                $logger->log($e, Zend_Log::ERR);
+            }
+            return false;
+        }
+    }
+        
+     private function _getUserEntityForm(User $user, Entity $entity) {
+        $form = new CrowdEd_Form_UserEntity(array(
+            'user' => $user,
+            'entity' => $entity)
+        );
+        
+        fire_plugin_hook('crowded_user_form', array('form' => $form, 'user' => $user, 'entity' => $entity));
+        
+        return $form;
+     }
 }
 

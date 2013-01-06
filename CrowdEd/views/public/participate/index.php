@@ -1,8 +1,9 @@
-<?php head(); ?>
+<?php echo head(); ?>
 <div class="row">
     <div class="span12">
         <div class="site-title"><h1><i class="icon-group"></i> Participate <small>Help us edit the collection</small></h1></div>
         <hr />
+        <?php flash(); ?>
     </div>
 </div>
 
@@ -10,7 +11,7 @@
     <div class="span4">
         <div class="well">
             <h2><i class="icon-user"></i> Become an Editor</h2>
-            <p class="lead"><a href="/participate/join"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo settings('site_title'); ?></b></a></p>
+            <p class="lead"><a href="/participate/join"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo get_option('site_title'); ?></b></a></p>
             <p class="alert alert-info"><i class="icon-key"></i> If you already have an account: <a href="/participate/login"><strong>Log In!</strong></a></p>
         </div>
     </div>
@@ -35,4 +36,4 @@
 </div>
 
 
-<?php foot(); ?>
+<?php echo foot(); ?>

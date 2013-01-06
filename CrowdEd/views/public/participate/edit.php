@@ -181,7 +181,7 @@
         <div class="row">
             <div class="span6" style="text-align:center">
                 <hr />
-                <?php echo $this->formSubmit(array('name'=>'submit','id'=>'save-changes','class'=>'submit btn btn-primary pull-left'),__('Save Changes')); ?>
+                <?php echo get_view()->formSubmit('submit','Save Changes',array('id'=>'save-changes','class'=>'submit btn btn-primary pull-left')); ?>
                 <?php echo link_to_item($text='<i class="icon-remove-sign"></i> Cancel and return to item',$props=array('class'=>'text-warning pull-right'),$action='show',$item) ?>
             
             </div>

@@ -135,7 +135,8 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         ));
         
         $this->addElement('submit', 'submit', array(
-            'label' => $this->_submitButtonText
+            'label' => $this->_submitButtonText,
+            'class' => 'btn btn-primary'
         ));
     }
     

@@ -101,6 +101,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     public function hookPublicHead($args) {
         $view = $args['view'];
+        $view->addHelperPath(CROWDED_DIR . '/helpers', 'CrowdEd_View_Helper_');
         
         queue_css_file('crowded');
         queue_js_file('crowded');

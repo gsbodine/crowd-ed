@@ -1,6 +1,8 @@
 <?php 
-    head();
-    $entity = $user->getEntity();
+    echo head();
+    $user = current_user();
+    $entity = new Entity();
+    $entity->getEntityByUser($user);
 
 ?>
 <div class="row">
@@ -15,7 +17,7 @@
     <div class="span6">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
-            <?php echo featureUnavailable(); ?>
+            <?php echo $this->profile($user,$entity)->featureUnavailable(); ?>
         </div>
     </div>
     <div class="span6">
@@ -23,10 +25,10 @@
             <h3><i class="icon-edit"></i> Items Recently Edited</h3>
             <?php 
                 //echo displayLastItemsEditedByUser($user->entity_id,5); 
-                echo featureUnavailable();
+                echo $this->profile($user,$entity)->featureUnavailable();
             ?>
             
         </div>
     </div>
 </div> 
-<?php foot(); ?>
+<?php echo foot(); ?>

@@ -15,9 +15,10 @@ require_once APP_DIR . '/controllers/ItemsController.php';
 
 class CrowdEd_CommunityController extends ItemsController {
     public function indexAction() {
-        
-    } 
     
+        
+        
+    }
 }
 
 ?>

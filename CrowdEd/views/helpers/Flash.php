@@ -8,7 +8,7 @@
 require_once APP_DIR . '/views/helpers/Flash.php';
 
 class CrowdEd_View_Helper_Flash extends Omeka_View_Helper_Flash {
-    public function flash($flashIcon = null, $flashHeading = null) {
+    /*public function flash($flashIcon = null, $flashHeading = null) {
         $flashHtml = '';
         if ($this->_flashMessenger->hasMessages()
          || $this->_flashMessenger->hasCurrentMessages()) {
@@ -31,7 +31,8 @@ class CrowdEd_View_Helper_Flash extends Omeka_View_Helper_Flash {
         $this->_flashMessenger->clearMessages();
         $this->_flashMessenger->clearCurrentMessages();
         return $flashHtml;
-    }
+    }*/
+    
 }
 
 ?>

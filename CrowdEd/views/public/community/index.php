@@ -6,7 +6,9 @@
  */
 
 
-head(); ?>
+echo head();
+
+?>
 
 <div class="row">
     <div class="span12">
@@ -16,17 +18,17 @@ head(); ?>
 <div class="row">
     <div class="span6">
         <div class="well">
-            <h3><i class="icon-dashboard"></i> Berry-o-meter</h3>
+            <h3><i class="icon-dashboard"></i> Completion-meter</h3>
             <p class="lead">The number of documents edited by the community from the entire current collection. Help us 
             move forward!</p>
-            <?php echo createCompletionMeter(); ?>
+            <?php echo $this->completionMeter(); ?>
         </div>
     </div>
     <div class="span3">
         <div class="well">
             <h3><i class="icon-trophy"></i> Top Editors </h3>
             <ol>
-              <?php echo getEditorsByVolume($this->_db,9); ?>
+              <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,9); ?>
             </ol>
         </div>
     </div>
@@ -34,9 +36,9 @@ head(); ?>
         <div class="well">
             <h3><i class="icon-time"></i> Latest Editors</h3>
             <ol>
-                <?php echo getMostRecentEditors($this->_db,9); ?>
+                <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,9); ?>
             </ol>
         </div>
     </div>
 </div>
-<?php foot(); ?>
+<?php echo foot(); ?>

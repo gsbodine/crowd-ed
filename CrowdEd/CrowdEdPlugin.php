@@ -239,7 +239,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function crowdedDescriptionInputs($components,$args) {
-        $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6','rows'=>'3'));
+        $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'], array('class'=>'span6','rows'=>'3'));
         $components['form_controls'] = null;
         $components['html_checkbox'] = null;
         return $components; 
@@ -310,19 +310,27 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
     }                    
     
+    private function _getHelpText($text) {
+        $helpText = '';
+        if ($text) {
+            $helpText = ' <a class="helpText" href="#" rel="tooltip" title="' . html_escape($text) .'" data-placement="right"><i class="icon-question-sign"></i></a>';
+        }
+        return $helpText;
+    }
+    
     private function _setUpFormElement($components,$args,$columns=3,$labelIcon='') {
         $html = '';
         $html .= '<div class="span'. $columns .'">';
-        $html .= '<div class="form-inline"><label>'.$labelIcon.' '.$components['label'].'</label> ';
-        //$html .= '<a href="#" rel="tooltip" class="tooltipper" data-title="Element description will go here"><i class="icon-info-sign"></i></a>';
-        $html .= '</div>'. $components['inputs'] .'</div>';
+        $html .= '<label>'.$labelIcon.' '.$components['label'].'</label>';
+        $html .= $this->_getHelpText($components['comment']);
+        $html .= '<div>' . $components['inputs'] . '</div>';
+        $html .= '</div>';
         return $html;
     }
     
     public function filterPublicNavigationAdminBar($args) {
         $args = null;
         return $args;
-        
     }
     
     private function _crowded_participate_item() {

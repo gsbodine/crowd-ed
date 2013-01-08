@@ -17,29 +17,12 @@
     text-align: center;
 }
 
-.explanation { 
-    display:none;
-    position:absolute; 
-    margin-left:20px; 
-    z-index:100; 
-    width:200px; 
-    padding:0.5em; 
-    background:#fff; 
-    border:1px solid #000;
-}
-
-.help_icon {
-    display:inline; 
-    margin-left:2px; 
-    cursor:help;
-}
-
-.help_icon img {
-    display:inline;
+#crowded-item-form label {
+    display: inline-block;
 }
 
 /* Bootstrap Adjustments and/or Overrides */
-.input-prepend, .input-append {
+/* .input-prepend, .input-append {
     white-space: nowrap;
     -webkit-padding-end: 27px;
-}
+} */

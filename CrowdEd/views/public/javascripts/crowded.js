@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
     $('.success').addClass("unstyled alert alert-success").prepend("<h4><i class='icon-ok-sign icon-large'></i> Success!</h4>");
     $('.failure').addClass("unstyled alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.error').addClass("unstyled alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
+    $('.helpText').tooltip({html:true});
     
     //$('#search-tags').Typeahead({minLength:2,mode:"multiple"});
     

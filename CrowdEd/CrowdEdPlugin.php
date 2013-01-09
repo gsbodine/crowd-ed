@@ -23,12 +23,15 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'public_items_show',
         'define_routes',
         'define_acl',
-        'after_save_item'
+        'after_save_item',
+        'admin_item_form'
     );
     
     protected $_filters = array(
         'public_navigation_main',
         'public_navigation_admin_bar',
+        
+        'admin_navigation_main',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -145,6 +148,13 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function hookAfterSaveItem($args) {
         //$id = $args['id'];
         
+    }
+    
+    public function hookAdminItemForm($args) {
+        $form = $args['form'];
+        $item = $args['record'];
+        $html = '<h1>Placeholder for Edit-Locking functionality.</h1>';
+        return $html;
     }
     
     public function crowdedTypeInputs($components,$args) {
@@ -300,11 +310,13 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $navArray;
     }
     
-    /*public function filterPublicNavigationItems($nav) {
-        $nav['Community'] = url(array('module'=>'crowd-ed', 'controller'=>'community', 'action'=>'index'), 'default');
-        return $nav;
-    }*/
-    
+    public function filterAdminNavigationMain($nav) {
+    $nav[] = array(
+                    'label' => 'Crowd-Ed',
+                    'uri' => url('crowd-ed')
+                  );
+    return $nav;
+    }   
     
     public function crowdedDateFlatten($components,$args) {
         $day = $args['post_array']['text']['day'];

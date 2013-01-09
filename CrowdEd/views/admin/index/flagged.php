@@ -1,12 +1,7 @@
 <?php
 queue_js_file('items-browse');
-$pageTitle = __('Browse Items') . ' ' . __('(%s total)', $total_results);
-echo head(
-    array(
-        'title' => $pageTitle,
-        'bodyclass' => 'items browse'
-    )
-);
+$pageTitle = __('Review Flagged Items') . ' ' . __('(%s total)', $total_results);
+echo head(array('title' => 'Crowd-Ed: Review Flagged Items'));
 echo flash();
 echo item_search_filters();
 ?>

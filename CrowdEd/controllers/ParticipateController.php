@@ -89,7 +89,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             return;
         }		        
                 
-        if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
+        if (!$requireTermsOfService || $_POST['terms'] == 1) {
             
             unset($_POST['role']);
             

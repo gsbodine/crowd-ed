@@ -23,7 +23,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         
         $this->addElement('text','username',array(
             'label' => __('Username'),
-            'description' => __('Username must contain only letters and/or numbers and have 30 or fewer characters.'),
+            //'description' => __('Username must contain only letters and/or numbers and have 30 or fewer characters.'),
             'required' => true,
             'size' => '30',
             'validators' => array(
@@ -73,7 +73,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         
         $this->addElement('text','first_name',array(
             'label' => __('First Name'),
-            'description' => __('Your first name'),
+            //'description' => __('Your first name'),
             'size' => '30',
             'required' => true,
             'validators' => array(
@@ -83,7 +83,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         
         $this->addElement('text','last_name',array(
             'label' => __('Last Name'),
-            'description' => __('Your last name (surname)'),
+            //'description' => __('Your last name (surname)'),
             'size' => '30',
             'required' => true,
             'validators' => array(
@@ -93,7 +93,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         
         $this->addElement('text','institution',array(
             'label' => __('Institution or Affiliation'),
-            'description' => __('Your institution or group affiliation (if applicable)'),
+            //'description' => __('Your institution or group affiliation (if applicable)'),
             'size' => '30',
             'required' => false,
             'validators' => array(
@@ -133,6 +133,9 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
                 ))
             )
         ));
+        
+        $this->addElement('checkbox','terms',array('label'=>'You must agree to the following Terms and Conditions of this site.',
+                                                    'description'=>get_option('crowded_terms_of_service')));
         
         $this->addElement('submit', 'submit', array(
             'label' => $this->_submitButtonText,

@@ -30,7 +30,7 @@ class CrowdEd_View_Helper_Flash extends Zend_View_Helper_Abstract {
                     $flashHtml .= $this->_getListHtml($status, $message);
                 }
             }
-            $flashHtml .= '</ul></div><div class="modal-footer"><button type="button" class="btn" data-dismiss="modal">OK</button></div></div>';
+            $flashHtml .= '</ul></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">OK</button></div></div>';
         }
         $this->_flashMessenger->clearMessages();
         $this->_flashMessenger->clearCurrentMessages();

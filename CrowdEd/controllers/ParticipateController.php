@@ -27,98 +27,32 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function editAction() {
-        $record = $this->_helper->db->findById();
         $user = current_user();
+        $item = $this->_helper->db->findById();
         
         if ($this->getRequest()->isPost()) {
             $this->_updatePersonElements();
-            $record->setPostData($_POST);
-            if ($record->save(false)) {
+            $item->setPostData($_POST);
+            if ($item->save()) {
                $this->_savePersonNames($item);
-               $record->addTags($_POST['tags']);
-               $successMessage = $this->_getEditSuccessMessage($record);
+               $item->addTags($_POST['tags']);
+               $successMessage = $this->_getEditSuccessMessage($item);
                 if ($successMessage != '') {
                     $this->_helper->flashMessenger($successMessage, 'success');
                 }
-                $this->_redirectAfterEdit($record);
+                $this->_redirectAfterEdit($item);
             } else {
-                $this->_helper->flashMessenger($record->getErrors());
+                $this->_helper->flashMessenger($item->getErrors());
             } 
         }
-        // $this->view->elementSets = $this->_getItemElementSets($item);
+        
+        $this->view->elementSets = $this->_getItemElementSets($item);
         $this->view->assign(compact('item'));
+        
         parent::editAction();
     }
     
-    private function _updatePersonElements() {
-        
-        $post = $_POST;    
-        if (!$post['PersonNames']) {
-            return;
-        }
-        
-        $ppn = $post['PersonNames'];
-        foreach ($ppn as $key => $pnValues) {
-           /* if (is_array($pnValues)) {
-                 foreach ($pnValues as $pn => $values) {
-                    $elementId = $pn['element_id'];
-                    $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
-                    $post['Elements'][$elementId][$i]['text'] = $catName;
-                }
-            } else {*/
-                $elementId = $pnValues['element_id'];
-                $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
-                $_POST['Elements'][$elementId][0]['text'] = $catName;
-           // }
-            //var_dump($_POST['Elements']);
-        }
-       
-        return $_POST; 
-    }
     
-    private function _savePersonNames($item) {
-        $post = $_POST;    
-        if (!$post['PersonNames']) {
-            return;
-        }
-        foreach ($post['PersonNames'] as $key => $ppn) {
-            $personName = new PersonName;
-            
-            if (substr($key, 0, 3) == 'new') {
-                foreach($post['PersonNames'][$key] as $pn) {
-                    $personName->setArray(
-                         array(
-                             'firstname'=>$pn['firstname'],
-                             'lastname'=>$pn['lastname'],
-                             'middlename'=>$pn['middlename'],
-                             'title'=>$pn['title'],
-                             'suffix'=>$pn['suffix'],
-                             'element_id'=>$pn['element_id'],
-                             'record_id'=>$pn['record_id']
-                         )
-                    );
-                    $personName->save();
-                }
-            } elseif (is_int($key)) {
-                $personName->setArray(
-                     array(
-                         'id'=>$key,
-                         'firstname'=>$ppn['firstname'],
-                         'lastname'=>$ppn['lastname'],
-                         'middlename'=>$ppn['middlename'],
-                         'title'=>$ppn['title'],
-                         'suffix'=>$ppn['suffix'],
-                         'element_id'=>$ppn['element_id'],
-                         'record_id'=>$ppn['record_id']
-                     )
-                );
-                $personName->save();
-            } else {
-                echo 'postPersonName[$id] did not work :( ';
-                die();
-            }
-        }
-    }
     
     public function forgotAction(){
         
@@ -185,27 +119,8 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $this->view->assign(compact('emailSent', 'requireTermsOfService', 'user', 'entity'));
        
    }
-    
-   public function _getPersonNames($item) {
-        return $this->getTable('PersonName')->findByRecordId($item->id);
-    } 
    
-    protected function _getItemElementSets($item) {
-        return $this->_helper->db->getTable('ElementSet')->findByRecordType('Item');
-        //return $this->getTable('ElementSet')->findForItems($item);
-    }
-
-    
-    protected function _getEditSuccessMessage($record) {
-         $successMessage = __('Your changes have been saved.');
-         return $successMessage;     
-    }
-    
-    protected function _redirectAfterEdit($record) {
-        $this->_helper->redirector('show', 'items', '', array('id'=>$record->id));
-    }
-    
-    public function sendActivationEmail($user) {
+   public function sendActivationEmail($user) {
         $ua = new UsersActivations;
         $ua->user_id = $user->id;
         $ua->save();
@@ -237,8 +152,96 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             return false;
         }
     }
+    
+    protected function _getItemElementSets($item) {
+        return $this->_helper->db->getTable('ElementSet')->findByRecordType('Item');
+    }
+    
+    protected function _getEditSuccessMessage($record) {
+         $successMessage = __('Your changes have been saved.');
+         return $successMessage;     
+    }
+    
+    protected function _redirectAfterEdit($record) {
+        $this->_helper->redirector('show', 'items', '', array('id'=>$record->id));
+    }
+    
+   
+   /* PRIVATE FUNCTIONS */
+    
+    private function _updatePersonElements() {
+          
+        if (!$_POST['PersonNames']) {
+            return;
+        }
         
-     private function _getUserEntityForm(User $user, Entity $entity) {
+        $ppn = $_POST['PersonNames'];
+        foreach ($ppn as $key => $pnValues) {
+           if (is_array($pnValues)) {
+                 foreach ($pnValues as $pn => $values) {
+                    $elementId = $pn['element_id'];
+                    $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
+                    $post['Elements'][$elementId][$i]['text'] = $catName;
+                }
+            } else {
+                $elementId = $pnValues['element_id'];
+                $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
+                $_POST['Elements'][$elementId][0]['text'] = $catName;
+           }
+        }
+        return $_POST; 
+    }
+    
+    private function _savePersonNames($item) {
+        $post = $_POST;    
+        if (!$post['PersonNames']) {
+            return;
+        }
+        foreach ($post['PersonNames'] as $key => $ppn) {
+            $personName = new PersonName;
+            
+            if (substr($key, 0, 3) == 'new') {
+                foreach($post['PersonNames'][$key] as $pn) {
+                    $personName->setArray(
+                         array(
+                             'firstname'=>$pn['firstname'],
+                             'lastname'=>$pn['lastname'],
+                             'middlename'=>$pn['middlename'],
+                             'title'=>$pn['title'],
+                             'suffix'=>$pn['suffix'],
+                             'element_id'=>$pn['element_id'],
+                             'record_id'=>$pn['record_id']
+                         )
+                    );
+                    $personName->save();
+                }
+            } elseif (is_int($key)) {
+                $personName->setArray(
+                     array(
+                         'id'=>$key,
+                         'firstname'=>$ppn['firstname'],
+                         'lastname'=>$ppn['lastname'],
+                         'middlename'=>$ppn['middlename'],
+                         'title'=>$ppn['title'],
+                         'suffix'=>$ppn['suffix'],
+                         'element_id'=>$ppn['element_id'],
+                         'record_id'=>$ppn['record_id']
+                     )
+                );
+                $personName->save();
+            } else {
+                echo 'postPersonName[$id] did not work :( ';
+                die();
+            }
+        }
+        //return $post;
+    }
+   
+    private function _getPersonNames($item) {
+        return $this->getTable('PersonName')->findByRecordId($item->id);
+    } 
+        
+    private function _getUserEntityForm(User $user, Entity $entity) {
         $form = new CrowdEd_Form_UserEntity(array(
             'user' => $user,
             'entity' => $entity)

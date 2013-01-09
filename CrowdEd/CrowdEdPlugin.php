@@ -22,7 +22,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'public_body',
         'public_items_show',
         'define_routes',
-        'define_acl'
+        'define_acl',
+        'after_save_item'
     );
     
     protected $_filters = array(
@@ -80,7 +81,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookInitialize() {
-        Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
+       // Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
         Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_SelectFilter);
         get_view()->addHelperPath(dirname(__FILE__) . '/views/helpers', 'CrowdEd_View_Helper_');
     }
@@ -129,15 +130,20 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         echo '<p class="pull-right"><small>Crowdsourcing provided by the <a href="http://gsbodine.github.com/crowd-ed"><i class="icon-github"></i> Crowd-Ed plugin</a></small></p>';
     }
     
-    public function hookDefineAcl($acl) {
-        $acl = new Zend_Acl();
+    public function hookDefineAcl($args) {
+        $acl = $args['acl'];
         
-        $participateResource = new Zend_Acl_Resource('participate');
+        $participateResource = new Zend_Acl_Resource('CrowdEd_Participate');
         $acl->addResource($participateResource);
+        $acl->allow(null, $participateResource, array('index','join','login','logout','forgot-password'));
         
         $crowdEditor = new Zend_Acl_Role(CROWDED_USER_ROLE);
         $acl->addRole($crowdEditor);
-        $acl->allow($crowdEditor, 'participate', array('edit','profile'));
+        $acl->allow($crowdEditor,array($participateResource,'Items','Tags','Search')); //todo: refine crowd-editor permissions
+    }
+    
+    public function hookAfterSaveItem($args) {
+        //$id = $args['id'];
         
     }
     

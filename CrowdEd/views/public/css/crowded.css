@@ -21,6 +21,10 @@
     display: inline-block;
 }
 
+#terms {
+    display: inline;
+}
+
 /* Bootstrap Adjustments and/or Overrides */
 /* .input-prepend, .input-append {
     white-space: nowrap;

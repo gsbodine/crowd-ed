@@ -15,6 +15,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     protected $_hooks = array(
         'install',
         'uninstall',
+        'config',
         'config_form',
         'initialize',
         'public_head',
@@ -81,6 +82,12 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     public function hookConfigForm() {
         include "config_form.php";
+    }
+    
+    public function hookConfig($args) {
+        set_option('crowded_require_terms_of_service', htmlspecialchars($_POST['crowded_require_terms_of_service']));
+        set_option('crowded_terms_of_service',  htmlspecialchars($_POST['crowded_terms_of_service']));
+        
     }
     
     public function hookInitialize() {

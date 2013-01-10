@@ -75,7 +75,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         // TODO: Create logout method
     }
     
-   public function joinAction() {
+    public function joinAction() {
         
         $user = new User();
         $entity = new Entity();
@@ -175,6 +175,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             return;
         }
         
+        $i = 0;
         $ppn = $_POST['PersonNames'];
         foreach ($ppn as $key => $pnValues) {
            if (is_array($pnValues)) {
@@ -182,6 +183,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                     $elementId = $pn['element_id'];
                     $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
                     $post['Elements'][$elementId][$i]['text'] = $catName;
+                    $i++;
                 }
             } else {
                 $elementId = $pnValues['element_id'];
@@ -250,6 +252,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         fire_plugin_hook('crowded_user_form', array('form' => $form, 'user' => $user, 'entity' => $entity));
         
         return $form;
-     }
+    }
 }
 

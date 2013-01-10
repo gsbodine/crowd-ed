@@ -4,8 +4,8 @@
 /**
  * Description of ParticipateController
  * 
- * Almost all of the user-related stuff here is from the MyOmeka plug-in 
- * codebase (at least for the time being) to make it functional.
+ * This controller contains most of the functionality of the crowd-editing 
+ * functions of Crowd-Ed, including even the login stuff for the time being...
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
@@ -174,7 +174,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         if (!$_POST['PersonNames']) {
             return;
         }
-        
+        $i = 0;
         $ppn = $_POST['PersonNames'];
         foreach ($ppn as $key => $pnValues) {
            if (is_array($pnValues)) {
@@ -182,6 +182,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                     $elementId = $pn['element_id'];
                     $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
                     $post['Elements'][$elementId][$i]['text'] = $catName;
+                    $i++;
                 }
             } else {
                 $elementId = $pnValues['element_id'];

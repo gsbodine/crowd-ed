@@ -34,6 +34,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
         'admin_navigation_main',
         
+        'item_citation',
+        
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
         'crowdedType' => array('ElementForm','Item','Dublin Core','Type'),
@@ -64,10 +66,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function setUp() {
         parent::setUp();
     }
-    
-    // Removed following [temporarily] due to the fact that Omeka 2.0 trashed all the entities tables :(
-    // add_filter('item_citation','crowded_item_citation'); 
-    
+     
     public function hookInstall() {
         set_option('crowded_plugin_version', CROWDED_PLUGIN_VERSION);
         //$db = get_db();
@@ -323,7 +322,13 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
                     'uri' => url('crowd-ed')
                   );
     return $nav;
-    }   
+    } 
+    
+    public function filterItemCitation($citation, $args) {
+        $citation = get_view()->itemCitation($args['item']); 
+        return $citation;
+    }
+       
     
     public function crowdedDateFlatten($components,$args) {
         $day = $args['post_array']['text']['day'];

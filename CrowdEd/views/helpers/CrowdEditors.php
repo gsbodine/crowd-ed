@@ -16,11 +16,10 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
     }
     
     public function getEditorsByVolume($db,$limit=10){
-
+        $html = "";
         $select = new Omeka_Db_Select($db);
-
         $select->from(array('u'=>'users'), array('u.username', 'count(u.username)'))
-                ->joinInner(array('e'=>'entities'), "e.id = u.entity_id", array())
+                ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array())
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
                 ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
                 ->group('u.username')
@@ -35,9 +34,10 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
     }
 
     public function getMostRecentEditors($db,$limit=10) {
+        $html = "";
         $select = new Omeka_Db_Select($db);
-        $select->from(array('u'=>'users'), array('u.username','max(time)'))
-                ->joinInner(array('e'=>'entities'), "e.id = u.entity_id", array())
+        $select->from(array('u'=>'users'), array('u.username'))
+                ->joinInner(array('e'=>'entities'), "e.User_id = u.id", array('max(time)'))
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
             ->where("time <> '0000-00-00 00:00:00'")

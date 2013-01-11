@@ -2,7 +2,7 @@
     echo head();
     $user = current_user();
     $entity = new Entity();
-    $entity->getEntityByUser($user);
+    $entity->getEntityByUserId($user->id);
 
 ?>
 <div class="row">
@@ -36,11 +36,16 @@
     </div>
     <div class="span6">
         <div class="well">
-            <h3><i class="icon-edit"></i> Items Recently Edited</h3>
+            <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
             <?php 
-                //echo displayLastItemsEditedByUser($user->entity_id,5); 
-                echo $this->profile($user,$entity)->featureUnavailable();
-            ?>
+                $itemList = $this->profile()->getItemsEditedByUser($user,5);
+                if ($itemList) : ?>
+                <ul class="unstyled">
+                    <?php echo $itemList; ?>
+                </ul>
+            <?php else: ?>
+                <p class="alert alert-info">You haven't edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>
+            <?php endif; ?>
             
         </div>
     </div>

@@ -61,7 +61,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     public function profileAction() {
         $user = current_user();
         $entity = new Entity();
-        $entity->getEntityByUser($user);
+        $entity->getEntityByUserId($user->id);
         $this->view->assign(compact('user','entity'));
     }
     

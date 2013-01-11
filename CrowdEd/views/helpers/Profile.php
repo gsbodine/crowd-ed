@@ -23,23 +23,26 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         return $html;
     }
 
-    public function getItemsEditedByUser($user,$limit) {
-
+    public function getItemsEditedByUser($user,$limit=5) {
+        $entity = new Entity;
+        $entity = $entity->getEntityByUserId($user->id);
         $select = new Omeka_Db_Select($user->_db);
-        $select->from(array('er'=>'entities_relations'),'i.id')
+        $select->from(array('er'=>'entities_relations'),array('i.id'))
                 ->joinInner(array('e'=>'entities'), "e.id = er.entity_id", array())
                 ->joinInner(array('i'=>'items'), "i.id = er.relation_id",array())
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
-            ->where("ers.name='modified' and e.id = '$user->entity_id'")
+            ->where("ers.name='modified' and e.id = '$entity->id'")
             ->group('i.id')
-            ->order('time DESC');
+            ->order('time DESC')
+            ->limit($limit);
         $stmt = $select->query();
         $html = '';
         while ($row = $stmt->fetch()) {
-            $html .= '<li><span class="label"><i class="icon-edit"></i> '. $row['id'] .'</span></li>';
+            $item = new Item;
+            $item = $item->getTable('Item')->find($row['id']);
+            $html .= '<li><span class="label"><i class="icon-edit"></i> '. metadata($item, array('Dublin Core','Title')) .'</span></li>';
         }
         return $html;
-
     }
 
     public function featureUnavailable($alertClass='icon-warning') {

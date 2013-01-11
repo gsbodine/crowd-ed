@@ -7,11 +7,11 @@
 ?>
 <?php
 $pageTitle = __('Forgot Password');
-head(array('title' => $pageTitle, 'bodyclass' => 'login'));
+echo head(array('title' => $pageTitle, 'bodyclass' => 'login'));
 ?>
 <div class="row">
     <div class="span12">
-       <h1><?php echo $pageTitle; ?></h1>
+       <h1><i class="icon-question-sign"></i> <?php echo $pageTitle; ?></h1>
     </div>
     <div class="span12">
         <p class="lead"><?php echo __('Enter your email address to retrieve your password.'); ?></p>
@@ -32,4 +32,4 @@ head(array('title' => $pageTitle, 'bodyclass' => 'login'));
         </form>
     </div>
 </div>
-<?php foot(); ?>
+<?php echo foot(); ?>

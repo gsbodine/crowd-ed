@@ -2,7 +2,7 @@
 
 <div class="row">
     <fieldset>
-        <div class="span12"><legend><h1>Log in to <?php echo get_option('site_title'); ?></h1></legend></div>
+        <div class="span12"><legend><h1><i class="icon-lock"></i> Log in to <?php echo get_option('site_title'); ?></h1></legend></div>
         <div class="span4">
             <p class="lead"><strong>Your participation will help to improve the information on this site.</strong></p>
         </div>

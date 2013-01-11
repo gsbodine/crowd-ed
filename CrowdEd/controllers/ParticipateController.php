@@ -54,7 +54,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     
     
     
-    public function forgotAction(){
+    public function forgotPasswordAction(){
         
     }
     

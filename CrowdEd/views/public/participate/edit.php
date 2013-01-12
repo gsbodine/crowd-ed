@@ -70,7 +70,7 @@
             <h1>Participate <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
         </div>
         <hr />
-        <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="">    
+        <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="" autocomplete="off">    
         <?php echo flash(); ?>
         
         <div class="row">
@@ -134,12 +134,13 @@
                 </div>
                 <div class="row">
                     <div class="add-tags span3"><?php 
-                        $tagList = tag_string($link=null,$delimiter=",");
+                        $tagList = tag_string($tags,$link=null,$delimiter=",");
                         $quotedTags = str_replace(",", "\",\"", $tagList);
                         echo get_view()->formText('tags', null, array(
                             'id' => 'search-tags',
                             'class'=>'span3',
                             'placeholder'=>'Add tags separated by commas',
+                            'preventSubmitOnError'=>true,
                             'data-provide'=>'typeahead',
                             'data-source'=>'["'.$quotedTags.'"]',
                             'data-items'=>'12',

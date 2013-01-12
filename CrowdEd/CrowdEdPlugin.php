@@ -113,8 +113,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $view = $args['view'];
         $view->addHelperPath(CROWDED_DIR . '/helpers', 'CrowdEd_View_Helper_');
         
-        queue_css_file('crowded');
-        queue_js_file('crowded');
+        queue_css_file(array('crowded','bootstrap-tagmanager'));
+        queue_js_file(array('crowded','bootstrap-tagmanager'));
         
         if (plugin_is_active('Geolocation')) {
             $view = $args['view'];

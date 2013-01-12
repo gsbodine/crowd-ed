@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
     $('.helpText').tooltip({html:true});
     
     //$('#search-tags').Typeahead({minLength:2,mode:"multiple"});
+    $('#search-tags').tagsManager();
     
     
  // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.

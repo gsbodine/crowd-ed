@@ -45,9 +45,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                 $this->_helper->flashMessenger($item->getErrors());
             } 
         }
-        
+        $tags = $this->_helper->db->getTable('Tag')->findBy($params);
         $this->view->elementSets = $this->_getItemElementSets($item);
-        $this->view->assign(compact('item'));
+        $this->view->assign(compact('item','tags'));
         
         parent::editAction();
     }

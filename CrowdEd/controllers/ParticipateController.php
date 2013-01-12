@@ -97,7 +97,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             
             $user->setPostData($_POST);
             $user->name = $entity->getName();
-            $user->role = CROWDED_USER_ROLE; // TODO: create/verify user roles for Crowd-Ed
+            $user->role = CROWDED_USER_ROLE; 
 
             if ($user->save()) {
                 $newUser = $this->_helper->db->getTable('User')->findByEmail($user->email);

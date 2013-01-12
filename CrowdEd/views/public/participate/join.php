@@ -2,11 +2,12 @@
     echo head();
     if (current_user()) {
         $user = current_user();
+        $entity = new Entity;
+        $entity->getEntityFromUser($user);
     } else {
         $user = new User;
     }
-    $entity = new Entity;
-    $entity->getEntityByUser($user);
+    
 ?>
     <div class="row">
         <div class="span12">
@@ -14,13 +15,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="span5 offset1">
+        <div class="span7">
             <div class="site-header" style="text-align:center"><h1><i class="icon-group"></i> Participate! <small>Create an account</small></h1></div>
             <p class="lead" style="text-align:center"><em>Be a part of the <?php echo get_option('site_title'); ?></em></p>
         </div>
         <div class="span5">
-        <?php echo $this->form; ?>
-        
+            <?php echo $this->form; ?>
         </div>
     </div>
 

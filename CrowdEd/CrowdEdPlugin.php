@@ -90,7 +90,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookInitialize() {
-       // Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
+        Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_Security);
         Zend_Controller_Front::getInstance()->registerPlugin(new CrowdEd_Controller_Plugin_SelectFilter);
         get_view()->addHelperPath(dirname(__FILE__) . '/views/helpers', 'CrowdEd_View_Helper_');
     }
@@ -374,7 +374,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         if ($user) {
             $content .= "<li><a href=\"/participate/profile/". $user->id . "\"><i class=\"icon-user\"></i> " . $user->username . "</a></li><li><a href=\"" . url(array('action'=>'logout', 'controller'=>'users'), 'default') . "\"><i class=\"icon-off\"></i> Logout</a></li>";
         } else {
-            $content .= "<li><a href=\"/participate/login\"><i class=\"icon-user\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
+            $content .= "<li><a href=\"/participate/login\"><i class=\"icon-signin\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
         }
         $content .= '</ul></div></div></div>';
         echo $content;

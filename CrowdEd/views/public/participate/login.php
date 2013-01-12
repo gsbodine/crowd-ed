@@ -3,10 +3,11 @@
 <div class="row">
     <fieldset>
         <div class="span12"><legend><h1><i class="icon-lock"></i> Log in to <?php echo get_option('site_title'); ?></h1></legend></div>
-        <div class="span4">
+        <div class="span5">
             <p class="lead"><strong>Your participation will help to improve the information on this site.</strong></p>
+            <p class="btn btn-info"><strong><i class="icon-cog"></i> Need to create an account?</strong></p>
         </div>
-        <div class="span8">
+        <div class="span7">
             <form action="/users/login" id="crowded-login-form" method="post" accept-charset="utf-8">
                 <div class="field">
                 <label for="username"><i class="icon-user"></i> Username</label>
@@ -25,7 +26,7 @@
                     <div class="span2">
                         <input type="submit" class="btn btn-primary" value="Log in" /> 
                     </div>
-                    <div class="span6">
+                    <div class="span5">
                         <?php echo link_to('participate', 'forgot-password', __('Forgot password?'),array('class'=>'text-warning')); ?>
                     </div>
                 </div>

@@ -35,7 +35,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             $item->setPostData($_POST);
             if ($item->save()) {
                $this->_savePersonNames($item);
-               $item->addTags($_POST['tags']);
+               $item->addTags($_POST['hidden-tags']);
                $successMessage = $this->_getEditSuccessMessage($item);
                 if ($successMessage != '') {
                     $this->_helper->flashMessenger($successMessage, 'success');
@@ -45,7 +45,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                 $this->_helper->flashMessenger($item->getErrors());
             } 
         }
-        $tags = $this->_helper->db->getTable('Tag')->findBy($params);
+        $tags = $this->_helper->db->getTable('Tag')->findAll();
         $this->view->elementSets = $this->_getItemElementSets($item);
         $this->view->assign(compact('item','tags'));
         

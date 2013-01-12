@@ -50,7 +50,7 @@
     }
 
     var obj = this;
-    var objName = obj.attr('name').replace(/[^\w]/g, '_');
+    var objName = 'tags';
     var queuedTag = "";
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;

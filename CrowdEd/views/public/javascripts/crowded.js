@@ -3,6 +3,13 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
+ function extractor(query) {
+    var result = /([^,]+)$/.exec(query);
+    if(result && result[1])
+        return result[1].trim();
+    return '';
+}
+
 jQuery(document).ready(function($) {
     
     $("input:submit, a, button", ".buttonbar").button();
@@ -14,9 +21,7 @@ jQuery(document).ready(function($) {
     $('.error').addClass("unstyled alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.helpText').tooltip({html:true});
     
-    //$('#search-tags').Typeahead({minLength:2,mode:"multiple"});
-    $('#search-tags').tagsManager();
-    
+    $('.tagManager').tagsManager();
     
  // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.
     var blackListGroups = [

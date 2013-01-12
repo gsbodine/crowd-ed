@@ -138,13 +138,13 @@
                         $quotedTags = str_replace(",", "\",\"", $tagList);
                         echo get_view()->formText('tags', null, array(
                             'id' => 'search-tags',
-                            'class'=>'span3',
+                            'class'=>'span3 tagManager',
                             'placeholder'=>'Add tags separated by commas',
-                            'preventSubmitOnError'=>true,
                             'data-provide'=>'typeahead',
                             'data-source'=>'["'.$quotedTags.'"]',
                             'data-items'=>'12',
                             'data-minLength' => '2',
+                            'data-mode'=>'multiple'
                             ),
                         @$_REQUEST['tags']); 
                         ?>

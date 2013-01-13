@@ -8,8 +8,7 @@
 <div class="row">
     <div class="span12">
         <h1><i class="icon-user"></i> <?php echo $user->username; ?> <small>My Editor Profile</small></h1>
-        <h2><?php echo $entity->first_name . ' ' . $entity->last_name ?></h2>
-        
+        <p class="lead"><strong><?php echo $user->name; ?> (<?php echo $user->email; ?>) <a href=""><i class="icon-edit"></i> Edit</a></strong></p>
         <hr />
     </div>
 </div>
@@ -20,15 +19,11 @@
             If you you're not sure where to go from here, <a href="/participate">take a look at the <i class="icon-group"></i> Participate page</a>.</p>
     </div>
     <div class="span4">
-        <h3>Profile Information<small> <a href=""><i class="icon-edit"></i> Edit</a></small></h3>
-        <h4>Username:</h4><?php echo $user->username; ?>
-        <h4>Name:</h4><?php echo $user->name; ?><br />
-        <h4>Email:</h4><?php echo $user->email; ?>
-        <h4></h4>
+      
     </div>
 </div>
 <div class="row">
-    <div class="span6">
+    <div class="span4">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
             <ul class="unstyled">
@@ -36,7 +31,7 @@
             </ul>
         </div>
     </div>
-    <div class="span6">
+    <div class="span4">
         <div class="well">
             <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
             <?php 
@@ -50,6 +45,9 @@
             <?php endif; ?>
             
         </div>
+    </div>
+    <div class="span4">
+        
     </div>
 </div> 
 <?php echo foot(); ?>

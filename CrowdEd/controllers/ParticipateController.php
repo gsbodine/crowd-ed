@@ -34,6 +34,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {
+               $this->updateEditStatus($item, 'QA');
                $this->_savePersonNames($item);
                $item->addTags($_POST['hidden-tags']);
                $successMessage = $this->_getEditSuccessMessage($item);
@@ -153,6 +154,15 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         }
     }
     
+    public function updateEditStatus($item,$statusName='QA') {
+        $editStatus = new EditStatus;
+        $status_id = $editStatus->getStatusIdByName($statusName);
+        $editStatusItem = new EditStatusItems();
+        $editStatusItem->edit_status_id = 1;
+        $editStatusItem->item_id = $item->id;
+        $editStatusItem->save();
+    }
+    
     protected function _getItemElementSets($item) {
         return $this->_helper->db->getTable('ElementSet')->findByRecordType('Item');
     }
@@ -252,5 +262,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         
         return $form;
      }
+     
 }
 

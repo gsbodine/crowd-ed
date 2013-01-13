@@ -31,7 +31,9 @@
     <div class="span6">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
-            <?php echo $this->profile($user,$entity)->featureUnavailable(); ?>
+            <ul class="unstyled">
+                <?php echo $this->profile()->getUserFavorites(); ?>
+            </ul>
         </div>
     </div>
     <div class="span6">

@@ -365,7 +365,14 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     private function _crowded_participate_item() {
         $item = get_current_record('item');
-        echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
+        $esi = new EditStatusItems();
+        $status_id = $esi->getItemEditStatusId($item);
+        $es = new EditStatus;
+        $lockStatus = $es->getLockedStatus($status_id);
+        if ($lockStatus != 1) {
+            echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
+    
+        }    
     }
     
     private function _crowded_user_bar() {

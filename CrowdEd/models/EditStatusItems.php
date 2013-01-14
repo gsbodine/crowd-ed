@@ -16,6 +16,11 @@ class EditStatusItems extends Omeka_Record_AbstractRecord {
     public $item_id;
     
     
+    public function getItemEditStatusId($item) {
+        $status = $this->getDb()->getTable('EditStatusItems')->findBy($params=array('item_id'=>$item->id));
+        return $status;
+    }
+    
 }
 
 ?>

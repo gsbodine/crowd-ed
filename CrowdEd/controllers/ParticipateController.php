@@ -30,7 +30,16 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $user = current_user();
         $item = $this->_helper->db->findById();
         
+        $esi = new EditStatusItems();
+        $status_id = $esi->getItemEditStatusId($item);
+        $es = new EditStatus;
+        $lockStatus = $es->getLockedStatus($status_id);
+        if ($lockStatus == 1) {
+            $this->_redirectAfterEdit($item);
+        }
+        
         if ($this->getRequest()->isPost()) {
+            
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {

@@ -69,8 +69,27 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
      
     public function hookInstall() {
         set_option('crowded_plugin_version', CROWDED_PLUGIN_VERSION);
-        //$db = get_db();
-        // TODO: Set up DB tables for all the Crowd-Ed specific junk
+        $db = $this->_db;
+        $editStatusSQL = "CREATE TABLE `edit_statuses` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `status` varchar(45) NOT NULL,
+            `description` text,
+            `isLockedStatus` bit(1) DEFAULT b'0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf-8;";
+
+        $editStatusesItemsSQL = "CREATE TABLE `edit_statuses_items` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `item_id` int(11) NOT NULL,
+            `edit_status_id` int(11) NOT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `item_id_UNIQUE` (`item_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+        $db->query($editStatusSQL);
+        $db->query($editStatusesItemsSQL);
+        
+        // TODO: CREATE all the other table scripts
+          
     }
     
     public function hookUninstall() {
@@ -365,14 +384,16 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     private function _crowded_participate_item() {
         $item = get_current_record('item');
+        /*
         $esi = new EditStatusItems();
         $status_id = $esi->getItemEditStatusId($item);
+        
         $es = new EditStatus;
         $lockStatus = $es->getLockedStatus($status_id);
-        if ($lockStatus != 1) {
+        if (!$lockStatus) {*/
             echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     
-        }    
+        //}    
     }
     
     private function _crowded_user_bar() {

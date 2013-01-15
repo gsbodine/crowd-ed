@@ -28,10 +28,14 @@ class EditStatus extends Omeka_Record_AbstractRecord {
         return $statusName;
     }
     
-    public function getLockedStatus($status_id) {
-        $status = $this->getDb()->getTable('EditStatus')->find($status_id);
-        $editStatus = $status->isLockedStatus;
-        return $editStatus;
+    public function getLockedStatus($status_id=null) {
+        if (is_null($status_id)) {
+            return;
+        } else {
+            $status = $this->getDb()->getTable('EditStatus')->find($status_id);
+            $editStatus = $status->isLockedStatus;
+            return $editStatus;
+        }
     }
     
 }

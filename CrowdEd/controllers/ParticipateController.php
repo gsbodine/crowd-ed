@@ -35,7 +35,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $es = new EditStatus;
         $lockStatus = $es->getLockedStatus($status_id);
         if ($lockStatus == 1) {
-            $this->_redirectAfterEdit($item);
+            //$this->_redirectAfterEdit($item);
         }
         
         if ($this->getRequest()->isPost()) {
@@ -192,21 +192,31 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         if (!$_POST['PersonNames']) {
             return;
         }
-        $i = 0;
+        //$i = 0;
         $ppn = $_POST['PersonNames'];
         foreach ($ppn as $key => $pnValues) {
-           if (is_array($pnValues)) {
-                 foreach ($pnValues as $pkey => $pn) {
-                    $elementId = $pn['element_id'];
-                    $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
-                    $_POST['Elements'][$elementId][$i]['text'] = $catName;
-                    $i++;
-                }
-            } else {
+           //if (is_array($pnValues)) {
+                 foreach ($pnValues as $pkey => $pnn) {
+                    if (is_array($pnn)){
+                        foreach ($pnn as $k => $pn) {
+                            $elementId = $pnn['element_id'];
+                            $catName = $pnn['title'].' '.$pnn['firstname'].' '.$pnn['middlename'].' '.$pnn['lastname'].' '.$pnn['suffix'];
+                            $_POST['Elements'][$elementId][$pkey]['text'] = $catName;
+                            
+                        }
+                    } else {
+                        $elementId = $pnValues['element_id'];
+                        $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
+                        $_POST['Elements'][$elementId][$key]['text'] = $catName;
+                        
+                    }
+                }    
+           /* } else {
                 $elementId = $pnValues['element_id'];
                 $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
                 $_POST['Elements'][$elementId][0]['text'] = $catName;
-           }
+                die();
+           }*/
         }
         return $_POST; 
     }

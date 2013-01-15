@@ -39,7 +39,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         }
         
         if ($this->getRequest()->isPost()) {
-            
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {
@@ -197,10 +196,10 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $ppn = $_POST['PersonNames'];
         foreach ($ppn as $key => $pnValues) {
            if (is_array($pnValues)) {
-                 foreach ($pnValues as $pn => $values) {
+                 foreach ($pnValues as $pkey => $pn) {
                     $elementId = $pn['element_id'];
                     $catName = $pn['title'].' '.$pn['firstname'].' '.$pn['middlename'].' '.$pn['lastname'].' '.$pn['suffix'];
-                    $post['Elements'][$elementId][$i]['text'] = $catName;
+                    $_POST['Elements'][$elementId][$i]['text'] = $catName;
                     $i++;
                 }
             } else {

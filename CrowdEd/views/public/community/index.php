@@ -17,12 +17,9 @@ echo head();
 </div>
 <div class="row">
     <div class="span6">
-        <div class="well">
-            <h3><i class="icon-dashboard"></i> Completion-meter</h3>
-            <p class="lead">The number of documents edited by the community from the entire current collection. Help us 
-            move forward!</p>
-            <?php echo $this->completionMeter(); ?>
-        </div>
+        <h3><i class="icon-dashboard"></i> Completion-meter</h3>
+        <p class="lead">The number of documents edited by the community from the entire current collection. Help us move forward!</p>
+        <?php echo $this->completionMeter(); ?>
     </div>
     <div class="span3">
         <div class="well">

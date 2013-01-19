@@ -1,5 +1,6 @@
 <?php 
     set_current_record('item', $item);
+    queue_js_file('elements');
     echo head();
     $elements = $item->getAllElements();
 ?>

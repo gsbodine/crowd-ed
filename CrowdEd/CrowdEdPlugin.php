@@ -294,7 +294,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function crowdedCreatorInputs($components,$args) {
-        $components['form_controls'] = null;
+        $components['form_controls'] = get_view()->formSubmit('add_element_' . get_view()->_element['id'],__('Add Input'),array('class'=>'add-element'));
         $components['html_checkbox'] = null;
         return $components; 
     }

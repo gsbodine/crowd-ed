@@ -25,7 +25,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'define_routes',
         'define_acl',
         'after_save_item',
-        'admin_item_form'
+        'admin_item_form',
+        'admin_items_panel_fields'
     );
     
     protected $_filters = array(
@@ -171,8 +172,17 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAfterSaveItem($args) {
-        //$id = $args['id'];
-        
+        if (is_admin_theme()){
+            if ($args['post']['edit_statuses_id']) {
+                $editStatusItem = new EditStatusItems();
+                $editStatusItem->edit_status_id = $args['post']['edit_statuses_id'];
+                $editStatusItem->item_id = $args['record']->id;
+                $editStatusItem->save();
+            } else {
+                var_dump($args['post']->edit_statuses_id);
+                die();
+            }
+        }
     }
     
     public function hookAdminItemForm($args) {
@@ -180,6 +190,19 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $item = $args['record'];
         $html = '<h1>Placeholder for Edit-Locking functionality.</h1>';
         return $html;
+    }
+    
+    public function hookAdminItemsPanelFields($args) {
+        $html = '<div id="collection-form" class="field">';
+        $html .=  $args['view']->formLabel('edit-statuses-id', __('Edit Status'));
+        $html .= '<div class="inputs">';
+        
+        $editStatusItem = new EditStatusItems();
+        $itemStatus = $editStatusItem->getItemEditStatus($args['record']);
+        $statusId = $itemStatus->edit_status_id;
+        $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
+        $html .= '</div></div>';
+        echo $html;
     }
     
     public function crowdedTypeInputs($components,$args) {
@@ -384,16 +407,20 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     private function _crowded_participate_item() {
         $item = get_current_record('item');
-        /*
-        $esi = new EditStatusItems();
-        $status_id = $esi->getItemEditStatusId($item);
         
-        $es = new EditStatus;
-        $lockStatus = $es->getLockedStatus($status_id);
-        if (!$lockStatus) {*/
+        $esi = new EditStatusItems();
+        $status = $esi->getItemEditStatus($item);
+        if ($status) {
+            $es = new EditStatus();
+            $lockStatus = $es->getLockedStatus($status->edit_status_id);
+        } else {
+            $lockStatus = 0;
+        }
+        
+        if ($lockStatus == 0) {
             echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     
-        //}    
+        }    
     }
     
     private function _crowded_user_bar() {

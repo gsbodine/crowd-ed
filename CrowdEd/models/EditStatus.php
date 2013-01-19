@@ -30,12 +30,12 @@ class EditStatus extends Omeka_Record_AbstractRecord {
     
     public function getLockedStatus($status_id=null) {
         if ($status_id == null || $status_id == '') {
-            return;
+            $editStatus = 0;
         } else {
             $status = $this->getDb()->getTable('EditStatus')->find($status_id);
             $editStatus = $status->isLockedStatus;
-            return $editStatus;
         }
+        return $editStatus;
     }
     
 }

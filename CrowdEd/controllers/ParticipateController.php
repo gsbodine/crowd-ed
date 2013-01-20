@@ -74,6 +74,35 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $this->view->assign(compact('user','entity'));
     }
     
+    public function editProfileAction(){
+        $user = current_user();
+        $e = new Entity();
+        $entity = $e->getEntityFromUser($user);
+        
+        $form = $this->_getUserEntityForm($user,$entity);
+        $form->setSubmitButtonText(__('Update Profile'));
+        $this->view->form = $form;
+        
+        if ($this->getRequest()->isPost() && $form->isValid($_POST)) {
+            unset($_POST['role']);
+            $entity->setPostData($_POST);
+            $user->setPostData($_POST);
+            $user->name = $entity->getName();
+
+            if ($user->save()) {
+                $newUser = $this->_helper->db->getTable('User')->findByEmail($user->email);
+                $entity->user_id = $newUser->id;
+                $entity->save();
+                $this->_helper->redirector('profile', 'participate', '', array());
+            } else {
+               $this->_helper->flashMessenger($user->getErrors());
+            }
+        } 			
+        
+        $this->view->assign(compact('user','entity'));
+        
+    }
+    
     public function loginAction() {
         $current = current_user();
         $this->view->assign(compact($current));

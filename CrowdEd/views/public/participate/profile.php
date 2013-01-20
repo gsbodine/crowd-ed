@@ -8,7 +8,7 @@
 <div class="row">
     <div class="span12">
         <h1><i class="icon-user"></i> <?php echo $user->username; ?> <small>My Editor Profile</small></h1>
-        <p class="lead"><strong><?php echo $user->name; ?> (<?php echo $user->email; ?>) <a href=""><i class="icon-edit"></i> Edit</a></strong></p>
+        <p class="lead"><strong><?php echo $user->name; ?> (<?php echo $user->email; ?>) <a href="/participate/edit-profile"><i class="icon-edit"></i> Edit</a></strong></p>
         <hr />
     </div>
 </div>

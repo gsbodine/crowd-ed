@@ -22,19 +22,19 @@ class CrowdEd_View_Helper_CompletionMeter {
 ?>
 <div class="row">
         <div class="span2">
-                Finalized Documents:<br />
+                <p>Finalized Documents</p>
                 <div class="progress progress-striped span1">
                     <div class="bar bar-success" style="width:100%;" ><strong><?php echo $totallyDoneItems; ?></strong></div> 
                 </div>
         </div>
         <div class="span2">
-                Documents Under Review<br />
+                <p>Documents Under Review</p>
                 <div class="progress progress-striped span1">
                     <div class="bar bar-warning" style="width:100%;" ><strong><?php echo $potentiallyDoneItems; ?></strong></div>
                 </div>
         </div>
         <div class="span2">
-                Unedited Documents<br />
+                <p>Unedited Documents</p>
                 <div class="progress progress-striped span1">
                     <div class="bar bar-danger" style="width:100%;" ><strong><?php echo $totalItems - $potentiallyDoneItems - $totallyDoneItems; ?></strong></div>
                 </div>

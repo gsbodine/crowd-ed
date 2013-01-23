@@ -26,7 +26,9 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'define_acl',
         'after_save_item',
         'admin_item_form',
-        'admin_items_panel_fields'
+        'admin_items_panel_fields',
+        'admin_items_batch_edit_form',
+        'items_batch_edit_custom'
     );
     
     protected $_filters = array(
@@ -178,10 +180,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
                 $editStatusItem->edit_status_id = $args['post']['edit_statuses_id'];
                 $editStatusItem->item_id = $args['record']->id;
                 $editStatusItem->save();
-            } else {
-                var_dump($args['post']->edit_statuses_id);
-                die();
-            }
+            } 
         }
     }
     
@@ -193,7 +192,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAdminItemsPanelFields($args) {
-        $html = '<div id="collection-form" class="field">';
+        $html = '<div id="edit-status-form" class="field">';
         $html .=  $args['view']->formLabel('edit-statuses-id', __('Edit Status'));
         $html .= '<div class="inputs">';
         
@@ -203,6 +202,24 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
         $html .= '</div></div>';
         echo $html;
+    }
+    
+    public function hookAdminItemsBatchEditForm($args) {
+        $html = '<div id="custom-edit-statuses-form" class="field">';
+        $html .=  $args['view']->formLabel('custom[edit_statuses_id]', __('Edit Status'),array('class'=>'two columns alpha'));
+        $html .= '<div class="inputs five columns omega">';
+        $html .= $args['view']->formSelect('custom[edit_statuses_id]', '', array('id' => 'custom-edit_statuses_id'), get_table_options('EditStatus'));
+        $html .= '</div></div>';
+        echo $html;
+    }
+    
+    public function hookItemsBatchEditCustom($args) {
+        $item = $args['item'];
+        $custom = $args['custom'];
+        $editStatusItem = new EditStatusItems();
+        $editStatusItem->edit_status_id = $custom['edit_statuses_id'];
+        $editStatusItem->item_id = $item->id;
+        $editStatusItem->save();
     }
     
     public function crowdedTypeInputs($components,$args) {
@@ -282,56 +299,74 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function crowdedTitleInputs($components,$args) {
-        $components['html'] = get_view()->formText($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6'));
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['html'] = get_view()->formText($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6'));
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components;
+   
     }
     
     public function crowdedTitle($components,$args) {
-        $components['label'] = 'Document Title';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args);
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Title';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args);
+        } 
         return $components;
+        
     }
     
     public function crowdedDescription($components,$args) {
-        $components['label'] = 'General Description';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6);
+        if (!is_admin_theme()) {
+            $components['label'] = 'General Description';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6);
+        }
         return $components;
     }
     
     public function crowdedDescriptionInputs($components,$args) {
-        $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'], array('class'=>'span6','rows'=>'3'));
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'], array('class'=>'span6','rows'=>'3'));
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components; 
     }
     
     public function crowdedCreator($components,$args) {
-        $components['label'] = 'Document Author(s)';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Author(s)';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        }
         return $components;
     }
     
     public function crowdedCreatorInputs($components,$args) {
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components; 
     }
     
     public function crowdedRecipient($components,$args) {
-        $components['label'] = 'Document Recipient(s)';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Recipient(s)';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        }
         return $components;
     }
     
     public function crowdedRecipientInputs($components,$args) {
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components; 
     }
     

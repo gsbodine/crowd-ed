@@ -18,6 +18,20 @@ class EditStatus extends Omeka_Record_AbstractRecord {
     public $description;
     public $isLockedStatus;
     
+    protected function _initializeMixins() { 
+        $this->_mixins[] = new Mixin_Search($this);
+    }
+    
+    protected function afterSave($args) {
+        if ($private) {
+            $this->setSearchTextPrivate();
+        }
+ 
+        $this->setSearchTextTitle($recordTitle);
+        $this->addSearchText($recordTitle);
+        $this->addSearchText($recordText);
+    }
+    
     public function getStatusIdByName($statusName) {
         $status_id = $this->getDb()->getTable(EditStatus)->findBy($params=array('status'=>$statusName));
         return $status_id;
@@ -30,12 +44,12 @@ class EditStatus extends Omeka_Record_AbstractRecord {
     
     public function getLockedStatus($status_id=null) {
         if ($status_id == null || $status_id == '') {
-            return;
+            $editStatus = 0;
         } else {
             $status = $this->getDb()->getTable('EditStatus')->find($status_id);
             $editStatus = $status->isLockedStatus;
-            return $editStatus;
         }
+        return $editStatus;
     }
     
 }

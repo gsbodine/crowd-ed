@@ -25,16 +25,25 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'define_routes',
         'define_acl',
         'after_save_item',
-        'admin_item_form'
+        'admin_item_form',
+        'admin_items_panel_fields',
+        'admin_items_batch_edit_form',
+        'items_batch_edit_custom',
+        'admin_items_search',
+        'search_sql',
+        'admin_items_browse_simple_each'
     );
     
     protected $_filters = array(
+        
         'public_navigation_main',
         'public_navigation_admin_bar',
         
         'admin_navigation_main',
         
         'item_citation',
+        
+        'search_record_types',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -171,8 +180,14 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAfterSaveItem($args) {
-        //$id = $args['id'];
-        
+        if (is_admin_theme()){
+            if ($args['post']['edit_statuses_id']) {
+                $editStatusItem = new EditStatusItems();
+                $editStatusItem->edit_status_id = $args['post']['edit_statuses_id'];
+                $editStatusItem->item_id = $args['record']->id;
+                $editStatusItem->save();
+            } 
+        }
     }
     
     public function hookAdminItemForm($args) {
@@ -180,6 +195,73 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $item = $args['record'];
         $html = '<h1>Placeholder for Edit-Locking functionality.</h1>';
         return $html;
+    }
+    
+    public function hookAdminItemsPanelFields($args) {
+        $html = '<div id="edit-status-form" class="field">';
+        $html .=  $args['view']->formLabel('edit-statuses-id', __('Edit Status'));
+        $html .= '<div class="inputs">';
+        
+        $editStatusItem = new EditStatusItems();
+        $itemStatus = $editStatusItem->getItemEditStatus($args['record']);
+        $statusId = $itemStatus->edit_status_id;
+        $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
+        $html .= '</div></div>';
+        echo $html;
+    }
+    
+    public function hookAdminItemsBatchEditForm($args) {
+        $html = '<div id="custom-edit-statuses-form" class="field">';
+        $html .=  $args['view']->formLabel('custom[edit_statuses_id]', __('Edit Status'),array('class'=>'two columns alpha'));
+        $html .= '<div class="inputs five columns omega">';
+        $html .= $args['view']->formSelect('custom[edit_statuses_id]', '', array('id' => 'custom-edit_statuses_id'), get_table_options('EditStatus'));
+        $html .= '</div></div>';
+        echo $html;
+    }
+    
+    public function hookAdminItemsSearch($args) {
+        $view = $args['view'];
+        $html = '<div class="field"><div class="two columns alpha">'
+          . $view->formLabel('exhibit', __('Search by Editing Status'))
+          . '</div><div class="five columns omega inputs">'
+          . $view->formSelect('edit_status', @$_GET['edit-status'], array(), get_table_options('EditStatus'))
+          . '</div></div>';
+        echo $html;
+    }
+    
+    public function hookAdminItemsBrowseSimpleEach($args) {
+        $esi = new EditStatusItems();
+        $item = $args['item'];
+        $e = $esi->getItemEditStatus($item);
+        if ($e) {
+            $args['edit_status_id'] = $e->status;
+        } else {
+            $args['edit_status_id'] = 'Unedited';
+        }
+        return $args;
+    }
+    
+    public function hookSearchSql($args) {
+        var_dump($args['query-type']);
+        die();
+        $params = $args['params'];
+        if ('edit_status' == $params['query_type']) {
+            $editStatusId = $params['edit_status'];
+            $select = $args['select'];
+            $select->join(array('es'=>'edit_statuses'), "es.id = $editStatusId", array());
+            $select->reset(Zend_Db_Select::WHERE);
+            $select->where('edit_status_id = ?',$params['query']);
+        }
+    }
+    
+    
+    public function hookItemsBatchEditCustom($args) {
+        $item = $args['item'];
+        $custom = $args['custom'];
+        $editStatusItem = new EditStatusItems();
+        $editStatusItem->edit_status_id = $custom['edit_statuses_id'];
+        $editStatusItem->item_id = $item->id;
+        $editStatusItem->save();
     }
     
     public function crowdedTypeInputs($components,$args) {
@@ -259,56 +341,79 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function crowdedTitleInputs($components,$args) {
-        $components['html'] = get_view()->formText($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6'));
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['html'] = get_view()->formText($args['input_name_stem'].'[text]', $args['value'],array('class'=>'span6'));
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components;
+   
     }
     
     public function crowdedTitle($components,$args) {
-        $components['label'] = 'Document Title';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args);
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Title';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args);
+        } 
         return $components;
+        
     }
     
     public function crowdedDescription($components,$args) {
-        $components['label'] = 'General Description';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6);
+        if (!is_admin_theme()) {
+            $components['label'] = 'General Description';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6);
+        }
         return $components;
     }
     
     public function crowdedDescriptionInputs($components,$args) {
-        $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'], array('class'=>'span6','rows'=>'3'));
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['html'] = get_view()->formTextarea($args['input_name_stem'].'[text]', $args['value'], array('class'=>'span6','rows'=>'3'));
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components; 
     }
     
     public function crowdedCreator($components,$args) {
-        $components['label'] = 'Document Author(s)';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Author(s)';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        }
         return $components;
     }
     
     public function crowdedCreatorInputs($components,$args) {
+<<<<<<< HEAD
         $components['form_controls'] = get_view()->formSubmit('add_element_' . get_view()->_element['id'],__('Add Input'),array('class'=>'add-element'));
         $components['html_checkbox'] = null;
+=======
+        if (!is_admin_theme()) {
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
+>>>>>>> master
         return $components; 
     }
     
     public function crowdedRecipient($components,$args) {
-        $components['label'] = 'Document Recipient(s)';
-        $components['description'] = trim($components['description']);
-        $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        if (!is_admin_theme()) {
+            $components['label'] = 'Document Recipient(s)';
+            $components['description'] = trim($components['description']);
+            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+        }
         return $components;
     }
     
     public function crowdedRecipientInputs($components,$args) {
-        $components['form_controls'] = null;
-        $components['html_checkbox'] = null;
+        if (!is_admin_theme()) {
+            $components['form_controls'] = null;
+            $components['html_checkbox'] = null;
+        }
         return $components; 
     }
     
@@ -382,18 +487,27 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $args;
     }
     
+    public function filterSearchRecordTypes($args) {
+        $args['EditStatusItems'] = __('Editing Status of Item');
+        return $args;
+    }
+    
     private function _crowded_participate_item() {
         $item = get_current_record('item');
-        /*
-        $esi = new EditStatusItems();
-        $status_id = $esi->getItemEditStatusId($item);
         
-        $es = new EditStatus;
-        $lockStatus = $es->getLockedStatus($status_id);
-        if (!$lockStatus) {*/
+        $esi = new EditStatusItems();
+        $status = $esi->getItemEditStatus($item);
+        if ($status) {
+            $es = new EditStatus();
+            $lockStatus = $es->getLockedStatus($status->edit_status_id);
+        } else {
+            $lockStatus = 0;
+        }
+        
+        if ($lockStatus == 0) {
             echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
     
-        //}    
+        }    
     }
     
     private function _crowded_user_bar() {

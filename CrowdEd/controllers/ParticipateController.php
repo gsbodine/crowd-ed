@@ -31,18 +31,18 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $item = $this->_helper->db->findById();
         
         $esi = new EditStatusItems();
-        $status_id = $esi->getItemEditStatusId($item);
+        $status = $esi->getItemEditStatus($item);
         $es = new EditStatus;
-        $lockStatus = $es->getLockedStatus($status_id);
+        $lockStatus = $es->getLockedStatus($status->edit_status_id);
         if ($lockStatus == 1) {
-            //$this->_redirectAfterEdit($item);
+            $this->_redirectAfterEdit($item);
         }
         
         if ($this->getRequest()->isPost()) {
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {
-               $this->updateEditStatus($item, 'QA');
+               $this->updateEditStatus($item, 'Pending');
                $this->_savePersonNames($item);
                $item->addTags($_POST['hidden-tags']);
                $successMessage = $this->_getEditSuccessMessage($item);
@@ -72,6 +72,35 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $entity = new Entity();
         $entity->getEntityByUserId($user->id);
         $this->view->assign(compact('user','entity'));
+    }
+    
+    public function editProfileAction(){
+        $user = current_user();
+        $e = new Entity();
+        $entity = $e->getEntityFromUser($user);
+        
+        $form = $this->_getUserEntityForm($user,$entity);
+        $form->setSubmitButtonText(__('Update Profile'));
+        $this->view->form = $form;
+        
+        if ($this->getRequest()->isPost() && $form->isValid($_POST)) {
+            unset($_POST['role']);
+            $entity->setPostData($_POST);
+            $user->setPostData($_POST);
+            $user->name = $entity->getName();
+
+            if ($user->save()) {
+                $newUser = $this->_helper->db->getTable('User')->findByEmail($user->email);
+                $entity->user_id = $newUser->id;
+                $entity->save();
+                $this->_helper->redirector('profile', 'participate', '', array());
+            } else {
+               $this->_helper->flashMessenger($user->getErrors());
+            }
+        } 			
+        
+        $this->view->assign(compact('user','entity'));
+        
     }
     
     public function loginAction() {
@@ -162,7 +191,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         }
     }
     
-    public function updateEditStatus($item,$statusName='QA') {
+    public function updateEditStatus($item,$statusName='Pending') {
         $editStatus = new EditStatus;
         $status_id = $editStatus->getStatusIdByName($statusName);
         $editStatusItem = new EditStatusItems();

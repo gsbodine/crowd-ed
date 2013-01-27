@@ -24,6 +24,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         $this->addElement('text','username',array(
             'label' => __('Username'),
             //'description' => __('Username must contain only letters and/or numbers and have 30 or fewer characters.'),
+            'value'=>$this->_user->username,
             'required' => true,
             'size' => '30',
             'validators' => array(
@@ -74,6 +75,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         $this->addElement('text','first_name',array(
             'label' => __('First Name'),
             //'description' => __('Your first name'),
+            'value'=> $this->_entity->first_name,
             'size' => '30',
             'required' => true,
             'validators' => array(
@@ -84,6 +86,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         $this->addElement('text','last_name',array(
             'label' => __('Last Name'),
             //'description' => __('Your last name (surname)'),
+            'value' => $this->_entity->last_name,
             'size' => '30',
             'required' => true,
             'validators' => array(
@@ -94,6 +97,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
         $this->addElement('text','institution',array(
             'label' => __('Institution or Affiliation'),
             //'description' => __('Your institution or group affiliation (if applicable)'),
+            'value' => $this->_entity->institution,
             'size' => '30',
             'required' => false,
             'validators' => array(
@@ -106,6 +110,7 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
             'label' => __('Email'),
             'size' => '30',
             'required' => true,
+            'value' => $this->_user->email,
             'validators' => array(
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' => array(
                     'messages' => array(
@@ -134,8 +139,10 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
             )
         ));
         
-        $this->addElement('checkbox','terms',array('label'=>'You must agree to the following Terms and Conditions of this site.',
+        if (current_url() != '/participate/edit-profile') {
+            $this->addElement('checkbox','terms',array('label'=>'You must agree to the following Terms and Conditions of this site.',
                                                     'description'=>get_option('crowded_terms_of_service')));
+        }
         
         $this->addElement('submit', 'submit', array(
             'label' => $this->_submitButtonText,

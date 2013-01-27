@@ -28,16 +28,22 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'admin_item_form',
         'admin_items_panel_fields',
         'admin_items_batch_edit_form',
-        'items_batch_edit_custom'
+        'items_batch_edit_custom',
+        'admin_items_search',
+        'search_sql',
+        'admin_items_browse_simple_each'
     );
     
     protected $_filters = array(
+        
         'public_navigation_main',
         'public_navigation_admin_bar',
         
         'admin_navigation_main',
         
         'item_citation',
+        
+        'search_record_types',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -212,6 +218,42 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $html .= '</div></div>';
         echo $html;
     }
+    
+    public function hookAdminItemsSearch($args) {
+        $view = $args['view'];
+        $html = '<div class="field"><div class="two columns alpha">'
+          . $view->formLabel('exhibit', __('Search by Editing Status'))
+          . '</div><div class="five columns omega inputs">'
+          . $view->formSelect('edit_status', @$_GET['edit-status'], array(), get_table_options('EditStatus'))
+          . '</div></div>';
+        echo $html;
+    }
+    
+    public function hookAdminItemsBrowseSimpleEach($args) {
+        $esi = new EditStatusItems();
+        $item = $args['item'];
+        $e = $esi->getItemEditStatus($item);
+        if ($e) {
+            $args['edit_status_id'] = $e->status;
+        } else {
+            $args['edit_status_id'] = 'Unedited';
+        }
+        return $args;
+    }
+    
+    public function hookSearchSql($args) {
+        var_dump($args['query-type']);
+        die();
+        $params = $args['params'];
+        if ('edit_status' == $params['query_type']) {
+            $editStatusId = $params['edit_status'];
+            $select = $args['select'];
+            $select->join(array('es'=>'edit_statuses'), "es.id = $editStatusId", array());
+            $select->reset(Zend_Db_Select::WHERE);
+            $select->where('edit_status_id = ?',$params['query']);
+        }
+    }
+    
     
     public function hookItemsBatchEditCustom($args) {
         $item = $args['item'];
@@ -437,6 +479,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     public function filterPublicNavigationAdminBar($args) {
         $args = null;
+        return $args;
+    }
+    
+    public function filterSearchRecordTypes($args) {
+        $args['EditStatusItems'] = __('Editing Status of Item');
         return $args;
     }
     

@@ -4,7 +4,8 @@ if (!Omeka) {
 
 Omeka.Elements = {};
 
-(function ($) {
+jQuery('document').ready(function ($) {
+    
     /**
      * Send an AJAX request to update a <div class="field"> that contains all
      * the form inputs for an element.
@@ -28,21 +29,24 @@ Omeka.Elements = {};
         params.element_id = elementId;
         params.record_id = recordId;
         params.record_type = recordType;
-
+        
         $.ajax({
             url: elementFormPartialUri,
             type: 'POST',
             dataType: 'html',
             data: params,
             success: function (response) {
-                fieldDiv.find('textarea').each(function () {
-                    tinyMCE.execCommand('mceRemoveControl', false, this.id);
-                });
+                //fieldDiv.find('textarea').each(function () {
+                //    tinyMCE.execCommand('mceRemoveControl', false, this.id);
+                //});
                 fieldDiv.html(response);
                 fieldDiv.trigger('omeka:elementformload');
             }
-        });
+            
+        }); 
     };
+    
+    
 
     /**
      * Set up add/remove element buttons for ElementText inputs.
@@ -59,7 +63,7 @@ Omeka.Elements = {};
         var inputBlockSelector = 'div.input-block';
         var context = $(element);
         var fields;
-
+        
         if (context.is(fieldSelector)) {
             fields = context;
         } else {
@@ -75,14 +79,14 @@ Omeka.Elements = {};
                 removeButtons.hide();
             }
         });
-
+        
         // When an add button is clicked, make an AJAX request to add another input.
         context.find(addSelector).click(function (event) {
             event.preventDefault();
             var fieldDiv = $(this).parents(fieldSelector);
-
             Omeka.Elements.elementFormRequest(fieldDiv, {add: '1'}, elementFormPartialUrl, recordType, recordId);
         });
+
 
         // When a remove button is clicked, remove that input from the form.
         context.find(removeSelector).click(function (event) {
@@ -114,4 +118,4 @@ Omeka.Elements = {};
         });
     };
 
-})(jQuery);
+});

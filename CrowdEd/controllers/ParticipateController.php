@@ -61,7 +61,25 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         parent::editAction();
     }
     
-    
+    public function personNameElementFormAction() {        
+        $elementId = (int)$_POST['element_id'];
+        $recordType = $_POST['record_type'];
+        $recordId  = (int)$_POST['record_id'];
+        //$this->_updatePersonElements();                
+        // Re-index the element form posts so that they are displayed in the correct order
+        // when one is removed.
+        //$_POST['PersonNames'][$elementId] = array_merge($_POST['PersonNames'][$elementId]);
+        
+
+        $element = $this->_helper->db->getTable('Element')->find($elementId);
+        $record = $this->_helper->db->getTable($recordType)->find($recordId);
+        
+        if (!$record) {
+            $record = new $recordType;            
+        }
+        
+        $this->view->assign(compact('element', 'record'));
+    }
     
     public function forgotPasswordAction(){
         

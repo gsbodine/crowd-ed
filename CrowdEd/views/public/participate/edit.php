@@ -3,7 +3,20 @@
     queue_js_file('elements');
     echo head();
     $elements = $item->getAllElements();
+    $id = $item->id;
 ?>
+<script type="text/javascript" charset="utf-8">
+//<![CDATA[
+jQuery(window).load(function () {
+    jQuery(document).trigger('omeka:elementformload');
+});
+
+jQuery(document).bind('omeka:elementformload', function (event) {
+    Omeka.Elements.makeElementControls(event.target, <?php echo js_escape(url('participate/person-name-element-form')); ?>,'Item'<?php if ($id = metadata('item', 'id')) echo ', '.$id; ?>);
+});
+//]]>
+</script>
+
 <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

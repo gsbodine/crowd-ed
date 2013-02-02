@@ -65,7 +65,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'crowdedCreator' => array('ElementForm','Item','Dublin Core','Creator'),
         'crowdedCreatorInputs' => array('ElementInput','Item','Dublin Core','Creator'),
         
-        'crowdedRecipient' => array('ElementForm','Item','Item Type Metadata','Recipient'),
+        'crowdedRecipient' => array('EditElements','Item','Item Type Metadata','Recipient'),
         'crowdedRecipientInputs' => array('ElementInput','Item','Item Type Metadata','Recipient'),
         
         'crowdedFlag' => array('ElementForm','Item','Crowdsourcing Metadata','Flag for Review'),
@@ -382,21 +382,16 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         if (!is_admin_theme()) {
             $components['label'] = 'Document Author(s)';
             $components['description'] = trim($components['description']);
-            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
         }
         return $components;
     }
     
     public function crowdedCreatorInputs($components,$args) {
-<<<<<<< HEAD
-        $components['form_controls'] = get_view()->formSubmit('add_element_' . get_view()->_element['id'],__('Add Input'),array('class'=>'add-element'));
-        $components['html_checkbox'] = null;
-=======
         if (!is_admin_theme()) {
-            $components['form_controls'] = null;
+            $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
+            $components['form_controls'] = get_view()->formSubmit('add_element_' . get_view()->_element['id'],__('Add Input'),array('class'=>'add-element'));
             $components['html_checkbox'] = null;
         }
->>>>>>> master
         return $components; 
     }
     

@@ -389,7 +389,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function crowdedCreatorInputs($components,$args) {
         if (!is_admin_theme()) {
             $components['html'] = $this->_setUpFormElement($components,$args,6,'<i class="icon-user"></i> ');
-            $components['form_controls'] = get_view()->formSubmit('add_element_' . get_view()->_element['id'],__('Add Input'),array('class'=>'add-element'));
+            $components['form_controls'] = null;
             $components['html_checkbox'] = null;
         }
         return $components; 

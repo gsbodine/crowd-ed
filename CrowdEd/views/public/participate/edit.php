@@ -125,8 +125,8 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         <hr />
         
         <div class="row">
-        <?php $itemCreator = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemCreator;
+        <?php $itemCreators = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
+            echo $itemCreators;
         ?>
         </div>
         
@@ -134,8 +134,8 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         
         <div class="row">  
         <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemRecipient = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemRecipient;
+            $itemRecipients = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
+            echo $itemRecipients;
         ?>
         </div> 
         

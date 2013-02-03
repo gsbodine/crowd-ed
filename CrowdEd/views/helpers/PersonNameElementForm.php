@@ -45,8 +45,6 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         
     }
     
-    
-    
     private function _getPersonsCount($recordId,$elementId) {
         if ($this->_isPosted()) {
             $personCount = count($_POST['PersonNames']);
@@ -56,83 +54,113 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         }
         
         return $personCount ? $personCount : 1;
-    }
-    /*public function elementForm(Element $element, Omeka_Record $record, $options = array()) {
-        $extraFieldCount = isset($options['extraFieldCount']) ? $options['extraFieldCount'] : null;
-
-        $columnSpan = isset($options['columnSpan']) ? $options['columnSpan'] : '6';
-        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';
-        $this->_element = $element;
-        $record->loadElementsAndTexts(); 
-        $this->_record = $record;
-        
-        $personMixin = new PersonName;
-        $isPersonName = $personMixin->isPersonNameElement($this->_element);
-        
-        $html = '';
-        $html .= '<div class="field span'. $columnSpan .'" id="element-' . html_escape($element->id) . '">';
-        $html .= $this->_displayFieldLabel();
-        $html .= $this->_displayValidationErrors();
-        if ($isPersonName){
-            $html .= $this->_displayPersonNameFields($this->_record,$this->_element);
-        } else {
-            $html .= $this->_displayFormFields($options=array('fieldColumnSpan'=>$fieldColumnSpan),$extraFieldCount); 
-        }
-        $html .= '</div>';
-        return $html;
-    }*/
+    }    
     
-    
-    protected function _displayPersonNameFields($record,$element,$extraFieldCount=0) {
+    protected function _displayPersonNameFields($record,$element,$extraFieldCount=null) {
         $html = '';
-        if ($this->_isPosted()) {
-            $personNames = $_POST['PersonNames'];
-        } else {
-            $pn = new PersonName;
-            $personNames = $pn->getPersonNamesByRecordAndElementIds($record->id,$element->id);
-        }
-        if ($extraFieldCount > 0) {
-            for ($i = 0; $i < $extraFieldCount; $i++) {
-                $personNames[] = new PersonName();
+        if (array_key_exists('PersonNames', $_POST)) {
+            
+            $postArray = $_POST['PersonNames'];
+            $newIndex = 0;
+            if (!$extraFieldCount) {
+                for ($i = 0; $i < $extraFieldCount; $i++) {
+                    $postArray['new-'.$element->id] = array('index'=>$newIndex,'title'=>'','firstname'=>'','lastname'=>'','middlename'=>'','suffix'=>'','element_id'=>$element->id,'record_id'=>$record->id);
+                    $newIndex++; 
+                }
             }
-        }
-       // $fieldCount = count($personNames) + (int) $extraFieldCount;
-        
-        
-        //for ($i=0; $i < $fieldCount; $i++) {
-        //if (is_array($personNames) && count($personNames) >= 1) { 
-        $newIndex = 1;
-        foreach ($personNames as $personName) {
-               if ($personName['element_id'] == $element->id) {
-                    // Case 1
+
+            
+            foreach ($postArray as $key => $personName) {
+               /*if (!array_key_exists('title', $personName)) {
+                       $personName = $personName[0];
+                   }
+                echo '(key: ' . $key . 'value: '. $personName['firstname'] .')<br /><br />'; */
+               if (substr($key,0,3) == 'new') {
+                   foreach($personName as $pname) {
+                    //$pname['index'] = $pkey;
                     $html .= '<div class="input-block">';
-                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][title]', $personName->title,$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][firstname]', $personName->firstname,$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][middlename]', $personName->middlename,$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][lastname]', $personName->lastname,$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName->id .'][suffix]', $personName->suffix,$options=array('class'=>'input-small','placeholder'=>'Suffix (e.g. Jr.)'));
-                    $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][element_id]" value="'. $element->id .'" />';
-                    $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][record_id]" value="'. $record->id .'" />';
-                    $html .= '<input type="hidden" name="PersonNames['. $personName->id .'][id]" value="'. $personName->id .'" />';
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]',$pname['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'.  $element->id .']['. $newIndex .'][firstname]',$pname['firstname'],$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]',$pname['middlename'],$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]',$pname['lastname'],$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]',$pname['suffix'],$options=array('class'=>'span1','placeholder'=>'1-Suffix (e.g. Jr.)'));
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex.'" />';
                     $html .= '</div>';
-                   // $html .= $this->_displayFormControls();
-               } else {
-                    // Case 2
+                    $newIndex++;
+                   }
+               } else if (is_int($key)){ 
+                    $html .= '<div class="input-block">';
+                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $key .'][title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $key .'][firstname]', $personName['firstname'],$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $key .'][middlename]', $personName['middlename'],$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $key .'][lastname]', $personName['lastname'],$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames['. $key .'][suffix]', $personName['suffix'],$options=array('class'=>'input-small','placeholder'=>'2-Suffix (e.g. Jr.)'));
+                    $html .= '<input type="hidden" name="PersonNames['. $key .'][element_id]" value="'. $element->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames['. $key .'][record_id]" value="'. $record->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames['. $key .'][id]" value="'. $key .'" />';
+                    $html .= '</div>';
+                }  else {
                     $html .= '<div class="input-block">';
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                     $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'3-Suffix (e.g. Jr.)'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
-                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />';  
                     $html .= '</div>';
                     $newIndex++;
-               }
+                }
+                
+            }   
+            
+            if ($extraFieldCount) {
+                for ($i = 0; $i < $extraFieldCount; $i++) {
+                    $html .= '<div class="input-block">';
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
+                    $html .= $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'4-Suffix (e.g. Jr.)'));
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
+                    $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />'; 
+                    $html .= '</div>';
+                    $newIndex++;
+                }
+            }
+        } else {
+            $pn = new PersonName;
+            $personNames = $pn->getPersonNamesByRecordAndElementIds($record->id,$element->id);
+            if (count($personNames) < 1) {
+                $blankPerson = new PersonName();
+                $blankPerson['id'] = 'new-'.$element->id;
+                $personNames[] = $blankPerson;
+            }
+            foreach ($personNames as $personName) {
+                if (substr($personName['id'], 0, 3) == 'new') {
+                    $index = '[0]';
+                } else {
+                    $index = null;
+                }
+                $html .= '<div class="input-block">';
+                $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[firstname]', $personName['firstname'],$options=array('class'=>'input-small','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[middlename]', $personName['middlename'],$options=array('class'=>'input-small','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[lastname]', $personName['lastname'],$options=array('class'=>'input-small','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
+                $html .= $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('class'=>'input-small','placeholder'=>'Suffix (e.g. Jr.)'));
+                $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[element_id]" value="'. $element->id .'" />';
+                $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[record_id]" value="'. $record->id .'" />';
+                $html .= '</div>';
+            }
         }
+        
         return $html;
+        
     }
-    
     protected function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';    
         //$fieldDataType = $this->_getElementDataType();

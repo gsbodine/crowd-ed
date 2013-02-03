@@ -65,9 +65,6 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $elementId = (int)$_POST['element_id'];
         $recordType = $_POST['record_type'];
         $recordId  = (int)$_POST['record_id'];
-        //$this->_updatePersonElements();                
-        // Re-index the element form posts so that they are displayed in the correct order
-        // when one is removed.
         //$_POST['PersonNames'][$elementId] = array_merge($_POST['PersonNames'][$elementId]);
         
 
@@ -274,10 +271,11 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             return;
         }
         foreach ($post['PersonNames'] as $key => $ppn) {
-            $personName = new PersonName;
+            
             
             if (substr($key, 0, 3) == 'new') {
                 foreach($post['PersonNames'][$key] as $pn) {
+                    $personName = new PersonName;
                     $personName->setArray(
                          array(
                              'firstname'=>$pn['firstname'],
@@ -292,6 +290,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                     $personName->save();
                 }
             } elseif (is_int($key)) {
+                $personName = new PersonName;
                 $personName->setArray(
                      array(
                          'id'=>$key,

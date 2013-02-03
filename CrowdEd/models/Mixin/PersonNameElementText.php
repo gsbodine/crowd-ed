@@ -34,7 +34,7 @@ class Mixin_PersonNameElementText extends Mixin_ElementText {
     }
     
     public function getPersonNamesByRecordAndElementIds($record_id,$element_id) {
-        return $this->_record->getTable('PersonName')->findBySql('record_id = ? AND element_id = ?',array($record_id,$element_id));
+        return $this->_record->getTable('PersonName')->findBySql('record_id = ? AND element_id = ?',array($record_id,$element_id),false);
     }
     
     public function getPersonNamesByElementTexts($index=null) {

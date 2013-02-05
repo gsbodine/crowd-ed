@@ -17,6 +17,10 @@
     text-align: center;
 }
 
+.remove-element {
+    display: inline;
+}
+
 #crowded-item-form label {
     display: inline-block;
 }

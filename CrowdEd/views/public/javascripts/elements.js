@@ -6,16 +6,6 @@ Omeka.Elements = {};
 
 jQuery('document').ready(function ($) {
     
-    /**
-     * Send an AJAX request to update a <div class="field"> that contains all
-     * the form inputs for an element.
-     *
-     * @param {jQuery} fieldDiv
-     * @param {Object} params Parameters to pass to AJAX URL.
-     * @param {string} elementFormPartialUri AJAX URL.
-     * @param {string} recordType Current record type.
-     * @param {string} recordId Current record ID.
-     */
     Omeka.Elements.elementFormRequest = function (fieldDiv, params, elementFormPartialUri, recordType, recordId) {
         var elementId = fieldDiv.attr('id').replace(/element-/, '');
         
@@ -46,16 +36,6 @@ jQuery('document').ready(function ($) {
         }); 
     };
     
-    
-
-    /**
-     * Set up add/remove element buttons for ElementText inputs.
-     *
-     * @param {Element} element The element to search at and below.
-     * @param {string} elementFormPartialUrl AJAX URL for form inputs.
-     * @param {string} recordType Current record type.
-     * @param {string} recordId Current record ID.
-     */
     Omeka.Elements.makeElementControls = function (element, elementFormPartialUrl, recordType, recordId) {
         var addSelector = '.add-element';
         var removeSelector = '.remove-element';
@@ -70,7 +50,6 @@ jQuery('document').ready(function ($) {
             fields = context.find(fieldSelector);
         }
 
-        // Show remove buttons for fields with 2 or more inputs.
         fields.each(function () {
             var removeButtons = $(this).find(removeSelector);
             if (removeButtons.length > 1) {
@@ -80,20 +59,16 @@ jQuery('document').ready(function ($) {
             }
         });
         
-        // When an add button is clicked, make an AJAX request to add another input.
         context.find(addSelector).click(function (event) {
             event.preventDefault();
             var fieldDiv = $(this).parents(fieldSelector);
             Omeka.Elements.elementFormRequest(fieldDiv, {add: '1'}, elementFormPartialUrl, recordType, recordId);
         });
 
-
-        // When a remove button is clicked, remove that input from the form.
         context.find(removeSelector).click(function (event) {
             event.preventDefault();
             var removeButton = $(this);
 
-            // Don't delete the last input block for an element.
             if (removeButton.parents(fieldSelector).find(inputBlockSelector).length === 1) {
                 return;
             }
@@ -103,12 +78,8 @@ jQuery('document').ready(function ($) {
             }
 
             var inputBlock = removeButton.parents(inputBlockSelector);
-            inputBlock.find('textarea').each(function () {
-                tinyMCE.execCommand('mceRemoveControl', false, this.id);
-            });
-            inputBlock.remove();
+            inputBlock.remove(); 
 
-            // Hide remove buttons for fields with one input.
             $(fieldSelector).each(function () {
                 var removeButtons = $(this).find(removeSelector);
                 if (removeButtons.length === 1) {

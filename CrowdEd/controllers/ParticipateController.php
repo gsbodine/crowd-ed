@@ -44,7 +44,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {
-               $this->updateEditStatus($item, 'Pending');
+               if ($lockStatus == 0) {
+                   $this->updateEditStatus($item, 'Pending');
+               }
                $this->_savePersonNames($item);
                $item->addTags($_POST['hidden-tags']);
                $successMessage = $this->_getEditSuccessMessage($item);

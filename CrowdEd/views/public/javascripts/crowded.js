@@ -23,6 +23,8 @@ jQuery(document).ready(function($) {
     
     $('.tagManager').tagsManager();
     
+    $('.carousel').carousel();
+    
  // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.
     var blackListGroups = [
         "Item Type Metadata",

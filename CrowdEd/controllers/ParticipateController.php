@@ -35,7 +35,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $es = new EditStatus;
         $lockStatus = $es->getLockedStatus($status->edit_status_id);
         if ($lockStatus == 1) {
-            $this->_redirectAfterEdit($item);
+            if ($user->role !== 'admin' && $user->role !== 'super') {
+                $this->_redirectAfterEdit($item);
+            }
         }
         
         if ($this->getRequest()->isPost()) {

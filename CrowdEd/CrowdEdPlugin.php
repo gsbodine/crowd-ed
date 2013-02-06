@@ -499,10 +499,21 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             $lockStatus = 0;
         }
         
+        $html = '<hr /><h4><i class="icon-edit icon-large"></i> Participate</h4>';
         if ($lockStatus == 0) {
-            echo("<hr /><h4><i class=\"icon-edit icon-large\"></i> Participate</h4><div><a href=\"/participate/edit/". $item->id ."\">Assist us with editing and cataloging this item!</a></div>");
-    
-        }    
+            $html .= '<div><a href="/participate/edit/'. $item->id .'">Assist us with editing and cataloging this item!</a></div>';
+        } else {
+            $html .= '<div><p class="alert alert-info"><i class="icon-lock icon-large"></i> This item has already been edited and is now locked.</p></div>';
+            $user = current_user();
+            if ($user && ($user->role == 'admin' || $user->role == 'super')) {
+                $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</p>';
+            }  else {
+                $html .= '<p><a href="/participate/random"><strong>How about trying an unedited item?</strong></a></p>';
+            }
+        }
+        
+        echo $html;
+        
     }
     
     private function _crowded_user_bar() {

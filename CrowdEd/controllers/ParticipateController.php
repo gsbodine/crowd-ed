@@ -45,8 +45,13 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             $item->setPostData($_POST);
             if ($item->save()) {
                if ($lockStatus == 0) {
-                   $this->updateEditStatus($item, 'Pending');
+                   if ($user->role == 'crowd-editor') {
+                       $this->updateEditStatus($item, 'Pending');
+                   } else if ($user->role == 'admin' || $user->role == 'super') {
+                       $this->updateEditStatus($item, 'Reviewed');
+                   }
                }
+               $this->_removePreviousPersonNames($item);
                $this->_savePersonNames($item);
                $item->addTags($_POST['hidden-tags']);
                $successMessage = $this->_getEditSuccessMessage($item);
@@ -315,9 +320,16 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         }
         //return $post;
     }
+    
+    private function _removePreviousPersonNames($item) {
+        $pns = $this->_getPersonNames($item);
+        foreach ($pns as $pn) {
+            $pn->delete();
+        }
+    }
    
     private function _getPersonNames($item) {
-        return $this->getTable('PersonName')->findByRecordId($item->id);
+        return $this->_helper->db->getTable('PersonName')->findBy($params=array('record_id'=>$item->id));
     } 
         
     private function _getUserEntityForm(User $user, Entity $entity) {

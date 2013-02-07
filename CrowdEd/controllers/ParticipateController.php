@@ -39,18 +39,15 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                 $this->_redirectAfterEdit($item);
             }
         }
-        
         if ($this->getRequest()->isPost()) {
             $this->_updatePersonElements();
             $item->setPostData($_POST);
             if ($item->save()) {
-               if ($lockStatus == 0) {
-                   if ($user->role == 'crowd-editor') {
-                       $this->updateEditStatus($item, 'Pending');
-                   } else if ($user->role == 'admin' || $user->role == 'super') {
-                       $this->updateEditStatus($item, 'Reviewed');
-                   }
-               }
+                if ($user->role == 'crowd-editor') {
+                    $this->updateEditStatus($item,'Pending');
+                } else if ($user->role == 'admin' || $user->role == 'super') {
+                    $this->updateEditStatus($item,'Reviewed');
+                }
                $this->_removePreviousPersonNames($item);
                $this->_savePersonNames($item);
                $item->addTags($_POST['hidden-tags']);
@@ -217,9 +214,15 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     
     public function updateEditStatus($item,$statusName='Pending') {
         $editStatus = new EditStatus;
-        $status_id = $editStatus->getStatusIdByName($statusName);
+        $status = $editStatus->getStatusIdByName($statusName);
+        
         $editStatusItem = new EditStatusItems();
-        $editStatusItem->edit_status_id = 1;
+        $itemStatus = $editStatusItem->getItemEditStatus($item);
+        
+        if ($itemStatus) {
+            $editStatusItem->id = $itemStatus->id;
+        }
+        $editStatusItem->edit_status_id = $status->id;
         $editStatusItem->item_id = $item->id;
         $editStatusItem->save();
     }

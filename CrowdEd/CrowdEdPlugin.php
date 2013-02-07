@@ -204,7 +204,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
         $editStatusItem = new EditStatusItems();
         $itemStatus = $editStatusItem->getItemEditStatus($args['record']);
-        $statusId = $itemStatus->edit_status_id;
+        if (!$itemStatus) {
+            $statusId = 0; 
+        } else {
+            $statusId = $itemStatus->edit_status_id;
+        }
         $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
         $html .= '</div></div>';
         echo $html;

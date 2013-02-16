@@ -6,24 +6,18 @@
  */
 class CrowdEd_IndexController extends Omeka_Controller_AbstractActionController {
     public function indexAction() {
-       
+        
     }
     
     public function browseAction() {
         
     }
     
-    public function reviewAction() {
-        $results = $this->_helper->searchItems();
-        
-        /** 
-         * Now process the pagination
-         * 
-         */
+    public function flaggedAction() {
+        //$results = $this->_helper->searchItems();
         $paginationUrl = $this->getRequest()->getBaseUrl().'/items/browse/';
 
-        //Serve up the pagination
-        $pagination = array('menu'          => null, // This hasn't done anything since $menu was never instantiated in ItemsController::browseAction()
+        $pagination = array('menu'          => null, 
                             'page'          => $results['page'], 
                             'per_page'      => $results['per_page'], 
                             'total_results' => $results['total_results'], 
@@ -34,6 +28,10 @@ class CrowdEd_IndexController extends Omeka_Controller_AbstractActionController 
         fire_plugin_hook('browse_items', $results['items']);
         
         $this->view->assign(array('items'=>$results['items'], 'total_items'=>$results['total_items']));
+    }
+    
+    public function reviewAction() {
+        
     }
         
 }

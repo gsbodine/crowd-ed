@@ -28,7 +28,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         //$html = $this->_personNameElement($element, $record, $options);
         
         $html .= $this->_displayPersonNameFields($this->_record,$this->_element,$extraFieldCount);  
-        $html .= '<div><input type="submit" class="add-element btn btn-small btn-info" value="Add another author" id="add_element_' . $element->id . '" name="add_element_' . $element->id . '"></div>';
+        $html .= '<div><button type="submit" class="add-element btn btn-small btn-info" id="add_element_' . $element->id . '" name="add_element_' . $element->id . '"><i class="icon-plus-sign"></i> Add another</button></div>';
         $html .= '</div>';
         return $html;
     }

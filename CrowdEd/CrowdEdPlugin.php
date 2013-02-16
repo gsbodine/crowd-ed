@@ -30,7 +30,6 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'admin_items_batch_edit_form',
         'items_batch_edit_custom',
         'admin_items_search',
-        'search_sql',
         'admin_items_browse_simple_each'
     );
     
@@ -43,7 +42,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
         'item_citation',
         
-        'search_record_types',
+        'item_search_filters',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -160,7 +159,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function hookPublicBody() {
-        $this->_crowded_user_bar();
+        //$this->_crowded_user_bar();
     }
     
     public function hookPublicFooter($args) {
@@ -226,11 +225,26 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function hookAdminItemsSearch($args) {
         $view = $args['view'];
         $html = '<div class="field"><div class="two columns alpha">'
-          . $view->formLabel('exhibit', __('Search by Editing Status'))
+          . $view->formLabel('edit_status_id', __('Search by Editing Status'))
           . '</div><div class="five columns omega inputs">'
-          . $view->formSelect('edit_status', @$_GET['edit-status'], array(), get_table_options('EditStatus'))
+          . $view->formSelect('edit_status_id', @$_GET['edit_status_id'], array(), get_table_options('EditStatus'))
           . '</div></div>';
         echo $html;
+    }
+    
+    public function filterItemSearchFilters($displayArray, $args) {
+        $request_array = $args['request_array'];
+        if (isset($request_array['edit_status_id'])) {
+            $db = get_db();
+            $editStatusItems = $db->getTable('EditStatusItems')->findBy($params = array('edit_status_id'=>$request_array['edit_status_id']));
+            $displayValue = array();
+            foreach ($editStatusItems as $esi) {
+                $displayValue = 'Pending';
+            }
+            $displayArray = null;
+            $displayArray['edit_status_id'] = $displayValue;
+        }
+        return $displayArray;
     }
     
     public function hookAdminItemsBrowseSimpleEach($args) {
@@ -243,19 +257,6 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             $args['edit_status_id'] = 'Unedited';
         }
         return $args;
-    }
-    
-    public function hookSearchSql($args) {
-        var_dump($args['query-type']);
-        die();
-        $params = $args['params'];
-        if ('edit_status' == $params['query_type']) {
-            $editStatusId = $params['edit_status'];
-            $select = $args['select'];
-            $select->join(array('es'=>'edit_statuses'), "es.id = $editStatusId", array());
-            $select->reset(Zend_Db_Select::WHERE);
-            $select->where('edit_status_id = ?',$params['query']);
-        }
     }
     
     
@@ -482,13 +483,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function filterPublicNavigationAdminBar($args) {
-        $args = null;
-        return $args;
-    }
-    
-    public function filterSearchRecordTypes($args) {
-        $args['EditStatusItems'] = __('Editing Status of Item');
-        return $args;
+        // overwrite basic public nav admin bar args
+        return $this->_crowded_user_bar();
     }
     
     private function _crowded_participate_item() {
@@ -503,11 +499,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             $lockStatus = 0;
         }
         
-        $html = '<hr /><h4><i class="icon-edit icon-large"></i> Participate</h4>';
+        $html = '<hr /><h4><i class="icon-edit"></i> Participate</h4>';
         if ($lockStatus == 0) {
             $html .= '<div><a href="/participate/edit/'. $item->id .'">Assist us with editing and cataloging this item!</a></div>';
         } else {
-            $html .= '<div><p class="alert alert-info"><i class="icon-lock icon-large"></i> This item has already been edited and is now locked.</p></div>';
+            $html .= '<div><p class="alert alert-info"><i class="icon-lock"></i> This item has already been edited and is now locked.</p></div>';
             $user = current_user();
             if ($user && ($user->role == 'admin' || $user->role == 'super')) {
                 $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</p>';
@@ -522,13 +518,13 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     private function _crowded_user_bar() {
         $user = current_user();
-        $content = '<div class="container"><div class="navbar navbar-static-top"><div class="navbar-inner"><div class="brand">Crowd-Ed</div><ul class="nav pull-right">';
+        $content = '<div class="navbar navbar-fixed-top"><div id="crowded-navbar" class="navbar-inner"><div class="brand" style="margin: 0;">Crowd-Ed</div><ul class="nav pull-right">';
         if ($user) {
-            $content .= "<li><a href=\"/participate/profile/". $user->id . "\"><i class=\"icon-user\"></i> " . $user->username . "</a></li><li><a href=\"" . url(array('action'=>'logout', 'controller'=>'users'), 'default') . "\"><i class=\"icon-off\"></i> Logout</a></li>";
+            $content .= '<li><a href="/participate/profile/' . $user->id . '"><i class="icon-user"></i> ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
         } else {
-            $content .= "<li><a href=\"/participate/login\"><i class=\"icon-signin\"></i> Log in</a></li><li><a href=\"/participate/join\"><i class=\"icon-cog\"></i> Create Account</a></li>";
+            $content .= '<li><a href="/participate/login"><i class="icon-signin"></i> Log in</a></li><li><a href="/participate/join"><i class="icon-cog"></i> Create Account</a></li>';
         }
-        $content .= '</ul></div></div></div>';
+        $content .= '</ul></div></div>';
         echo $content;
     }
 }

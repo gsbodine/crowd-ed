@@ -13,7 +13,7 @@
             <h2><i class="icon-user"></i> Become an Editor</h2>
             <hr />
         <?php if (current_user()): ?>
-            <p class="alert alert-success lead"><strong><i class="icon-check icon-large"></i> Step one: Complete!</strong></p>
+            <p class="alert alert-success lead"><strong><i class="icon-check"></i> Step one: Complete!</strong></p>
             <p><strong>Welcome!</strong> Since you've already got an account, you're an editor whether you know it yet or not. Move on to the next steps, and thanks in advance for contributing to the project!</p>
         <?php else: ?>
             <p class="lead"><a href="/participate/join"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo get_option('site_title'); ?></b></a></p>

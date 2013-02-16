@@ -81,7 +81,7 @@ jQuery(document).bind('omeka:elementformload', function (event) {
     <div class="span6">
         <div style="text-align:center;"><?php echo link_to_item($text='<i class="icon-arrow-left"></i> return to item display page',$props=array(),$action='show',$item) ?></div>
         <div class="site-title">
-            <h1>Participate <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
+            <h1>Participate<br /> <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
         </div>
         <hr />
         <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="" autocomplete="off">    

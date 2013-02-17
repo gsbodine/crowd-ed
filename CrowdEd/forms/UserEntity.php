@@ -10,6 +10,8 @@
  *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
+
+
 class CrowdEd_Form_UserEntity extends Omeka_Form {
     
     private $_submitButtonText;
@@ -139,15 +141,47 @@ class CrowdEd_Form_UserEntity extends Omeka_Form {
             )
         ));
         
-        if (current_url() != '/participate/edit-profile') {
-            $this->addElement('checkbox','terms',array('label'=>'You must agree to the following Terms and Conditions of this site.',
-                                                    'description'=>get_option('crowded_terms_of_service')));
+        if (get_option('crowded_terms_of_service')) {
+            
+            $serviceTerms = html_entity_decode(get_option('crowded_terms_of_service'));
+            $termsModal = '<div id="termsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">';
+            $termsModal .='<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="termsModalLabel">Terms and Conditions</h3></div>';
+            $termsModal .='<div class="modal-body">' . $serviceTerms . '</div>';
+            $termsModal .='<div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button></div></div>';
+            
+            $terms = new CrowdEd_Form_Element_Modal (
+                'formNote',
+                array('value' => $termsModal,
+                        'description'=>'<a href="#termsModal" role="button" class="text-warning" data-toggle="modal"><i class="icon-legal"></i> '. get_option('site_title').' Terms and Conditions</a>')
+            );
+            
+            $terms->removeDecorator('HtmlTag');
+            $terms->removeDecorator('Label');
+            $terms->setOptions(array('escape'=>false));
+            $terms->getDecorator('Description')->setOption('escape',false);
+                          
+            $this->addElement($terms);
+        
+            if (current_url() != '/participate/edit-profile') {
+                $check = $this->createElement('checkbox',
+                                  'terms',
+                                  array(
+                                    'label'=>'I agree to the Terms and Conditions of this site.',
+                                    'class'=>'checkbox',
+                                    
+                                  ));
+                $check->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
+                $check->addDecorator('HtmlTag',array('tag'=>'span'));
+                $this->addElement($check);
+            }
         }
         
         $this->addElement('submit', 'submit', array(
             'label' => $this->_submitButtonText,
             'class' => 'btn btn-primary'
         ));
+        
+        
     }
     
     public function setSubmitButtonText($text) {

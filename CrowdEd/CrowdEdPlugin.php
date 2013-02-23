@@ -197,20 +197,22 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAdminItemsPanelFields($args) {
-        $html = '<div id="edit-status-form" class="field">';
-        $html .=  $args['view']->formLabel('edit-statuses-id', __('Edit Status'));
-        $html .= '<div class="inputs">';
-        
-        $editStatusItem = new EditStatusItems();
-        $itemStatus = $editStatusItem->getItemEditStatus($args['record']);
-        if (!$itemStatus) {
-            $statusId = 0; 
-        } else {
-            $statusId = $itemStatus->edit_status_id;
+        if (Zend_Controller_Front::getInstance()->getRequest()->getActionName() == 'edit') {
+            $html = '<div id="edit-status-form" class="field">';
+            $html .=  $args['view']->formLabel('edit-statuses-id', __('Edit Status'));
+            $html .= '<div class="inputs">';
+
+            $editStatusItem = new EditStatusItems();
+            $itemStatus = $editStatusItem->getItemEditStatus($args['record']);
+            if (!$itemStatus) {
+                $statusId = 0; 
+            } else {
+                $statusId = $itemStatus->edit_status_id;
+            }
+            $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
+            $html .= '</div></div>';
+            echo $html;
         }
-        $html .= $args['view']->formSelect('edit_statuses_id', $statusId, array('id' => 'edit-statuses-id'), get_table_options('EditStatus'));
-        $html .= '</div></div>';
-        echo $html;
     }
     
     public function hookAdminItemsBatchEditForm($args) {

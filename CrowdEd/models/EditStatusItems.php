@@ -45,6 +45,7 @@ class EditStatusItems extends Omeka_Record_AbstractRecord {
         if (is_array($status) && count($status) >= 1) {
             return $status[0];
         } else {
+            $status = new EditStatusItems();
             return $status;
         }
         

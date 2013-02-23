@@ -12,10 +12,10 @@
  */
 class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
     public function itemCitation($item) {
-        $creator    = trim(strip_formatting(metadata('item',array('Dublin Core', 'Creator'))));
-        $title      = trim(strip_formatting(metadata('item',array('Dublin Core', 'Title'))));
+        $creator    = trim(strip_formatting(metadata($item,array('Dublin Core', 'Creator'))));
+        $title      = trim(strip_formatting(metadata($item,array('Dublin Core', 'Title'))));
         $siteTitle  = trim(strip_formatting(option('site_title')));
-        $itemId     = metadata('item','id');
+        $itemId     = metadata($item,'id');
         $accessDate = date('F j, Y');
         $uri        = html_escape(record_url($item,'show',true));
         $siteEditor = trim(strip_formatting(get_theme_option('Site Editor')));

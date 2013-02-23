@@ -33,8 +33,6 @@ body {
     padding-top: 30px;
 }
 
-/* Bootstrap Adjustments and/or Overrides */
-/* .input-prepend, .input-append {
-    white-space: nowrap;
-    -webkit-padding-end: 27px;
-} */
+.user-list-item {
+    margin: 1em 0;
+}

@@ -23,13 +23,23 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         return $html;
     }
 
-    public function getItemsEditedByUser($user,$limit=5) {
-        $html = $this->_selectUserItems();
+    public function getItemsEditedByUser($user,$limit=null) {
+        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text',array('Dublin Core','Title'),$limit);
         return $html;
     }
     
-    public function getUserFavorites($limit=5) {
-        $html = $this->_selectUserItems('favorite', 'icon-heart', 'label label-important');
+    public function getUserEditedItemsAsTable($user,$limit=null) {
+        $html = $this->_selectUserItems($user,'modified','icon-circle-ok','text-success',array('Dublin Core','Title'),$limit,$type='table');
+        return $html;
+    }
+    
+    public function getUserFavorites($user,$limit=null) {
+        $html = $this->_selectUserItems($user,'favorite','icon-heart','text-error',array('Dublin Core','Title'),$limit,$type='list');
+        return $html;
+    }
+    
+    public function getUserFavoritesAsTable($user,$limit=null) {
+        $html = $this->_selectUserItems($user,'favorite','icon-heart','text-error',array('Dublin Core','Title'),$limit,$type='table');
         return $html;
     }
 
@@ -40,13 +50,13 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
     }
     
 /* PRIVATE FUNCTIONS */
-    private function _selectUserItems($relationshipName='modified',$icon='icon-user',$class='label',$metadata=array('Dublin Core','Title'),$limit=null) {
-        $user = current_user();
+    private function _selectUserItems($user,$relationshipName='modified',$icon='icon-circle',$class='label label-inverse',$metadata=array('Dublin Core','Title'),$limit=null,$type='list') {
+        $formatter = get_view()->format();
         $entity = new Entity;
         $entity = $entity->getEntityByUserId($user->id);
         $select = new Omeka_Db_Select($user->_db);
         $select->from(array('er'=>'entities_relations'),array())
-                ->joinInner(array('e'=>'entities'), "e.id = er.entity_id", array())
+                ->joinInner(array('e'=>'entities'), "e.id = er.entity_id", array('er.time'))
                 ->joinInner(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
             ->where("ers.name='$relationshipName' and e.id = '$entity->id'")
@@ -55,13 +65,20 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
             ->limit($limit);
         $stmt = $select->query()->fetchAll();
         $html = '';
+        
         foreach ($stmt as $row) {
             $item = get_db()->getTable('Item')->find($row['item_id']);
-            $html .= '<li><a href="' . url('/items/show/'.$row['item_id']) . '"><span class="' . $class . '"><i class="' . $icon . '"></i> '. metadata($item, $metadata) .'</span></a></li>';
-        }
+            if ($type == 'table') {
+                $html .= '<tr><td>'. link_to_item(item_image('square_thumbnail', array(), 0, $item), array('class' => 'img'), 'show', $item) .'</td><td><p class="lead">'. link_to_item(metadata($item, array('Dublin Core','Title')), array('class' => 'title'), 'show', $item).'</p><p class="well">'. metadata($item, array('Dublin Core','Description')) .'</p><p>'. metadata($item,'citation',array('no_escape' => true)) .'</p></td><td><b>'. date("M j, Y",strtotime($row['time'])). '<br />'. date("g:i:s a",strtotime($row['time'])) .'</b></td></tr>';
+            } else {
+                $html .= '<li class="user-list-item"><strong><a href="' . url('/items/show/'.$row['item_id']) . '"><span class="' . $class . '"><i class="' . $icon . '"></i> '. metadata($item, $metadata) .'</span></a></strong> &ndash; (' . $formatter->time_passed(strtotime($row['time'])) . ')</li>';
+            }
+        
+        }   
+        
         return $html;
-    }
     
-}
+    }
 
+}
 ?>

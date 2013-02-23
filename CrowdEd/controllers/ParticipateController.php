@@ -26,6 +26,22 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         
     }
     
+    public function favoritesAction() {
+        $id = $this->_request->getParam('userid'); 
+        $user = $this->_helper->db->getTable('User')->find($id);
+        $entity = new Entity();
+        $entity->getEntityByUserId($user->id);
+        $this->view->assign(compact('user','entity'));
+    }
+    
+    public function editedAction() {
+        $id = $this->_request->getParam('userid'); 
+        $user = $this->_helper->db->getTable('User')->find($id);
+        $entity = new Entity();
+        $entity->getEntityByUserId($user->id);
+        $this->view->assign(compact('user','entity'));
+    }
+    
     public function editAction() {
         $user = current_user();
         $item = $this->_helper->db->findById();
@@ -89,7 +105,8 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function profileAction() {
-        $user = current_user();
+        $id = $this->_request->getParam('userid'); 
+        $user = $this->_helper->db->getTable('User')->find($id);
         $entity = new Entity();
         $entity->getEntityByUserId($user->id);
         $this->view->assign(compact('user','entity'));

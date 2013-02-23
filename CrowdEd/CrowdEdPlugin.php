@@ -521,7 +521,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $user = current_user();
         $content = '<div class="navbar navbar-fixed-top"><div id="crowded-navbar" class="navbar-inner"><div class="brand" style="margin: 0;">Crowd-Ed</div><ul class="nav pull-right">';
         if ($user) {
-            $content .= '<li><a href="/participate/profile/' . $user->id . '"><i class="icon-user"></i> ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
+            $content .= '<li><a href="/participate/profile/' . $user->id . '">' . get_view()->gravatar($user->email,array('imgSize' => 22)) . ' ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
         } else {
             $content .= '<li><a href="/users/login"><i class="icon-signin"></i> Log in</a></li><li><a href="/participate/join"><i class="icon-cog"></i> Create Account</a></li>';
         }

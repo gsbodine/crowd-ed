@@ -40,7 +40,7 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
     }
     
 /* PRIVATE FUNCTIONS */
-    private function _selectUserItems($relationshipName='modified',$icon='icon-user',$class='label',$metadata=array('Dublin Core','Title'),$limit=5) {
+    private function _selectUserItems($relationshipName='modified',$icon='icon-user',$class='label',$metadata=array('Dublin Core','Title'),$limit=null) {
         $user = current_user();
         $entity = new Entity;
         $entity = $entity->getEntityByUserId($user->id);

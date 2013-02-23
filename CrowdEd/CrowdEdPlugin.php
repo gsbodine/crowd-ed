@@ -123,9 +123,9 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookDefineRoutes() {
-        /* if (is_admin()) {
+        if (is_admin_theme()) {
             return;
-        } */
+        }
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
         $router->addConfig(new Zend_Config_Ini(CROWDED_DIR . DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
@@ -159,7 +159,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function hookPublicBody() {
-        //$this->_crowded_user_bar();
+        $this->_crowded_user_bar();
     }
     
     public function hookPublicFooter($args) {
@@ -484,7 +484,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
     public function filterPublicNavigationAdminBar($args) {
         // overwrite basic public nav admin bar args
-        return $this->_crowded_user_bar();
+        $args = null;
+        return $args;
     }
     
     private function _crowded_participate_item() {

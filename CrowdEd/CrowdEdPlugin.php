@@ -190,10 +190,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAdminItemForm($args) {
-        $form = $args['form'];
-        $item = $args['record'];
-        $html = '<h1>Placeholder for Edit-Locking functionality.</h1>';
-        return $html;
+        return $args;
     }
     
     public function hookAdminItemsPanelFields($args) {
@@ -250,15 +247,32 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAdminItemsBrowseSimpleEach($args) {
+        
+    // Editing Status Information    
         $esi = new EditStatusItems();
         $item = $args['item'];
         $e = $esi->getItemEditStatus($item);
         if ($e) {
-            $args['edit_status_id'] = $e->status;
+            $args['edit_status_id'] = $e->edit_status_id;
+            $status = new EditStatus;
+            $statusName = $status->getStatusNameById($e->edit_status_id);
+            if ($statusName) {
+                echo '<p>Editing Status: <strong>'. $statusName->status .'</strong></p>';
+            } else {
+                echo '<p>Editing Status:<strong> Unedited</strong></p>';
+            }
         } else {
             $args['edit_status_id'] = 'Unedited';
+            echo '<p>Editing Status:<strong> Unedited</strong></p>';
         }
-        return $args;
+        
+    // Information about whether/how the Item was flagged
+        
+        $flagged = metadata($item, array('Crowdsourcing Metadata','Flag for Review'));
+        if ($flagged != '') {
+            echo '<p><i class="icon-flag"></i> Flagged: '. $flagged .'</p>';
+        }
+        
     }
     
     

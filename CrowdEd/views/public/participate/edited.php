@@ -9,7 +9,7 @@
 ?>
 <div class="row">
     <div class="span12">
-        <h1><?php echo $this->gravatar($user->email,array('imgSize'=>60)) . ' ' . $user->username; ?> <small>Favorites</small></h1>
+        <h1><?php echo $this->gravatar($user->email,array('imgSize'=>60)) . ' ' . $user->username; ?> <small>Edited Items</small></h1>
         <p class="lead">
         <?php 
             echo '<strong>'. $user->name .'</strong>';

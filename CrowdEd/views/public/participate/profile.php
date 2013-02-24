@@ -4,6 +4,8 @@
     if (!$user) {
         $user = current_user();
     }
+    $entity = new Entity();
+    $entity = $entity->getEntityFromUser($user);
 ?>
 <div class="row">
     <div class="span12">
@@ -11,11 +13,11 @@
         <p class="lead"><strong>
         <?php 
             echo $user->name;
-            if (trim($user->institution) != '') {
-                echo ' from ' . $user->institution;
+            if (trim($entity->institution) != '') {
+                echo ' from ' . $entity->institution;
             }
             if ($user->id == current_user()->id) {
-                echo ' <a href="/participate/edit-profile"><i class="icon-edit"></i> Edit</a></strong></p>';
+                echo ' <span class="pull-right"><a href="/participate/edit-profile"><i class="icon-edit"></i> Edit Profile</a></span></strong></p>';
             }
         ?>
         <hr />
@@ -26,16 +28,30 @@
     <div class="span4">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
-            <ul class="unstyled">
-                <?php echo $this->profile()->getUserFavorites($user,10); ?>
-            </ul>
-            <p><a href="/participate/favorites/user/<?php echo $user->id ?>">
-               <?php if ($user == current_user()) {
-                   echo 'See all of your favorite items';
-               } else {
-                   echo 'See all the items favorited by ' . $user->username;
-               } ?>
-                </a></p>
+            <?php 
+            $favList = $this->profile()->getItemsEditedByUser($user,10);
+            if ($favList) : ?>
+                <ul class="unstyled">
+                    <?php echo $this->profile()->getUserFavorites($user,10); ?>
+                </ul>
+                <hr />
+                <p class="text-center text-error"><strong><a href="/participate/favorites/user/<?php echo $user->id ?>">
+                   <?php if ($user == current_user()) {
+                       echo '<i class="icon-list"></i> List all of your favorite items';
+                   } else {
+                       echo '<i class="icon-list"></i> List all the items favorited by ' . $user->username;
+                   } ?>
+                    </a></strong>
+                </p>
+             <?php else: ?>
+                <p class="text-error"><strong><i class="icon-minus-sign"></i> No items have been marked as favorites by
+                    <?php if ($user == current_user()) {
+                        echo 'you. <a href="/items/browse">Why not go find some?</a>';
+                    } else {
+                        echo $user->username;
+                    } ?>.
+                    </strong></p>
+             <?php endif ?>
         </div>
     </div>
     <div class="span4">
@@ -47,6 +63,15 @@
                 <ul class="unstyled">
                     <?php echo $itemList; ?>
                 </ul>
+                <hr />
+                <p class="text-center"><strong><a href="/participate/edited/user/<?php echo $user->id ?>"><i class="icon-list"></i> 
+                    <?php if ($user == current_user()) {
+                        echo ' List all of your edited items';
+                    } else {
+                        echo ' List all of the items favorited by ' . $user->username;
+                    } ?>
+                     </a></strong>
+                 </p>
             <?php else: ?>
                 <p class="alert alert-info">You haven't edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>
             <?php endif; ?>

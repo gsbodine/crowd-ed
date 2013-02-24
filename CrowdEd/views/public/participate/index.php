@@ -37,7 +37,7 @@
             <ul class="unstyled">
                 <li><a href="/items/search"><strong><i class="icon-search"></i> Search</strong></a> for items<br /><br /></li>
                 <li><a href="/items/browse"><strong><i class="icon-eye-open"></i> Browse</strong></a> the collection<br /><br /></li>
-                <li><a href="/participate/random"><strong><i class="icon-question-sign"></i> Edit a randomly-chosen item</strong></a><br /><br /></li>
+                <li><a href="/items/show/<?php echo $this->itemEditing()->getRandomUneditedItem($this->_db)->id; ?>"><strong><i class="icon-question-sign"></i> Edit a randomly-chosen item</strong></a></li>
             </ul>
         </div>
     </div>

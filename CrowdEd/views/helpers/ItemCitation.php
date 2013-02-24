@@ -21,11 +21,11 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
         $siteEditor = trim(strip_formatting(get_theme_option('Site Editor')));
         $siteLocation = trim(strip_formatting(get_theme_option('Site Location')));
         $siteInstitution = trim(strip_formatting(get_theme_option('Site Institution')));
-        $addlEditors = $this->_getUsersForCitation($item);
+        $addlEditors = $this->_formatUsersForCitation($item);
 
         $itemDate = date_format(date_create($item->added),'Y');
 
-        $cite = '';
+        $cite = '<p>';
         if ($creator) {
             $cite .= "$creator, ";
         }
@@ -54,14 +54,37 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
             $cite .= " $itemDate";
         }
         $cite .= ". accessed $accessDate, ";
-        $cite .= "$uri.";
+        $cite .= "$uri.</p>";
+        
+        $cite .= '<p class="pull-right"><small><i class="icon-book"></i> <a href="#citationModal" role="button" data-toggle="modal">Item Edit History</a></small></p>';
+        
+        $cite .= $this->_makeUserCitationModal($item);
 
         return $cite;
     }
     
+    private function _formatUsersForCitation($item) {
+        $html = '';
+        $users = $this->_getUsersForCitation($item);
+        foreach ($users as $citeName) {
+            $html .= ', '.$citeName['first_name'].' '.$citeName['last_name'];
+        } 
+        return $html;
+    }
+    
+    private function _formatUsersForHistory($item) {
+        $html = '';
+        $users = $this->_getUsersForCitation($item);
+        foreach ($users as $u) {
+            $html .= '<p><i class="icon-edit"></i> <strong>'. $u['first_name']. ' ' .$u['last_name']. '</strong> (<a href="/participate/profile/id/'. $u['id'] .'">' . $u['username'] .'</a>): '. date("M j, Y - g:i:s a",strtotime($u['time'])) .'</p>';
+        }
+        
+        return $html;
+    }
+    
     private function _getUsersForCitation($item) {
         $select = new Omeka_Db_Select($item->_db);
-        $select->from(array('e'=>'entities'), array('e.first_name','e.last_name','max(time)'))
+        $select->from(array('e'=>'entities'), array('e.first_name','e.last_name','max(time) as time','u.username','u.id'))
                 ->joinInner(array('u'=>'users'), "u.id = e.user_id", array())
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
@@ -71,11 +94,22 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
         $stmt = $select->query();
         $html = '';
         while ($row = $stmt->fetch()) {
-            $html .= ', '.$row['first_name'].' '.$row['last_name'];
+            $users[] = array('first_name'=>$row['first_name'],'last_name'=>$row['last_name'],'username'=>$row['username'],'time'=>$row['time'],'id'=>$row['id']);
         }
-
+        
+        return $users;
+    }
+    
+    private function _makeUserCitationModal($item) {
+        $html = '<div id="citationModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="citationModalLabel" aria-hidden="true">';
+        $html .= '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="citationModalLabel"><i class="icon-book"></i> Item Editing History</h3></div>';
+        $html .= '<div class="modal-body">'. $this->_formatUsersForHistory($item) .'</div>';
+        $html .= '<div class="modal-footer"><button class="btn btn-success" data-dismiss="modal" aria-hidden="true"><i class="icon-ok"></i> OK</button></div>';
+        $html .= '</div>';
+        
         return $html;
     }
+    
 }
 
 ?>

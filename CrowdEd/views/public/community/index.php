@@ -38,4 +38,17 @@ echo head();
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="span8">
+        <div class="well">
+            <h3><i class="icon-heart-empty"></i> Most Favorited Items</h3>
+            <?php 
+                echo $this->favorites()->listMostFavoritedItems($this->_db);
+            ?>
+        </div>
+    </div>
+    <div class="span4">
+        
+    </div>
+</div>
 <?php echo foot(); ?>

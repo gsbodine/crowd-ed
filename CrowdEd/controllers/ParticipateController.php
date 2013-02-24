@@ -27,7 +27,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function favoritesAction() {
-        $id = $this->_request->getParam('userid'); 
+        $id = $this->_request->getParam('id'); 
         $user = $this->_helper->db->getTable('User')->find($id);
         $entity = new Entity();
         $entity->getEntityByUserId($user->id);
@@ -35,7 +35,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function editedAction() {
-        $id = $this->_request->getParam('userid'); 
+        $id = $this->_request->getParam('id'); 
         $user = $this->_helper->db->getTable('User')->find($id);
         $entity = new Entity();
         $entity->getEntityByUserId($user->id);

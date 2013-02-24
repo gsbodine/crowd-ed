@@ -28,13 +28,13 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
 
         $stmt = $select->query();
         while ($row = $stmt->fetch()) {
-            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';
+            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/id/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';
         }
         return $html;
     }
 
     public function getMostRecentEditors($db,$limit=10) {
-        $formatter = get_view()->_helper->format();
+        $formatter = get_view()->format();
         $html = "";
         $select = new Omeka_Db_Select($db);
         $select->from(array('u'=>'users'), array('u.username','u.email','u.id','er.time as modtime'))
@@ -43,11 +43,11 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
             ->where("time <> '0000-00-00 00:00:00'")
             ->group('u.username')
-            ->order('max(time) DESC')
+            ->order('modtime DESC')
             ->limit($limit);
         $stmt = $select->query();
         while ($row = $stmt->fetch()) {
-            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</a></strong>: ' . $formatter->time_passed(time($row['modtime'])) . '</span></li>';
+            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/id/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</a></strong>: ' . $formatter->time_passed(strtotime($row['modtime'])) . '</span></li>';
         }
 
         return $html;

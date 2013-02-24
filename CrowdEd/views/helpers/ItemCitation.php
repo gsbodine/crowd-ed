@@ -66,19 +66,24 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
     private function _formatUsersForCitation($item) {
         $html = '';
         $users = $this->_getUsersForCitation($item);
-        foreach ($users as $citeName) {
-            $html .= ', '.$citeName['first_name'].' '.$citeName['last_name'];
-        } 
+        if ($users) {
+            foreach ($users as $citeName) {
+                $html .= ', '.$citeName['first_name'].' '.$citeName['last_name'];
+            }  
+        }
         return $html;
     }
     
     private function _formatUsersForHistory($item) {
         $html = '';
         $users = $this->_getUsersForCitation($item);
-        foreach ($users as $u) {
-            $html .= '<p><i class="icon-edit"></i> <strong>'. $u['first_name']. ' ' .$u['last_name']. '</strong> (<a href="/participate/profile/id/'. $u['id'] .'">' . $u['username'] .'</a>): '. date("M j, Y - g:i:s a",strtotime($u['time'])) .'</p>';
+        if ($users) {
+            foreach ($users as $u) {
+                $html .= '<p><i class="icon-edit"></i> <strong>'. $u['first_name']. ' ' .$u['last_name']. '</strong> (<a href="/participate/profile/id/'. $u['id'] .'">' . $u['username'] .'</a>): '. date("M j, Y - g:i:s a",strtotime($u['time'])) .'</p>';
+            }
+        } else {
+            $html = '<p class="alert alert-warning">No one else has edited this item yet.</p>';
         }
-        
         return $html;
     }
     
@@ -92,11 +97,10 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
             ->group('u.username')
             ->order('max(time) DESC');
         $stmt = $select->query();
-        $html = '';
+        $users = array();
         while ($row = $stmt->fetch()) {
             $users[] = array('first_name'=>$row['first_name'],'last_name'=>$row['last_name'],'username'=>$row['username'],'time'=>$row['time'],'id'=>$row['id']);
-        }
-        
+        } 
         return $users;
     }
     

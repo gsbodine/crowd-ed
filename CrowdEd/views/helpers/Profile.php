@@ -69,7 +69,7 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         foreach ($stmt as $row) {
             $item = get_db()->getTable('Item')->find($row['item_id']);
             if ($type == 'table') {
-                $html .= '<tr><td>'. link_to_item(item_image('square_thumbnail', array(), 0, $item), array('class' => 'img'), 'show', $item) .'</td><td><p class="lead">'. link_to_item(metadata($item, array('Dublin Core','Title')), array('class' => 'title'), 'show', $item).'</p><p class="well">'. metadata($item, array('Dublin Core','Description')) .'</p><p>'. metadata($item,'citation',array('no_escape' => true)) .'</p></td><td><b>'. date("M j, Y",strtotime($row['time'])). '<br />'. date("g:i:s a",strtotime($row['time'])) .'</b></td></tr>';
+                $html .= '<tr><td>'. link_to_item(item_image('square_thumbnail', array(), 0, $item), array('class' => 'img'), 'show', $item) .'</td><td><p class="lead">'. link_to_item(metadata($item, array('Dublin Core','Title')), array('class' => 'title'), 'show', $item).'</p><p class="well">'. metadata($item, array('Dublin Core','Description')) .'</p><p>'. metadata($item,'citation',array('no_escape' => true)) .'</p></td><td><p class="text-center"><b><i class="icon-calendar"></i> &ndash; '. date("M j, Y",strtotime($row['time'])). '<br /><i class="icon-time"></i> &ndash; '. date("g:i:s a",strtotime($row['time'])) .'</b></p></td></tr>';
             } else {
                 $html .= '<li class="user-list-item"><strong><a href="' . url('/items/show/'.$row['item_id']) . '"><span class="' . $class . '"><i class="' . $icon . '"></i> '. metadata($item, $metadata) .'</span></a></strong> &ndash; (' . $formatter->time_passed(strtotime($row['time'])) . ')</li>';
             }

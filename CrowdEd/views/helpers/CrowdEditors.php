@@ -22,6 +22,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
                 ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array())
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
                 ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
+                ->where("u.username != 'sschlitz'")
                 ->group('u.username')
                 ->order('count(u.username) DESC')
                 ->limit($limit);

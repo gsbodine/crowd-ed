@@ -30,7 +30,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'admin_items_batch_edit_form',
         'items_batch_edit_custom',
         'admin_items_search',
-        'admin_items_browse_simple_each'
+        'admin_items_browse_simple_each',
+        'admin_items_browse'
     );
     
     protected $_filters = array(
@@ -134,6 +135,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     public function hookAdminHead($args) {
         queue_css_file('crowded');
         queue_js_file('crowded');
+    }
+    
+    public function hookAdminItemsBrowse($args) {
+        var_dump($args['view']);
+        die();
     }
     
     public function hookPublicHead($args) {

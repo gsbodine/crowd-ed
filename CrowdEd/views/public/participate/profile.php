@@ -14,10 +14,10 @@
         <?php 
             echo $user->name;
             if (trim($entity->institution) != '') {
-                echo ' from ' . $entity->institution;
+                echo ' of ' . $entity->institution;
             }
             if ($user->id == current_user()->id) {
-                echo ' <span class="pull-right"><a href="/participate/edit-profile"><i class="icon-edit"></i> Edit Profile</a></span></strong></p>';
+                echo ' <span class="pull-right"><a href="'. url(array('action'=>'update-account', 'controller'=>'user'), 'default') .'"><i class="icon-edit"></i> Edit Account Information</a></span></strong></p>';
             }
         ?>
         <hr />

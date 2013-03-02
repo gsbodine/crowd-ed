@@ -45,6 +45,8 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
         'item_search_filters',
         
+        'guest_user_widgets',
+        
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
         'crowdedType' => array('ElementForm','Item','Dublin Core','Type'),
@@ -474,7 +476,20 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $citation = get_view()->itemCitation($args['item']); 
         return $citation;
     }
-       
+      
+    public function filterGuestUserWidgets($widgets) {
+        $widgets = array();
+        $widget = array('label'=>'My Account');
+        $passwordUrl = url('/user/change-password');
+        $accountUrl = url('/user/update-account');
+        $html = '<ul class="unstyled">';
+        $html .= "<li class='lead'><a href='$accountUrl'><i class='icon-user'></i> Update Account Information</a></li>";
+        $html .= '<li class="lead"><a href="/participate/profile/id/'. current_user()->id . '"><i class="icon-share"></i> View Public Profile</a></li>';
+        $html .= "</ul>";
+        $widget['content'] = $html;
+        $widgets[] = $widget;
+        return $widgets;
+    }
     
     public function crowdedDateFlatten($components,$args) {
         $day = $args['post_array']['text']['day'];
@@ -528,10 +543,10 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         } else {
             $html .= '<div><p class="alert alert-info"><i class="icon-lock"></i> This item has already been edited and is now locked.</p></div>';
             $user = current_user();
-            if ($user && ($user->role == 'admin' || $user->role == 'super')) {
+            if ($user && ($user->role == 'admin' || $user->role == 'super')) { // TODO: fix routes
                 $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</p>';
             }  else {
-                $html .= '<p><a href="/participate/random"><strong>How about trying an unedited item?</strong></a></p>';
+                $html .= '<p><a href="' . url(array('action'=>'random', 'controller'=>'participate'), 'default') . '"><strong>How about trying an unedited item?</strong></a></p>';
             }
         }
         
@@ -542,10 +557,10 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     private function _crowded_user_bar() {
         $user = current_user();
         $content = '<div class="navbar navbar-fixed-top"><div id="crowded-navbar" class="navbar-inner"><div class="brand" style="margin: 0;">Crowd-Ed</div><ul class="nav pull-right">';
-        if ($user) {
-            $content .= '<li><a href="/participate/profile/id/' . $user->id . '">' . get_view()->gravatar($user->email,array('imgSize' => 22)) . ' ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
+        if ($user) {          // TODO: fix routes
+            $content .= '<li><a href="/user/me">' . get_view()->gravatar($user->email,array('imgSize' => 22)) . ' ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
         } else {
-            $content .= '<li><a href="/users/login"><i class="icon-signin"></i> Log in</a></li><li><a href="/participate/join"><i class="icon-cog"></i> Create Account</a></li>';
+            $content .= '<li><a href="' . url(array('action'=>'login', 'controller'=>'users'), 'default') . '"><i class="icon-signin"></i> Log in</a></li><li><a href="' . url(array('action'=>'register', 'controller'=>'user'), 'default') . '"><i class="icon-cog"></i> Create Account</a></li>';
         }
         $content .= '</ul></div></div>';
         echo $content;

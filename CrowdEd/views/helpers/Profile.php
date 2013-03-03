@@ -56,9 +56,9 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         $entity = $entity->getEntityByUserId($user->id);
         $select = new Omeka_Db_Select($user->_db);
         $select->from(array('er'=>'entities_relations'),array())
-                ->joinInner(array('e'=>'entities'), "e.id = er.entity_id", array('er.time'))
-                ->joinInner(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
-                ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
+                ->joinLeft(array('e'=>'entities'), "e.id = er.entity_id", array('er.time'))
+                ->joinLeft(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
+                ->joinLeft(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
             ->where("ers.name='$relationshipName' and e.id = '$entity->id'")
             ->group('i.id')
             ->order('time DESC')

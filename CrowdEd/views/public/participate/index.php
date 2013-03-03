@@ -16,8 +16,8 @@
             <p class="alert alert-success"><strong><i class="icon-check"></i> Step one: Complete!</strong></p>
             <p><strong>Welcome!</strong> Since you've already got an account, you're an editor whether you know it yet or not. Move on to the next steps, and thanks in advance for contributing to the project!</p>
         <?php else: ?>
-            <p><a href="/participate/join"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo get_option('site_title'); ?></b></a></p>
-            <p class="alert alert-info"><i class="icon-key"></i> If you already have an account: <a href="/participate/login"><strong>Log In!</strong></a></p>
+            <p><a href="/user/register"><b>Create an <span class="label label-inverse label-large"><i class="icon-user"></i> editor</span> account for the <?php echo get_option('site_title'); ?></b></a></p>
+            <p class="alert alert-info"><i class="icon-key"></i> If you already have an account: <a href="/users/login"><strong>Log In!</strong></a></p>
         <?php endif ?>
         </div>
     </div>

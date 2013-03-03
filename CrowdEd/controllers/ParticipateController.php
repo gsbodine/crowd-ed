@@ -163,6 +163,8 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $this->_helper->redirector('show', 'items', '', array('id'=>$record->id));
     }
     
+    
+    
    
    /* PRIVATE FUNCTIONS */
     

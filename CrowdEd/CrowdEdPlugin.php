@@ -478,7 +478,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
       
     public function filterGuestUserWidgets($widgets) {
-        $widgets = array();
+        $widgets = null;
         $widget = array('label'=>'My Account');
         $passwordUrl = url('/user/change-password');
         $accountUrl = url('/user/update-account');
@@ -560,7 +560,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         if ($user) {          // TODO: fix routes
             $content .= '<li><a href="/user/me">' . get_view()->gravatar($user->email,array('imgSize' => 22)) . ' ' . $user->username . '</a></li><li><a href="' . url(array('action'=>'logout', 'controller'=>'users'), 'default') . '"><i class="icon-off"></i> Logout</a></li>';
         } else {
-            $content .= '<li><a href="' . url(array('action'=>'login', 'controller'=>'users'), 'default') . '"><i class="icon-signin"></i> Log in</a></li><li><a href="' . url(array('action'=>'register', 'controller'=>'user'), 'default') . '"><i class="icon-cog"></i> Create Account</a></li>';
+            $content .= '<li><a href="/users/login"><i class="icon-signin"></i> Log in</a></li><li><a href="/user/register"><i class="icon-cog"></i> Create Account</a></li>';
         }
         $content .= '</ul></div></div>';
         echo $content;

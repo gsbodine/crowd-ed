@@ -29,10 +29,10 @@
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
             <?php 
-            $favList = $this->profile()->getItemsEditedByUser($user,10);
+            $favList = $this->profile()->getUserFavorites($user,10);
             if ($favList) : ?>
                 <ul class="unstyled">
-                    <?php echo $this->profile()->getUserFavorites($user,10); ?>
+                    <?php echo $favList; ?>
                 </ul>
                 <hr />
                 <p class="text-center text-error"><strong><a href="/participate/favorites/user/<?php echo $user->id ?>">
@@ -49,7 +49,7 @@
                         echo 'you. <a href="/items/browse">Why not go find some?</a>';
                     } else {
                         echo $user->username;
-                    } ?>.
+                    } ?>
                     </strong></p>
              <?php endif ?>
         </div>

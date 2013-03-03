@@ -24,8 +24,8 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $user = new User();
         $entity = new Entity();
         
-        $openRegistration = (get_option('guest_user_open') == 1);
-        $instantAccess = (get_option('guest_user_instant_access') == 1);
+        $openRegistration = (get_option('guest_user_open') == 'on');
+        $instantAccess = (get_option('guest_user_instant_access') == 'on');
         $requireTermsOfService = get_option('crowded_require_terms_of_service');
 
         $form = $this->_getForm(array('user'=>$user,'entity'=>$entity));
@@ -76,17 +76,21 @@ class CrowdEd_UserController extends GuestUser_UserController {
                         if ($session->redirect) {
                             $this->_helper->redirector->gotoUrl($session->redirect);
                         }
-                        return;
+                        $this->_helper->redirector('index', 'participate');
                     }
                     if($openRegistration) {
                         $message = "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.";
                         $this->_helper->flashMessenger($message, 'success');
                         $activation = UsersActivations::factory($user);
                         $activation->save();
+                        $user->active = 1;
+                        $user->save();
+                        $this->_helper->redirector('index', 'participate');
 
                     } else {
-                        $message = "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and an administrator activates your account, you will be able to log in.";
+                        $message = "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.";
                         $this->_helper->flashMessenger($message, 'success');
+                        $this->_helper->redirector('index', 'participate');
                     }
                 }
             } catch (Omeka_Validator_Exception $e) {
@@ -136,7 +140,11 @@ class CrowdEd_UserController extends GuestUser_UserController {
             return;
         }
         
-        $user->setPassword($_POST['new_password']);
+        if (trim($_POST['new_password']) != '') {
+            $user->setPassword($_POST['new_password']);
+        } else {
+            $_POST['new_password'] = null;
+        }
         $user->setPostData($_POST);
         try {
             $user->save($_POST);
@@ -144,11 +152,101 @@ class CrowdEd_UserController extends GuestUser_UserController {
             $this->flashValidationErrors($e);
         }              
     }
+    
+    public function confirmAction() {
+        
+        $db = get_db();
+        $token = $this->getRequest()->getParam('token');
+        $records = $db->getTable('GuestUserToken')->findBy(array('token'=>$token));
+        $record = $records[0];
+        if($record) {
+            $record->confirmed = true;
+            $record->save();
+            $user = $db->getTable('User')->find($record->user_id);
+            $activation = UsersActivations::factory($user);
+            $activation->save();
+            $user->active = 1;
+            $user->save();
+            $this->_sendAdminNewConfirmedUserEmail($user);
+            $this->_sendConfirmedEmail($user);
+            $message = "Please check the email we just sent you for the next steps! You're almost there!";
+            $this->_helper->flashMessenger($message, 'success');
+            $this->redirect('users/login');
+        } else {
+            $this->_helper->flashMessenger('Invalid token', 'error');
+        }
+    }
+    
+    protected function _sendConfirmationEmail($user, $token) {
+        $transport = $this->_getSMTP();
+        $siteTitle = get_option('site_title');
+        $url = WEB_ROOT . '/user/confirm/token/' . $token->token;
+        $siteUrl = absolute_url('/');
+        $subject = "Your request to join $siteTitle";
+        $body = "You have registered for an account on <a href='$siteUrl'>$siteTitle</a>. Please confirm your registration by following <a href='$url'>this link</a>.  If you did not request to join $siteTitle please disregard this email.";
+        $mail = $this->_getMail($user, $body, $subject);
+        try {
+            $mail->send($transport);
+        } catch (Exception $e) {
+            _log($e);
+            _log($body);
+        }
+    }
+    
+    protected function _sendConfirmedEmail($user) {
+        $transport = $this->_getSMTP();
+        $siteTitle = get_option('site_title');
+        $body = "Thanks for joining $siteTitle!";
+        if(get_option('guest_user_open') == 'on') {
+            $body .= "\n\n You can now log in using the password you chose.";
+        } else {
+            $body .= "\n\n When an administrator approves your account, you will receive another message that you" .
+                    "can log in with the password you chose.";
+        }
+        $subject = "Registration for $siteTitle";
+        $mail = $this->_getMail($user, $body, $subject);
+        try {
+            $mail->send($transport);
+        } catch (Exception $e) {
+            _log($e);
+            _log($body);
+        }
+
+    }
+    
+    protected function _sendAdminNewConfirmedUserEmail($user) {
+        $transport = $this->_getSMTP();
+        $siteTitle = get_option('site_title');
+        $url = WEB_ROOT . "/admin/users/edit/" . $user->id;
+        $subject = "New request to join $siteTitle";
+        $body = "A new user has confirmed that they want to join $siteTitle.  ";
+        $body .= "\n\n<a href='$url'>" . $user->username . "</a>";
+        $mail = $this->_getMail($user, $body, $subject);
+        $mail->clearRecipients();
+        $mail->addTo(get_option('administrator_email'), "$siteTitle Administrator");
+         try {
+            $mail->send($transport);
+        } catch (Exception $e) {
+            _log($body);
+        }
+    }
    
    
    /* PRIVATE FUNCTIONS */
         
-   private function _getUserEntityForm(User $user, Entity $entity) {
+   private function _getSMTP() {
+       $config = array(
+        'ssl' => 'tls',
+        'port' => 587,
+        'auth' => 'login',
+        'username' => 'garrick.bodine@gmail.com',
+        'password' => '$A$sirem4269!#');
+ 
+        $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+        return $transport;
+   }
+    
+    private function _getUserEntityForm(User $user, Entity $entity) {
         $form = new CrowdEd_Form_UserEntity(array(
             'user' => $user,
             'entity' => $entity)
@@ -166,6 +264,8 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $form->addElement('submit', 'submit', array('label' => 'Register','class'=>'btn btn-primary','style'=>'margin-top:1em;'));
         return $form;        
     }
-
+    
+   
+    
 }
 

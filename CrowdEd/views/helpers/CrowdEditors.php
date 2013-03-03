@@ -15,24 +15,28 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
        return $this;
     }
     
-    public function getEditorsByVolume($db,$limit=10){
+    public function getEditorsByVolume($db) {
+        $stmt = $this->_getEditorsByVolumeQuery($db);
         $html = "";
-        $select = new Omeka_Db_Select($db);
-        $select->from(array('u'=>'users'), array('u.username', 'count(u.username) as counted','u.email','u.id'))
-                ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array())
-                ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
-                ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
-                ->where("u.username != 'sschlitz'")
-                ->group('u.username')
-                ->order('count(u.username) DESC')
-                ->limit($limit);
-
-        $stmt = $select->query();
         while ($row = $stmt->fetch()) {
             $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/id/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';
         }
         return $html;
     }
+
+    public function getEditorRank($user,$db) {
+        $stmt = $this->_getEditorsByVolumeQuery($db);
+        $i = 0;
+        while ($row = $stmt->fetch()) {
+            $i++;
+            if ($row['id'] == $user->id) {
+                $rank = $i;
+            }
+        }
+        
+        return $rank;
+    }
+    
 
     public function getMostRecentEditors($db,$limit=10) {
         $formatter = get_view()->format();
@@ -53,6 +57,23 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
 
         return $html;
 
+    }
+    
+    /* PRIVATE FUNCTIONS */
+    
+    private function _getEditorsByVolumeQuery($db,$limit=null){
+        $select = new Omeka_Db_Select($db);
+        $select->from(array('u'=>'users'), array('u.username', 'count(u.username) as counted','u.email','u.id'))
+                ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array())
+                ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
+                ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
+                ->where("u.username != 'sschlitz'")
+                ->group('u.username')
+                ->order('count(u.username) DESC')
+                ->limit($limit);
+
+        $stmt = $select->query();
+        return $stmt;
     }
 
 

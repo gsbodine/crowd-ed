@@ -25,6 +25,31 @@
 </div>
 
 <div class="row">
+    <div class="span8">
+        <h3><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $this->crowdEditors()->getEditorRank($user,$this->_db); ?></h3>
+        <hr />
+        <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
+        <?php 
+            $itemList = $this->profile()->getItemsEditedByUser($user,10);
+            if ($itemList) : ?>
+            <ul class="unstyled">
+                <?php echo $itemList; ?>
+            </ul>
+            <hr />
+            <p class="text-center"><strong><a href="/participate/edited/user/<?php echo $user->id ?>"><i class="icon-list"></i> 
+                <?php if ($user == current_user()) {
+                    echo ' List all of your edited items';
+                } else {
+                    echo ' List all of the items favorited by ' . $user->username;
+                } ?>
+                 </a></strong>
+             </p>
+        <?php else: ?>
+            <p class="alert alert-info">You haven't edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>
+        <?php endif; ?>
+            
+        
+    </div>
     <div class="span4">
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
@@ -52,30 +77,6 @@
                     } ?>
                     </strong></p>
              <?php endif ?>
-        </div>
-    </div>
-    <div class="span4">
-        <div class="well">
-            <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
-            <?php 
-                $itemList = $this->profile()->getItemsEditedByUser($user,10);
-                if ($itemList) : ?>
-                <ul class="unstyled">
-                    <?php echo $itemList; ?>
-                </ul>
-                <hr />
-                <p class="text-center"><strong><a href="/participate/edited/user/<?php echo $user->id ?>"><i class="icon-list"></i> 
-                    <?php if ($user == current_user()) {
-                        echo ' List all of your edited items';
-                    } else {
-                        echo ' List all of the items favorited by ' . $user->username;
-                    } ?>
-                     </a></strong>
-                 </p>
-            <?php else: ?>
-                <p class="alert alert-info">You haven't edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>
-            <?php endif; ?>
-            
         </div>
     </div>
     <div class="span4">

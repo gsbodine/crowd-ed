@@ -546,7 +546,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             if ($user && ($user->role == 'admin' || $user->role == 'super')) { // TODO: fix routes
                 $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</p>';
             }  else {
-                $html .= '<p><a href="' . url(array('action'=>'random', 'controller'=>'participate'), 'default') . '"><strong>How about trying an unedited item?</strong></a></p>';
+                $html .= '<p><a href="/participate/edit/'. get_view()->itemEditing()->getRandomUneditedItem(get_view()->_db)->id .'"><strong>How about trying an unedited item?</strong></a></p>';
             }
         }
         

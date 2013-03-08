@@ -40,12 +40,17 @@
                 <?php if ($user == current_user()) {
                     echo ' List all of your edited items';
                 } else {
-                    echo ' List all of the items favorited by ' . $user->username;
+                    echo ' List all of the items edited by ' . $user->username;
                 } ?>
                  </a></strong>
              </p>
         <?php else: ?>
-            <p class="alert alert-info">You haven't edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>
+            <p class="alert alert-info">
+                <?php if ($user == current_user()) {
+                    echo 'You haven&rsquo;t  edited anything yet. <strong><a href="/getting-started">Why not get started?</a></strong></p>';
+                } else {
+                    echo $user->username .' hasn&rsquo;t edited anything yet.'; 
+                } ?>
         <?php endif; ?>
             
         
@@ -78,9 +83,6 @@
                     </strong></p>
              <?php endif ?>
         </div>
-    </div>
-    <div class="span4">
-        
     </div>
 </div> 
 <?php echo foot(); ?>

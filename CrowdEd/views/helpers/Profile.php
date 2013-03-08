@@ -24,12 +24,12 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
     }
 
     public function getItemsEditedByUser($user,$limit=null) {
-        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text',array('Dublin Core','Title'),$limit);
+        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text-info',array('Dublin Core','Title'),$limit);
         return $html;
     }
     
     public function getUserEditedItemsAsTable($user,$limit=null) {
-        $html = $this->_selectUserItems($user,'modified','icon-circle-ok','text-success',array('Dublin Core','Title'),$limit,$type='table');
+        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text-success',array('Dublin Core','Title'),$limit,$type='table');
         return $html;
     }
     

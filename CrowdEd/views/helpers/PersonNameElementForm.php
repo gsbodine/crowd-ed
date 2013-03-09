@@ -22,15 +22,16 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         $this->_record = $record;
         
         $html = '';
-        $html .= $this->_displayFieldLabel();
+        
         $html .= '<div class="field row" id="element-' . html_escape($element->id) . '">';
+        $html .= $this->_displayFieldLabel();
         //$html .= $this->_displayValidationErrors();
         //$html = $this->_personNameElement($element, $record, $options);
         
         $html .= $this->_displayPersonNameFields($this->_record,$this->_element,$extraFieldCount);  
         
-        $html .= '</div>';
         $html .= $this->_getAddFieldButton();
+        $html .= '</div>';
         return $html;
     }
     
@@ -143,12 +144,12 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                 } else {
                     $index = null;
                 }
-                $html .= '<div class="span3">';
-                $html .= '<div class="control-group"><label class="control-label">Title</label><div class="controls">'. $this->_displayPersonNameFormTitleSelect('PersonNames['. $personName['id'] .']'.$index.'[title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;')).'</div></div>';
-                $html .= '<div class="control-group"><label class="control-label">First name</label><div class="controls">'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[firstname]', $personName['firstname'],$options=array('placeholder'=>'First Name','style'=>'margin-right:1em;')).'</div></div>';
-                $html .= '<div class="control-group"><label class="control-label">Middle name</label><div class="controls">'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[middlename]', $personName['middlename'],$options=array('placeholder'=>'Middle Name','style'=>'margin-right:1em;')).'</div></div>';
-                $html .= '<div class="control-group"><label class="control-label">Last name</label><div class="controls">'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[lastname]', $personName['lastname'],$options=array('placeholder'=>'Last Name','style'=>'margin-right:1em;')).'</div></div>';
-                $html .= '<div class="control-group"><label class="control-label">Suffix</label><div class="controls">'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('placeholder'=>'Suffix (e.g. Jr.)')).'</div></div>';
+                $html .= '<div class="span3"><hr class="personForm" />';
+                $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames['. $personName['id'] .']'.$index.'[title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
+                $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[firstname]', $personName['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
+                $html .= '<label class="personNameLabel">Middle name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[middlename]', $personName['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
+                $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[lastname]', $personName['lastname'],$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
+                $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'(e.g. Jr.)'));
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[element_id]" value="'. $element->id .'" />';
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[record_id]" value="'. $record->id .'" />';
                 $html .= $this->_createRemoveButton();
@@ -218,7 +219,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             default: 
                 $person = 'field';
         }
-        $html .= '<div class="span6 text-center"><button type="submit" class="add-element btn btn-small btn-info" id="add_element_' . $this->_element->id . '" name="add_element_' . $this->_element->id . '"><i class="icon-plus-sign"></i> Add another ' . $person .'</button><hr /></div>';
+        $html .= '<div class="span3 text-center"><div class="well well-large" style="margin-top: 20px"><button type="submit" class="add-element btn btn-small btn-info" id="add_element_' . $this->_element->id . '" name="add_element_' . $this->_element->id . '"><i class="icon-plus-sign"></i> Add another ' . $person .'</button></div></div>';
         return $html;
     }
     
@@ -230,7 +231,18 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     }
     
     private function _createRemoveButton() {
-        $html = '<div class="control-group"><div class="controls"><button type="submit" class="remove-element btn btn-small btn-danger" style="margin-top: -10px"><i class="icon-remove-sign"></i> Remove</button></div></div>';
+        $person = '';
+        switch ($this->_getFieldLabel()) {
+            case 'Creator':
+                $person = 'author';
+                break;
+            case 'Recipient':
+                $person = 'recipient';
+                break;
+            default: 
+                $person = 'field';
+        }
+        $html = '<div><button type="submit" class="remove-element btn btn-small btn-danger" style="margin-top: 1em;"><i class="icon-remove-sign"></i> Remove this ' . $person . '</button></div>';
         return $html; 
     }
     

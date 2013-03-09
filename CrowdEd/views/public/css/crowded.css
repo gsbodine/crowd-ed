@@ -6,6 +6,7 @@
 
 */
 
+
 .dateinput > .textinput {
     display: inline;
 }
@@ -18,11 +19,11 @@
 }
 
 .remove-element {
-    display: inline;
+    /* display: inline; */
 }
 
 #crowded-item-form label {
-    display: inline-block;
+   /*  display: inline-block; */
 }
 
 #terms {
@@ -36,3 +37,11 @@ body {
 .user-list-item {
     margin: 1em 0;
 }
+
+hr.personForm {
+    height: 1px;
+    background: #ededed;
+    border: none;
+    margin: 10px 0;
+}
+

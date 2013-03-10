@@ -124,15 +124,10 @@ jQuery(document).bind('omeka:elementformload', function (event) {
             
         <hr />
         
-        <?php $itemCreators = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3'));
-            echo $itemCreators;
-        ?>
-        
-        <hr />
+        <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
         
         <?php // todo: enhancement - fix this to only do recipient for the right kind of document - gsb
-            $itemRecipients = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemRecipients;
+            echo $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'3'));
         ?>
         
         <hr />

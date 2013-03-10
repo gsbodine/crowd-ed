@@ -7,6 +7,7 @@ Omeka.Elements = {};
 jQuery('document').ready(function ($) {
     
     Omeka.Elements.elementFormRequest = function (fieldDiv, params, elementFormPartialUri, recordType, recordId) {
+
         var elementId = fieldDiv.attr('id').replace(/element-/, '');
         
         fieldDiv.find('input, textarea, select').each(function () {
@@ -26,9 +27,6 @@ jQuery('document').ready(function ($) {
             dataType: 'html',
             data: params,
             success: function (response) {
-                //fieldDiv.find('textarea').each(function () {
-                //    tinyMCE.execCommand('mceRemoveControl', false, this.id);
-                //});
                 fieldDiv.html(response);
                 fieldDiv.trigger('omeka:elementformload');
             }

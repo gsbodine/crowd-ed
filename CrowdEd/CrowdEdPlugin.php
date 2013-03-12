@@ -517,7 +517,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     private function _setUpFormElement($components,$args,$columns=3,$labelIcon='') {
         $html = '';
         $html .= '<div class="span'. $columns .'">';
-        $html .= '<label>'.$labelIcon.' '.$components['label'].'</label>';
+        $html .= '<label class="edit-label">'.$labelIcon.' '.$components['label'].'</label>';
         $html .= $this->_getHelpText($components['comment']);
         $html .= '<div>' . $components['inputs'] . '</div>';
         $html .= '</div>';

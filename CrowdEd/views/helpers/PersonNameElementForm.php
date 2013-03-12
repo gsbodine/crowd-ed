@@ -80,7 +80,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'.  $element->id .']['. $newIndex .'][firstname]',$pname['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]',$pname['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]',$pname['lastname'],$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]',$pname['suffix'],$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
+                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]',$pname['suffix'],$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex.'" />';
@@ -94,7 +94,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $key .'][firstname]', $personName['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames['. $key .'][middlename]', $personName['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $key .'][lastname]', $personName['lastname'],$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $key .'][suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
+                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames['. $key .'][suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][id]" value="'. $key .'" />';
@@ -107,7 +107,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
+                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />';  
@@ -126,7 +126,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][lastname]','',$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
+                    $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][suffix]','',$options=array('class'=>'span1','placeholder'=>'Suffix (e.g. Jr.)','style'=>'margin-right:1em;'));
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />';  
@@ -155,7 +155,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                 $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[firstname]', $personName['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                 $html .= '<label class="personNameLabel">Middle name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[middlename]', $personName['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
                 $html .= '<label class="personNameLabel">Last name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[lastname]', $personName['lastname'],$options=array('class'=>'span2','placeholder'=>'Last Name','style'=>'margin-right:1em;'));
-                $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'(e.g. Jr.)'));
+                $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'(e.g. Jr.)'));
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[element_id]" value="'. $element->id .'" />';
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[record_id]" value="'. $record->id .'" />';
                 $html .= $this->_createRemoveButton();
@@ -168,11 +168,11 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         
     }
     
-    protected function _createPersonNameFields($fieldType,$inputNameStem,$value,$options) {
+    private function _createPersonNameFields($fieldType,$inputNameStem,$value,$options) {
        //todo: refactor - abstract all the uglies above into a more elegant and maintainable implementation - gsb
     }
     
-    protected function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
+    private function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
         
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';  
         $html = '';
@@ -180,11 +180,20 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         return $html;
     }
     
-    protected function _displayPersonNameFormTitleSelect($inputNameStem, $value, $options=array()) {
+    private function _displayPersonNameFormTitleSelect($inputNameStem, $value, $options=array()) {
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '2'; 
         $html = '';
         // todo: refactor - this is ugly, unilingual, and surely incomplete. but given the schedule and our purpose, this will work for now - gsb
-        $selectOptions = array(''=>'','Dr.'=>'Dr.','Miss'=>'Miss','Mr.'=>'Mr.','Mrs.'=>'Mrs.','Prof.'=>'Prof.');
+        $selectOptions = array(''=>'','Dr.'=>'Dr.','Miss'=>'Miss','Mr.'=>'Mr.','Mrs.'=>'Mrs.','Prof.'=>'Prof.','Rev.'=>'Rev.');
+        $html .= $this->view->formSelect($inputNameStem, trim($value), $options, $selectOptions);
+        return $html;
+    }
+    
+    private function _displayPersonNameFormSuffixSelect($inputNameStem, $value, $options=array()) {
+        $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '2'; 
+        $html = '';
+        // todo: refactor - same as above: this is ugly, unilingual, and surely incomplete. - gsb
+        $selectOptions = array(''=>'','Jr.'=>'Jr.','II'=>'II','III'=>'III','IV'=>'IV','V'=>'V','VI'=>'VI','M.D.'=>'M.D.','Esq.'=>'Esq.','M.A.'=>'M.A.','M.S.'=>'M.S.','Ph.D.'=>'Ph.D.');
         $html .= $this->view->formSelect($inputNameStem, trim($value), $options, $selectOptions);
         return $html;
     }

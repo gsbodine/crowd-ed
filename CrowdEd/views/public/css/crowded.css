@@ -44,6 +44,7 @@ hr.personForm {
     border: none;
     margin: 10px 0;
 }
-label {
-    display: inline-block !important;
+.edit-label {
+    display: inline;
 }
+

@@ -46,6 +46,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'item_search_filters',
         
         'guest_user_widgets',
+        'exhibit_builder_page_nav',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -489,6 +490,10 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $widget['content'] = $html;
         $widgets[] = $widget;
         return $widgets;
+    }
+    
+    public function filterExhibitBuilderPageNav($args) {
+        return $args;
     }
     
     public function crowdedDateFlatten($components,$args) {

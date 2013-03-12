@@ -90,12 +90,12 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         <div class="row">
         <?php  
             $itemType = element_form($elements['Dublin Core']['Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $itemType; 
+            echo $itemType;
         ?>
             <div class="btn-group">
         <?php 
             $scriptType = element_form($elements['Item Type Metadata']['Script Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $scriptType; 
+            echo $scriptType;
         ?>  </div>
         </div>
         

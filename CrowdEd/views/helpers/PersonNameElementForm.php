@@ -173,6 +173,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     }
     
     protected function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
+        
         $fieldColumnSpan = isset($options['fieldColumnSpan']) ? $options['fieldColumnSpan'] : '3';  
         $html = '';
         $html .= $this->view->formText($inputNameStem, $value, $options);
@@ -189,7 +190,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     }
     
     protected function _displayFieldLabel() {
-        $html = '<div class="span6 personNameSetLabel">';
+        $html = '<div class="span6 person-name-set-label">';
         // todo: genericize - MBDA-specific relabeling - gsb
         switch ($this->_getFieldLabel()) {
             case 'Creator':
@@ -207,7 +208,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             $label = $this->_getFieldLabel();
         }
         $html .=  __($label);
-        //$html .= $this->_displayExplanation();
+        $html .= $this->_displayExplanation();
         $html .= '</div>';
         return $html;
     }

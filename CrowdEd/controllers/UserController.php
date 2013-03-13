@@ -118,9 +118,9 @@ class CrowdEd_UserController extends GuestUser_UserController {
                         array(
                                 'label'         => __('Current Password'),
                                 'required'      => true,
-                                'class'         => 'textinput',
-                        )
-        );        
+                                'class'         => 'textinput  user-form-input',
+                                'description'   =>  '<a class="helpText" href="#" rel="tooltip" title="For security reasons, your current password is required to make changes to your account." data-placement="right"><i class="icon-question-sign"></i></a>'
+        ));        
         
         $oldPassword = $form->getElement('current_password');
         $oldPassword->setOrder(0);
@@ -240,7 +240,7 @@ class CrowdEd_UserController extends GuestUser_UserController {
         'port' => 587,
         'auth' => 'login',
         'username' => 'garrick.bodine@gmail.com',
-        'password' => '$A$sirem4269!#');
+        'password' => '');
  
         $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
         return $transport;

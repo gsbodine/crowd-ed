@@ -42,10 +42,10 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
         $formatter = get_view()->format();
         $html = "";
         $select = new Omeka_Db_Select($db);
-        $select->from(array('u'=>'users'), array('u.username','u.email','u.id','er.time as modtime'))
-                ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array('max(time)'))
-                ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
-                ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
+        $select->from(array('u'=>'users'), array('u.username','u.email','u.id','max(er.time) as modtime'))
+                ->joinLeft(array('e'=>'entities'), "e.user_id = u.id", array('max(time)'))
+                ->joinLeft(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
+                ->joinLeft(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
             ->where("time <> '0000-00-00 00:00:00'")
             ->group('u.username')
             ->order('modtime DESC')

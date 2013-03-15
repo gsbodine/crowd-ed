@@ -46,6 +46,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         'item_search_filters',
         
         'guest_user_widgets',
+        'exhibit_builder_page_nav',
         
         'crowdedDateFlatten' => array('Flatten','Item','Dublin Core','Date'),
         
@@ -491,6 +492,10 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         return $widgets;
     }
     
+    public function filterExhibitBuilderPageNav($args) {
+        return $args;
+    }
+    
     public function crowdedDateFlatten($components,$args) {
         $day = $args['post_array']['text']['day'];
         $month = $args['post_array']['text']['month'];
@@ -512,7 +517,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     private function _setUpFormElement($components,$args,$columns=3,$labelIcon='') {
         $html = '';
         $html .= '<div class="span'. $columns .'">';
-        $html .= '<label>'.$labelIcon.' '.$components['label'].'</label>';
+        $html .= '<label class="edit-label">'.$labelIcon.' '.$components['label'].'</label>';
         $html .= $this->_getHelpText($components['comment']);
         $html .= '<div>' . $components['inputs'] . '</div>';
         $html .= '</div>';

@@ -90,12 +90,12 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         <div class="row">
         <?php  
             $itemType = element_form($elements['Dublin Core']['Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $itemType; 
+            echo $itemType;
         ?>
             <div class="btn-group">
         <?php 
             $scriptType = element_form($elements['Item Type Metadata']['Script Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $scriptType; 
+            echo $scriptType;
         ?>  </div>
         </div>
         
@@ -124,20 +124,13 @@ jQuery(document).bind('omeka:elementformload', function (event) {
             
         <hr />
         
-        <div class="row">
-        <?php $itemCreators = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemCreators;
-        ?>
-        </div>
+        <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
         
         <hr />
         
-        <div class="row">  
-        <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemRecipients = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemRecipients;
+        <?php // todo: enhancement - fix this to only do recipient for the right kind of document - gsb
+            echo $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'3'));
         ?>
-        </div> 
         
         <hr />
         

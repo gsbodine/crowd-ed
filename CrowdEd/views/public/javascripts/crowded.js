@@ -23,6 +23,7 @@ jQuery(document).ready(function($) {
     $(".explanation").tooltip({html:true});
     
     $('.tagManager').tagsManager();
+    $('.popHelp').tooltip({html:true});
     
  // following http://omeka.org/forums/topic/customize-advanced-search-1 -- hopefully temporary.
     var blackListGroups = [

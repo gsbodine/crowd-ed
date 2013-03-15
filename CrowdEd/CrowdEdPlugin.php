@@ -141,8 +141,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     public function hookAdminItemsBrowse($args) {
-        var_dump($args['view']);
-        die();
+        
     }
     
     public function hookPublicHead($args) {

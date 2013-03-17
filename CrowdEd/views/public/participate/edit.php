@@ -45,7 +45,7 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         </dl>
         <dl>
             <dt>The document contains more than one author or recipient:</dt>
-            <dd>Click on XXX to add additional author and/or recipient fields. </dd>
+            <dd>Click on <button class="btn btn-small btn-info"><i class="icon-plus-sign"></i> Add another ...</button> to add additional author and/or recipient fields. </dd>
         </dl>
         <dl>
             <dt>A title or name is typed or written in by someone other than the author: </dt>
@@ -125,12 +125,9 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         <hr />
         
         <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
-        
         <hr />
         
-        <?php // todo: enhancement - fix this to only do recipient for the right kind of document - gsb
-            echo $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'3'));
-        ?>
+        <?php echo $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'3')); ?>
         
         <hr />
         

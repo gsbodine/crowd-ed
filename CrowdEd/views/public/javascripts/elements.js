@@ -67,11 +67,11 @@ jQuery('document').ready(function ($) {
             event.preventDefault();
             var removeButton = $(this);
 
-            if (removeButton.parents(fieldSelector).find(inputBlockSelector).length === 1) {
+            if (removeButton.parents(fieldSelector).find(inputBlockSelector).length == 1) {
                 return;
             }
 
-            if (!confirm('Do you want to delete this input?')) {
+            if (!confirm('Are you sure you want to delete this person\'s information?')) {
                 return;
             }
 

@@ -117,6 +117,12 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             $this->getDisplayGroup('password-group')->setDecorators(array('Description','FormElements','Fieldset'));
         }
         
+        $this->addElement('checkbox',
+                                  'private', array(
+                                    'label'=>'Make my profile private. I do not wish to be included in citations, community progress listings, or display a public profile.',
+                                    'class'=>'checkbox',
+                                  ));
+        
         if (get_option('crowded_terms_of_service')) {
             
             $serviceTerms = html_entity_decode(get_option('crowded_terms_of_service'));

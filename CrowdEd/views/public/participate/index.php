@@ -26,7 +26,7 @@
             <h3 class="text-center"><i class="icon-book"></i> Learn How to Edit</h3>
             <hr />
             <p>Visit our <a href="/getting-started"><strong>Getting Started</strong></a> page or view our 
-                simple <a href="/getting-started#editing"><strong>Editing Guidelines</strong></a>.</p>
+                simple <a href="/editing-guidelines"><strong>Editing Guidelines</strong></a>.</p>
             <p class="alert alert-warning"><strong><i class="icon-asterisk"></i> Don't worry!</strong> Help is available on every page when you're editing!</p>
         </div>
     </div>

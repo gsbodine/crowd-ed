@@ -181,13 +181,21 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                     if (is_array($pnn)){
                         foreach ($pnn as $k => $pn) {
                             $elementId = $pnn['element_id'];
-                            $catName = $pnn['title'].' '.$pnn['firstname'].' '.$pnn['middlename'].' '.$pnn['lastname'].' '.$pnn['suffix'];
+                            if (trim($pnn['firstname'] == '') && trim($pnn['lastname'] == '')) {
+                                $catName = $pnn['orgname'];
+                            } else {
+                                $catName = $pnn['title'].' '.$pnn['firstname'].' '.$pnn['middlename'].' '.$pnn['lastname'].' '.$pnn['suffix'];
+                            }
                             $_POST['Elements'][$elementId][$pkey]['text'] = $catName;
                             
                         }
                     } else {
                         $elementId = $pnValues['element_id'];
-                        $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
+                        if (trim($pnValues['firstname'] == '') && trim($pnValues['lastname'] == '')) {
+                            $catName = $pnValues['orgname'];
+                        } else {
+                            $catName = $pnValues['title'].' '.$pnValues['firstname'].' '.$pnValues['middlename'].' '.$pnValues['lastname'].' '.$pnValues['suffix'];
+                        }
                         $_POST['Elements'][$elementId][$key]['text'] = $catName;
                         
                     }
@@ -220,6 +228,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                              'middlename'=>$pn['middlename'],
                              'title'=>$pn['title'],
                              'suffix'=>$pn['suffix'],
+                             'orgname'=>$pn['orgname'],
                              'element_id'=>$pn['element_id'],
                              'record_id'=>$pn['record_id']
                          )
@@ -236,6 +245,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
                          'middlename'=>$ppn['middlename'],
                          'title'=>$ppn['title'],
                          'suffix'=>$ppn['suffix'],
+                         'orgname'=>$ppn['orgname'],
                          'element_id'=>$ppn['element_id'],
                          'record_id'=>$ppn['record_id']
                      )

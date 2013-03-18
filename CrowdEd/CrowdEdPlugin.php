@@ -484,7 +484,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $accountUrl = url('/user/update-account');
         $html = '<ul class="unstyled">';
         $html .= "<li class='lead'><a href='$accountUrl'><i class='icon-user'></i> Update Account Information</a></li>";
-        $html .= '<li class="lead"><a href="/participate/profile/id/'. current_user()->id . '"><i class="icon-share"></i> View Public Profile</a></li>';
+        $html .= '<li class="lead"><a href="/participate/profile/'. current_user()->id . '"><i class="icon-share"></i> View Public Profile</a></li>';
         $html .= "</ul>";
         $widget['content'] = $html;
         $widgets[] = $widget;

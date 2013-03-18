@@ -99,11 +99,16 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
     }
     
     public function profileAction() {
-        $id = $this->_request->getParam('userid'); 
+        $id = $this->_request->getParam('id'); 
         $user = $this->_helper->db->getTable('User')->find($id);
-        $entity = new Entity();
-        $entity->getEntityByUserId($user->id);
-        $this->view->assign(compact('user','entity'));
+        $e = new Entity();
+        $entity = $e->getEntityByUserId($user->id);
+        
+        if ($entity->private == 1) {
+            $this->render('private');
+        } else {
+            $this->view->assign(compact('user','entity'));
+        }
     }
     
     public function editProfileAction(){

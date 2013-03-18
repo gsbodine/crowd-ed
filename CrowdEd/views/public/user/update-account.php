@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="span7">
+        <div class="span6">
             <div class="site-header" style="text-align:center"><h1><i class="icon-user"></i> Profile <small>Update your information</small></h1></div>
             <p class="lead" style="text-align:center"><em><?php echo get_option('site_title'); ?></em></p>
             <div class="well">
@@ -26,7 +26,7 @@
                     such as WordPress, github, American Idol, and more.</p>
             </div>
         </div>
-        <div class="span5">
+        <div class="span6">
             
             <?php echo $this->form; ?>
         </div>

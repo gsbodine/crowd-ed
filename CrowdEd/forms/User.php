@@ -10,7 +10,6 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         $this->removeElement('name');
         $this->removeElement('submit');
         
-        // adapt inputs length, bootstrap-style
         $this->getElement('email')->setAttrib('class','span4 user-form-input');
         
         $this->getElement('username')->setAttrib('class','span2 user-form-input');
@@ -20,9 +19,8 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         
         $this->addElement('text','first_name',array(
             'label' => __('First Name'),
-            'description' => $this->_getHelpText('Your first name'),
+            'description' => $this->_getHelpText('Your first (given) name'),
             'value'=> $this->_entity->first_name,
-            'size' => '30',
             'class' => 'span3 user-form-input',
             'required' => false,
             'validators' => array(
@@ -32,9 +30,8 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         
         $this->addElement('text','last_name',array(
             'label' => __('Last Name'),
-            'description' => $this->_getHelpText('Your last name (surname)'),
+            'description' => $this->_getHelpText('Your last name (surname or family name)'),
             'value' => $this->_entity->last_name,
-            'size' => '30',
             'class'=> 'span3 user-form-input',
             'required' => false,
             'validators' => array(
@@ -54,19 +51,10 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             )
         ));
         
-        $this->addDisplayGroup(
-                    array('first_name','last_name','institution'),
-                    'name-group',
-                    array('legend'=>'Names for Attribution',
-                        'class'=>'user-fieldset',
-                        'description'=>'Although not required, your first and last name will be used for attribution (e.g. in item citations) for any contributions you make to the site. Your institution (if desired) will be shown in your public profile.')
-                        );
-        $this->getDisplayGroup('name-group')->setDecorators(array('Description','FormElements','Fieldset'));
-        
         
         $this->addElement('password', 'new_password',
             array(
-                    'label'         => __('Password'),
+                    'label'         => __('New Password'),
                     'required'      => true,
                     'class'         => 'textinput user-form-input',
                     'validators'    => array(
@@ -99,23 +87,57 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             )
         );
         $this->addElement('password', 'new_password_confirm',
-                        array(
-                                'label'         => 'Password again for match',
-                                'required'      => true,
-                                'class'         => 'textinput user-form-input',
-                                'errorMessages' => array(__('New password must be typed correctly twice.'))
-                        )
+                array(
+                        'label'         => 'Password again for match',
+                        'required'      => true,
+                        'class'         => 'textinput user-form-input',
+                        'errorMessages' => array(__('New password must be typed correctly twice.'))
+                )
         );
         
-        if (current_url() == '/user/update-account') {
-            $this->addDisplayGroup(
-                    array('new_password','new_password_confirm'),
-                    'password-group',
-                    array('class'=>'user-fieldset',
-                        'description'=>'If you don\'t want to change your password at this time, simply leave the following fields blank.')
-                        );
-            $this->getDisplayGroup('password-group')->setDecorators(array('Description','FormElements','Fieldset'));
-        }
+        $privacy = $this->createElement('checkbox',
+                                  'private', array(
+                                  'label'=>'Make my profile private.',
+                                  'value'=>$this->_entity->private,
+                                  'class'=>'checkbox'
+                                  ));
+        $privacy->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
+        $privacy->addDecorator('HtmlTag',array('tag'=>'span', 'class'=>'privacy-checkbox'));
+        
+        $this->addElement($privacy);
+        
+       
+        $this->addDisplayGroup(
+            array('first_name','last_name','institution'),
+            'names-group',
+            array('legend'=>'Names for Attribution',
+                'class'=>'user-fieldset',
+                'description'=>'Although not required, your first and last name will be used for attribution (e.g. in item citations) for any contributions you make to the site. Your institution (if desired) will be shown in your public profile.')
+        );
+        
+        $this->addDisplayGroup(
+            array('username','email'),
+            'username-group',
+            array('legend'=>'Username and Email',
+                'class'=>'user-fieldset',
+                'description'=>'Although your username and email may be changed later, they must both be unique within the site.')
+        );
+        
+        $this->addDisplayGroup(
+            array('new_password','new_password_confirm'),
+            'password-group',
+            array('class'=>'user-fieldset',
+                'legend'=>'Password')
+        );
+        
+        $this->addDisplayGroup(
+            array('private'),
+            'private-group',
+            array('legend'=>'Profile Privacy Settings',
+                'class'=>'user-fieldset',
+                'description'=>'Check the box below if you do NOT wish your name to be included in citations, community progress listings, or display a public profile. Don\'t worry, we never publicly display your email address.')
+        );
+        
         
         if (get_option('crowded_terms_of_service')) {
             
@@ -148,7 +170,20 @@ class CrowdEd_Form_User extends Omeka_Form_User {
                 $check->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
                 $check->addDecorator('HtmlTag',array('tag'=>'span'));
                 $this->addElement($check);
+                $this->addDisplayGroup(
+                    array('formNote','terms'),
+                    'terms-group',
+                    array('legend'=>'Terms and Conditions',
+                        'class'=>'user-fieldset'
+                        ));
+        
+                $this->getDisplayGroup('terms-group')->setDecorators(array('FormElements','Fieldset'));
+        
             }
+            
+            $this->setDisplayGroupDecorators(array('Description','FormElements','Fieldset'));
+        
+        
         }
         
         if(Omeka_Captcha::isConfigured() && (get_option('guest_user_recaptcha') == 'on')) {

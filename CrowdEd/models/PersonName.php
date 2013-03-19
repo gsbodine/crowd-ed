@@ -17,6 +17,7 @@ class PersonName extends Omeka_Record_AbstractRecord {
     public $lastname = '';
     public $title = '';
     public $suffix = '';
+    public $orgname = '';
     public $element_text_id = '';
     public $record_id = '';
     public $element_id = '';
@@ -51,6 +52,10 @@ class PersonName extends Omeka_Record_AbstractRecord {
         $this->suffix = trim($suffix);
     }
     
+    public function setOrgname($orgname) {
+        $this->orgname = trim($orgname);
+    }
+    
     public function setTitle($title) {
         $this->title = trim($title);
     }
@@ -74,6 +79,9 @@ class PersonName extends Omeka_Record_AbstractRecord {
                         break;
                     case 'title':
                         $this->setTitle($value);
+                        break;
+                    case 'orgname':
+                        $this->setOrgname($value);
                         break;
                     case 'suffix':
                         $this->setSuffix($value);

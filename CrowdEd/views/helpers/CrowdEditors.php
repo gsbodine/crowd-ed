@@ -46,7 +46,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
                 ->joinLeft(array('e'=>'entities'), "e.user_id = u.id", array('max(time)'))
                 ->joinLeft(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
                 ->joinLeft(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
-            ->where("time <> '0000-00-00 00:00:00'")
+            ->where("time <> '0000-00-00 00:00:00' and e.private != 1")
             ->group('u.username')
             ->order('modtime DESC')
             ->limit($limit);
@@ -67,7 +67,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
                 ->joinInner(array('e'=>'entities'), "e.user_id = u.id", array())
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id", array())
                 ->joinInner(array('ers'=>'entity_relationships'), "er.relationship_id = ers.id",array())
-                ->where("u.username != 'sschlitz'")
+                ->where("u.username != 'sschlitz' and e.private != 1")
                 ->group('u.username')
                 ->order('count(u.username) DESC')
                 ->limit($limit);

@@ -118,39 +118,58 @@ class CrowdEd_UserController extends GuestUser_UserController {
                         array(
                                 'label'         => __('Current Password'),
                                 'required'      => true,
-                                'class'         => 'textinput  user-form-input',
-                                'description'   =>  '<a class="helpText" href="#" rel="tooltip" title="For security reasons, your current password is required to make changes to your account." data-placement="right"><i class="icon-question-sign"></i></a>'
+                                'class'         => 'textinput user-form-input'
         ));        
         
         $oldPassword = $form->getElement('current_password');
-        $oldPassword->setOrder(0);
+        //$oldPassword->setOrder(0);
         $form->addElement($oldPassword);
         
-        //$form->removeElement('new_password_confirm');
+        $form->addDisplayGroup(
+                array('current_password'),
+                'current-password-group',
+                array('class'=>'user-fieldset',
+                    'legend'=>'Current Password',
+                    'description'=>'For security reasons, your current password is required to make changes to your account.')
+                    );
+        
+        $form->getDisplayGroup('current-password-group')->setOrder(-1);
+        
+        $form->getDisplayGroup('names-group')->setDescription('Update your display names at any time to be included in citations.');
+        $form->getDisplayGroup('password-group')->setDescription('If you don\'t want to change your password at this time, simply leave the following fields blank.');
+        
+        $form->setDisplayGroupDecorators(array('Description','FormElements','Fieldset'));
+        
         $form->setSubmitButtonText('Update');
         $form->setDefaults($user->toArray());
+        $form->setDefaults($entity->toArray());
         $this->view->form = $form;
         
         if (!$this->getRequest()->isPost() || !$form->isValid($_POST)) {
             return;
         }  
-        
-        if($user->password != $user->hashPassword($_POST['current_password'])) {
-            $this->_helper->flashMessenger(__("Incorrect password"), 'error');
-            return;
-        }
-        
-        if (trim($_POST['new_password']) != '') {
-            $user->setPassword($_POST['new_password']);
+        if (!$requireTermsOfService || $_POST['terms'] == 1) {
+            if($user->password != $user->hashPassword($_POST['current_password'])) {
+                $this->_helper->flashMessenger(__("Incorrect password"), 'error');
+                return;
+            }
+
+            if (trim($_POST['new_password']) != '') {
+                $user->setPassword($_POST['new_password']);
+            } else {
+                $_POST['new_password'] = null;
+            }
+            $user->setPostData($_POST);
+            $entity->setPostData($_POST);
+            try {
+                $user->save($_POST);
+                $entity->save($_POST);
+            } catch (Omeka_Validator_Exception $e) {
+                $this->flashValidationErrors($e);
+            }     
         } else {
-            $_POST['new_password'] = null;
+            $this->_helper->flashMessenger(__('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.'),'warning');
         }
-        $user->setPostData($_POST);
-        try {
-            $user->save($_POST);
-        } catch (Omeka_Validator_Exception $e) {
-            $this->flashValidationErrors($e);
-        }              
     }
     
     public function confirmAction() {

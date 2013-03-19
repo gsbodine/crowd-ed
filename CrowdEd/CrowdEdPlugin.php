@@ -484,7 +484,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $accountUrl = url('/user/update-account');
         $html = '<ul class="unstyled">';
         $html .= "<li class='lead'><a href='$accountUrl'><i class='icon-user'></i> Update Account Information</a></li>";
-        $html .= '<li class="lead"><a href="/participate/profile/id/'. current_user()->id . '"><i class="icon-share"></i> View Public Profile</a></li>';
+        $html .= '<li class="lead"><a href="/participate/profile/'. current_user()->id . '"><i class="icon-share"></i> View Public Profile</a></li>';
         $html .= "</ul>";
         $widget['content'] = $html;
         $widgets[] = $widget;
@@ -543,7 +543,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         
         $html = '<hr /><h4><i class="icon-edit"></i> Participate</h4>';
         if ($lockStatus == 0) {
-            $html .= '<div><a href="/participate/edit/'. $item->id .'">Assist us with editing and cataloging this item!</a></div>';
+            $html .= '<div><a href="/participate/edit/'. $item->id .'" class="btn btn-success"><i class="icon-edit"></i> Assist us with editing and cataloging this item!</a></div>';
         } else {
             $html .= '<div><p class="alert alert-info"><i class="icon-lock"></i> This item has already been edited and is now locked.</p></div>';
             $user = current_user();

@@ -29,7 +29,6 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         $html = '<div class="field' . $rowClass . '" id="element-' . html_escape($element->id) . '">';
         $html .= $this->_displayFieldLabel();
         $html .= $this->_displayPersonNameFields($this->_record,$this->_element,$extraFieldCount); 
-        $html .= $this->_getAddFieldButton();
         $html .= '</div>';
         
         return $html;
@@ -54,7 +53,6 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             $pn = new PersonName();
             $personCount = count($pn->getPersonNamesByRecordAndElementIds($recordId,$elementId));
         }
-        
         return $personCount ? $personCount : 1;
     }    
     
@@ -66,16 +64,19 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             $newIndex = 0;
             if (!$extraFieldCount) {
                 for ($i = 0; $i < $extraFieldCount; $i++) {
-                    $postArray['new-'.$element->id] = array('index'=>$newIndex,'title'=>'','firstname'=>'','lastname'=>'','middlename'=>'','suffix'=>'','element_id'=>$element->id,'record_id'=>$record->id);
+                    $postArray['new-'.$element->id] = array('index'=>$newIndex,'title'=>'','firstname'=>'','lastname'=>'','middlename'=>'','suffix'=>'','orgname'=>'','element_id'=>$element->id,'record_id'=>$record->id);
                     $newIndex++; 
                 }
             }
 
             foreach ($postArray as $key => $personName) {
-               //$html .= '<div>';
-               if (substr($key,0,3) == 'new') {
+                $html .= '<div class="input-block">';
+                $html .= '<span class="span6"><hr class="personForm"></span>';
+                
+                if (substr($key,0,3) == 'new') {
                    foreach($personName as $pname) {
-                    $html .= '<div class="span3 input-block"><hr class="personForm" />';
+                
+                    $html .= '<div class="span3">';
                     $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][title]',$pname['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'.  $element->id .']['. $newIndex .'][firstname]',$pname['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]',$pname['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
@@ -84,12 +85,19 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />'; 
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex.'" />';
+                    $html .= '</div>';
+                    
+                    // org name field, new column
+                    $html .= '<div class="span3">';
+                    $html .= '<label class="institutionNameLabel">Organization (Group, Company, or Institution)</label>';
+                    $html .= $this->_createOrgField('PersonNames[new-'. $element->id .']['. $newIndex .'][orgname]','',$options=array('class'=>'span3','placeholder'=>'e.g. Berry Alumni Association'));
                     $html .= $this->_createRemoveButton();
                     $html .= '</div>';
+                    
                     $newIndex++;
                    }
                } else if (is_int($key)){
-                    $html .= '<div class="span3 input-block"><hr class="personForm" />';
+                    $html .= '<div class="span3">';
                     $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames['. $key .'][title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $key .'][firstname]', $personName['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames['. $key .'][middlename]', $personName['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
@@ -98,11 +106,16 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames['. $key .'][id]" value="'. $key .'" />';
+                    $html .= '</div>';
+                    // org name field, new column
+                    $html .= '<div class="span3">';
+                    $html .= '<label class="institutionNameLabel">Organization (Group, Company, or Institution)</label>';
+                    $html .= $this->_createOrgField('PersonNames['. $personName['id'] .']'.$index.'[orgname]', $personName['orgname'],$options=array('class'=>'span3','placeholder'=>'e.g. Berry Alumni Association'));
                     $html .= $this->_createRemoveButton();
                     $html .= '</div>';
-                    
-                }  else {
-                    $html .= '<div class="span3 input-block"><hr class="personForm" />';
+                
+               }  else {
+                    $html .= '<div class="span3">';
                     $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
@@ -111,17 +124,25 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />';  
+                    $html .= '</div>';
+                    
+                    // org name field, new column
+                    $html .= '<div class="span3">';
+                    $html .= '<label class="institutionNameLabel">Organization (Group, Company, or Institution)</label>';
+                    $html .= $this->_createOrgField('PersonNames[new-'. $element->id .']['. $newIndex .'][orgname]','',$options=array('class'=>'span3','placeholder'=>'e.g. Berry Alumni Association'));
                     $html .= $this->_createRemoveButton();
                     $html .= '</div>';
+                    
                     $newIndex++;
                 }
-                
-                
+                $html .= '</div>'; // end .input-block
             }   
             
             if ($extraFieldCount) {
                 for ($i = 0; $i < $extraFieldCount; $i++) {
-                    $html .= '<div class="span3 input-block"><hr class="personForm" />';
+                    $html .= '<div class="input-block"><span class="span6"><hr class="personForm"></span>';
+                    
+                    $html .= '<div class="span3">';
                     $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames[new-'. $element->id .']['. $newIndex .'][title]','',$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][firstname]','',$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                     $html .= '<label class="personNameLabel">Middle name: </label>'.$this->_displayPersonNameFormInput('PersonNames[new-'. $element->id .']['. $newIndex .'][middlename]','',$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
@@ -130,8 +151,16 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][element_id]" value="'. $element->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][record_id]" value="'. $record->id .'" />';
                     $html .= '<input type="hidden" name="PersonNames[new-'. $element->id .']['. $newIndex .'][index]" value="'. $newIndex . '" />';  
+                    $html .= '</div>';
+                    
+                    // org name field, new column
+                    $html .= '<div class="span3">';
+                    $html .= '<label class="institutionNameLabel">Organization (Group, Company, or Institution)</label>';
+                    $html .= $this->_createOrgField('PersonNames[new-'. $element->id .']['. $newIndex .'][orgname]','',$options=array('class'=>'span3','placeholder'=>'e.g. Berry Alumni Association'));
                     $html .= $this->_createRemoveButton();
                     $html .= '</div>';
+                    
+                    $html .= '</div>'; // end .input-block
                     $newIndex++;
                 }
             }
@@ -150,7 +179,9 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                 } else {
                     $index = null;
                 }
-                $html .= '<div class="span3 input-block"><hr class="personForm" />';
+                
+                $html .= '<div class="input-block"><span class="span6"><hr class="personForm"></span>';
+                $html .= '<div class="span3">';
                 $html .= '<label class="personNameLabel">Title: </label>'. $this->_displayPersonNameFormTitleSelect('PersonNames['. $personName['id'] .']'.$index.'[title]', $personName['title'],$options=array('class'=>'span1','placeholder'=>'Title','style'=>'margin-right:1em;'));
                 $html .= '<label class="personNameLabel">First name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[firstname]', $personName['firstname'],$options=array('class'=>'span2','placeholder'=>'First Name','style'=>'margin-right:1em;'));
                 $html .= '<label class="personNameLabel">Middle name: </label>'. $this->_displayPersonNameFormInput('PersonNames['. $personName['id'] .']'.$index.'[middlename]', $personName['middlename'],$options=array('class'=>'span2','placeholder'=>'Middle Name','style'=>'margin-right:1em;'));
@@ -158,18 +189,27 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
                 $html .= '<label class="personNameLabel">Suffix: </label>'. $this->_displayPersonNameFormSuffixSelect('PersonNames['. $personName['id'] .']'.$index.'[suffix]', $personName['suffix'],$options=array('class'=>'span1','placeholder'=>'(e.g. Jr.)'));
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[element_id]" value="'. $element->id .'" />';
                 $html .= '<input type="hidden" name="PersonNames['. $personName['id'] .']'.$index.'[record_id]" value="'. $record->id .'" />';
+                $html .= '</div>';
+                // org name field, new column
+                $html .= '<div class="span3">';
+                $html .= '<label class="institutionNameLabel">Organization (Group, Company, or Institution)</label>';
+                $html .= $this->_createOrgField('PersonNames['. $personName['id'] .']'.$index.'[orgname]', $personName['orgname'],$options=array('class'=>'span3','placeholder'=>'e.g. Berry Alumni Association'));
                 $html .= $this->_createRemoveButton();
                 $html .= '</div>';
-                
+                $html .= '</div>'; // end .input-block
             }
         }
-        //$html .= '</div>';
+        //$html .= '</div>'; //end row
+        $html .= $this->_getAddFieldButton();
+       // $html .= '</div>'; // end container div (.span6, .field)
         return $html;
         
     }
     
-    private function _createPersonNameFields($fieldType,$inputNameStem,$value,$options) {
-       //todo: refactor - abstract all the uglies above into a more elegant and maintainable implementation - gsb
+    private function _createOrgField($inputNameStem, $value, $options) {
+        $html = '';
+        $html .= $this->view->formText($inputNameStem, $value, $options);
+        return $html;
     }
     
     private function _displayPersonNameFormInput($inputNameStem, $value, $options=array()) {
@@ -235,7 +275,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             default: 
                 $person = 'field';
         }
-        $html .= '<div class="span3 text-center"><div class="well" style="margin-top: 20px"><button type="submit" class="add-element btn btn-small btn-info" id="add_element_' . $this->_element->id . '" name="add_element_' . $this->_element->id . '"><i class="icon-plus-sign"></i> Add another ' . $person .'</button></div></div>';
+        $html .= '<span class="span6"><div class="well well-small text-center" style="margin-top: 20px"><button type="submit" class="add-element btn btn-small btn-info" id="add_element_' . $this->_element->id . '" name="add_element_' . $this->_element->id . '"><i class="icon-plus-sign"></i> Add another ' . $person .'</button></div></span>';
         return $html;
     }
     
@@ -258,7 +298,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
             default: 
                 $person = 'field';
         }
-        $html = '<div><button type="submit" class="remove-element btn btn-small btn-danger" style="margin: 1em 0;"><i class="icon-remove-sign"></i> Remove this ' . $person . '</button></div>';
+        $html = '<span><button type="submit" class="remove-element btn btn-small btn-danger" style="margin: 1em 0;"><i class="icon-remove-sign"></i> Remove this ' . $person . '</button></span>';
         return $html; 
     }
     

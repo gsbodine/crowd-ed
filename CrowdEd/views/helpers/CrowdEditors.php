@@ -19,7 +19,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
         $stmt = $this->_getEditorsByVolumeQuery($db);
         $html = "";
         while ($row = $stmt->fetch()) {
-            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/id/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';
+            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';
         }
         return $html;
     }
@@ -52,7 +52,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
             ->limit($limit);
         $stmt = $select->query();
         while ($row = $stmt->fetch()) {
-            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/id/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</a></strong>: ' . $formatter->time_passed(strtotime($row['modtime'])) . '</span></li>';
+            $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</a></strong>: ' . $formatter->time_passed(strtotime($row['modtime'])) . '</span></li>';
         }
 
         return $html;

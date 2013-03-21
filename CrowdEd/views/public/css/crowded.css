@@ -70,5 +70,9 @@ hr.personForm {
     margin: 0 0 1em 0;
 }
 
+.privacy-checkbox > div {
+    display: inline;
+}
+
 
 

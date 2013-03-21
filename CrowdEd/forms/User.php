@@ -95,24 +95,21 @@ class CrowdEd_Form_User extends Omeka_Form_User {
                 )
         );
         
-        $privacy = $this->createElement('checkbox',
-                                  'private', array(
+        $this->addElement('checkbox','private', array(
+                                  'checked' => $this->_entity->private,
                                   'label'=>'Make my profile private.',
-                                  'value'=>$this->_entity->private,
-                                  'class'=>'checkbox'
-                                  ));
-        $privacy->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
-        $privacy->addDecorator('HtmlTag',array('tag'=>'span', 'class'=>'privacy-checkbox'));
-        
-        $this->addElement($privacy);
-        
+                                  'values'=> array(1, 0),
+                                  'class'=>'checkbox')
+                    );
+        $this->getElement('private')->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
+        $this->getElement('private')->addDecorator('HtmlTag',array('tag'=>'span', 'class'=>'privacy-checkbox'));
        
         $this->addDisplayGroup(
             array('first_name','last_name','institution'),
             'names-group',
             array('legend'=>'Names for Attribution',
                 'class'=>'user-fieldset',
-                'description'=>'Although not required, your first and last name will be used for attribution (e.g. in item citations) for any contributions you make to the site. Your institution (if desired) will be shown in your public profile.')
+                'description'=>'MBDA recognizes community participation. Your first and last name will be used to acknowledge any contributions you make to the site (e.g. in item citations). Your institution or affiliation will be shown in your public profile.')
         );
         
         $this->addDisplayGroup(
@@ -120,7 +117,8 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             'username-group',
             array('legend'=>'Username and Email',
                 'class'=>'user-fieldset',
-                'description'=>'Although your username and email may be changed later, they must both be unique within the site.')
+                //'description'=>'Although your username and email may be changed later, they must both be unique within the site.'   
+                )
         );
         
         $this->addDisplayGroup(
@@ -135,7 +133,7 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             'private-group',
             array('legend'=>'Profile Privacy Settings',
                 'class'=>'user-fieldset',
-                'description'=>'Check the box below if you do NOT wish your name to be included in citations, community progress listings, or display a public profile. Don\'t worry, we never publicly display your email address.')
+                'description'=>'Check the box below if you do NOT wish your name to be included in citations, community progress listings, or in a public profile page. Don\'t worry, we never publicly display your email address.')
         );
         
         
@@ -161,7 +159,7 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             $this->addElement($terms);
             
             // TODO: fix route; use request
-            if (current_url() != '/participate/edit-profile') {
+            //if (current_url() != '/participate/edit-profile') {
                 $check = $this->createElement('checkbox',
                                   'terms', array(
                                     'label'=>'I agree to the Terms and Conditions of this site.',
@@ -179,7 +177,7 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         
                 $this->getDisplayGroup('terms-group')->setDecorators(array('FormElements','Fieldset'));
         
-            }
+            //}
             
             $this->setDisplayGroupDecorators(array('Description','FormElements','Fieldset'));
         

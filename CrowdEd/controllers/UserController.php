@@ -32,6 +32,10 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $form->setSubmitButtonText(__('Create Account'));
         $this->view->form = $form;
         
+        if (current_user()) {
+            $this->_helper->redirector('profile', 'participate');
+        }
+        
         if (!$this->getRequest()->isPost() || !$form->isValid($_POST)) {
             return;
         }		        
@@ -109,8 +113,10 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $user = current_user();
         $e = new Entity;
         $entity = $e->getEntityFromUser($user); 
+        $requireTermsOfService = get_option('crowded_require_terms_of_service');
         
         $form = $this->_getForm(array('user'=>$user,'entity'=>$entity));
+        
         $form->getElement('new_password')->setLabel(__("New Password"));
         $form->getElement('new_password')->setRequired(false);
         $form->getElement('new_password_confirm')->setRequired(false);
@@ -122,7 +128,6 @@ class CrowdEd_UserController extends GuestUser_UserController {
         ));        
         
         $oldPassword = $form->getElement('current_password');
-        //$oldPassword->setOrder(0);
         $form->addElement($oldPassword);
         
         $form->addDisplayGroup(
@@ -140,7 +145,7 @@ class CrowdEd_UserController extends GuestUser_UserController {
         
         $form->setDisplayGroupDecorators(array('Description','FormElements','Fieldset'));
         
-        $form->setSubmitButtonText('Update');
+        $form->setSubmitButtonText('Update Account');
         $form->setDefaults($user->toArray());
         $form->setDefaults($entity->toArray());
         $this->view->form = $form;
@@ -148,7 +153,9 @@ class CrowdEd_UserController extends GuestUser_UserController {
         if (!$this->getRequest()->isPost() || !$form->isValid($_POST)) {
             return;
         }  
+        
         if (!$requireTermsOfService || $_POST['terms'] == 1) {
+            
             if($user->password != $user->hashPassword($_POST['current_password'])) {
                 $this->_helper->flashMessenger(__("Incorrect password"), 'error');
                 return;
@@ -161,15 +168,22 @@ class CrowdEd_UserController extends GuestUser_UserController {
             }
             $user->setPostData($_POST);
             $entity->setPostData($_POST);
+            $user->name = $entity->getName();
+            //var_dump($entity); die();
+            
             try {
-                $user->save($_POST);
-                $entity->save($_POST);
+                if ($user->save()) {
+                    $entity->save();
+                }
             } catch (Omeka_Validator_Exception $e) {
                 $this->flashValidationErrors($e);
-            }     
+            }   
         } else {
             $this->_helper->flashMessenger(__('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.'),'warning');
+            return;
         }
+        
+        $this->_helper->redirector('profile', 'participate');
     }
     
     public function confirmAction() {

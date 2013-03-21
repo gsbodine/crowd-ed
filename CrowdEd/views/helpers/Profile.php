@@ -59,10 +59,10 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
                 ->joinLeft(array('e'=>'entities'), "e.id = er.entity_id", array('er.time'))
                 ->joinLeft(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
                 ->joinLeft(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
-            ->where("ers.name='$relationshipName' and e.id = '$entity->id'")
+            ->where("ers.name='$relationshipName' and e.id = '$entity->id' and i.id != null")
             ->group('i.id')
             ->order('time DESC')
-            ->limit($limit);
+            ->limit(0);
         $stmt = $select->query()->fetchAll();
         $html = '';
         

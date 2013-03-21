@@ -17,7 +17,7 @@
                 echo ' of ' . $entity->institution;
             }
             if ($user->id == current_user()->id) {
-                echo ' <span class="pull-right"><a href="'. url(array('action'=>'update-account', 'controller'=>'user'), 'default') .'"><i class="icon-edit"></i> Edit Account Information</a></span></strong></p>';
+                echo ' <span class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></span></strong></p>';
             }
         ?>
         <hr />
@@ -59,7 +59,7 @@
         <div class="well">
             <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
             <?php 
-            $favList = $this->profile()->getUserFavorites($user,10);
+            $favList = $this->profile()->getUserFavorites($user,$limit=10);
             if ($favList) : ?>
                 <ul class="unstyled">
                     <?php echo $favList; ?>

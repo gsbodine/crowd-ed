@@ -184,17 +184,6 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         
         }
         
-        if(Omeka_Captcha::isConfigured() && (get_option('guest_user_recaptcha') == 'on')) {
-            $this->addElement('captcha', 'captcha',  array(
-                'class' => 'hidden',
-                'style' => 'display: none;',
-                'label' => "Please verify you're a human",
-                'type' => 'hidden',
-                'captcha' => Omeka_Captcha::getCaptcha()
-            ));
-        }
-        
-        
         $this->addElement('submit', 'submit', array('label' => 'Submit','class'=>'btn btn-primary','style'=>'margin-top:1em;'));
     }
     

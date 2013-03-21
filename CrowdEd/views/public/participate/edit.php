@@ -1,6 +1,6 @@
 <?php 
     set_current_record('item', $item);
-    queue_js_file(array('elements','jQuery.elevateZoom-2.5.5.min'));
+    queue_js_file(array('elements','jquery.elevateZoom-2.5.5.min'));
     echo head();
     $elements = $item->getAllElements();
     $id = $item->id;
@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 <?php
     $i = 0;
     foreach ($files as $file) {
-        echo '$("#image-'. $i .'").elevateZoom({ zoomType : "lens", lensShape : "round", lensSize : 200, zoomLevel : 1 });';
+        echo '$("#image-'. $i .'").elevateZoom({lensSize: 200, zoomWindowWidth: 400, zoomWindowHeight: 400});';
         $i++;
     }
 ?>
@@ -91,7 +91,7 @@ jQuery(document).ready(function($) {
             null);  }*/
             $i = 0;
             foreach ($files as $file) {
-                echo file_image('fullsize',array('id'=>'image-'.$i, 'data-zoom-image'=>'/files/fullsize/'.$file->filename),$file);
+                echo file_image('fullsize',array('id'=>'image-'.$i, 'data-zoom-image'=>'/files/original/'.$file->filename),$file);
                 $i++;
             }
         ?>

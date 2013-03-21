@@ -1,9 +1,11 @@
 <?php 
     set_current_record('item', $item);
-    queue_js_file('elements');
+    queue_js_file(array('elements','jquery.elevateZoom-2.5.5.min'));
     echo head();
     $elements = $item->getAllElements();
     $id = $item->id;
+    $files = $item->Files;
+    
 ?>
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[
@@ -14,7 +16,18 @@ jQuery(window).load(function () {
 jQuery(document).bind('omeka:elementformload', function (event) {
     Omeka.Elements.makeElementControls(event.target, <?php echo js_escape(url('participate/person-name-element-form')); ?>,'Item'<?php if ($id = metadata('item', 'id')) echo ', '.$id; ?>);
 });
+
+jQuery(document).ready(function($) {
+<?php
+    $i = 0;
+    foreach ($files as $file) {
+        echo '$("#image-'. $i .'").elevateZoom({lensSize: 200, zoomWindowWidth: 400, zoomWindowHeight: 400});';
+        $i++;
+    }
+?>
+});
 //]]>
+
 </script>
 
 <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -72,10 +85,15 @@ jQuery(document).bind('omeka:elementformload', function (event) {
     <div class="span6">
         <p class="lead" style="text-align:center;">Item Identification #: <?php echo metadata($item,array('Dublin Core','Identifier')); ?></p>
         <?php 
-            echo files_for_item(
+            /* echo files_for_item(
             array('imageSize'=>'fullsize'),
             array('class'=>'image','style'=>'text-align:center'), 
-            null);
+            null);  }*/
+            $i = 0;
+            foreach ($files as $file) {
+                echo file_image('fullsize',array('id'=>'image-'.$i, 'data-zoom-image'=>'/files/original/'.$file->filename),$file);
+                $i++;
+            }
         ?>
     </div>
     <div class="span6">

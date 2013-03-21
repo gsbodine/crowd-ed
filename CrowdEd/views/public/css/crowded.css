@@ -6,6 +6,7 @@
 
 */
 
+
 .dateinput > .textinput {
     display: inline;
 }
@@ -18,19 +19,60 @@
 }
 
 .remove-element {
-    display: inline;
+    /* display: inline; */
 }
 
 #crowded-item-form label {
-    display: inline-block;
+   /*  display: inline-block; */
 }
 
 #terms {
     display: inline;
 }
 
-/* Bootstrap Adjustments and/or Overrides */
-/* .input-prepend, .input-append {
-    white-space: nowrap;
-    -webkit-padding-end: 27px;
-} */
+body {
+    padding-top: 30px;
+}
+
+.user-list-item {
+    margin: 1em 0;
+}
+
+hr.personForm {
+    height: 1px;
+    background: #ededed;
+    border: none;
+    margin: 10px 0;
+}
+.edit-label {
+    display: inline;
+}
+.user-form-input {
+    display: block !important;
+}
+.user-fieldset legend {
+    margin: 0;
+    padding: 0;
+    height:20px;
+    border: none;
+    font-weight: bold;
+    font-size: 100%; 
+}
+.hint {
+    margin: 0 0 1em 0;
+    padding: 0;
+    font-size: 75%;
+}
+
+.user-fieldset {
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+    margin: 0 0 1em 0;
+}
+
+.privacy-checkbox > div {
+    display: inline;
+}
+
+
+

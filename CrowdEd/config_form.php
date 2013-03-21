@@ -17,7 +17,7 @@
     <div class="inputs five columns omega">
         <p class="explanation">The full Terms of Service as presented for the User's consent prior to account being created.</p>
         <div class="input-block">
-            <?php echo get_view()->formTextarea('crowded_terms_of_service',get_option('crowded_terms_of_service')) ?>        
+            <?php echo get_view()->formTextarea('crowded_terms_of_service',  html_entity_decode(get_option('crowded_terms_of_service'))) ?>        
         </div>
     </div>
 </div>

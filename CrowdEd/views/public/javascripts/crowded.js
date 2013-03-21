@@ -20,8 +20,10 @@ jQuery(document).ready(function($) {
     $('.failure').addClass("unstyled alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.error').addClass("unstyled alert alert-error").prepend("<h4><i class='icon-remove-sign icon-large'></i> Uh oh!</h4>");
     $('.helpText').tooltip({html:true});
+    $(".explanation").tooltip({html:true});
     
     $('.tagManager').tagsManager();
+    $('.popHelp').tooltip({html:true});
     
     $('.carousel').carousel();
     

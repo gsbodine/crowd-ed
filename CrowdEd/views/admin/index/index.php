@@ -9,8 +9,8 @@ echo head(array('title'=>'Crowd-Ed Plug-in Administration'));
 <h1>Crowd-Ed</h1>
 <hr />
 <p>This will be the home of the Crowd-Ed administrative utilities.</p>
-<p><a href="<?php echo html_escape(url('index/review')); ?>">Review and/or Lock Edited Items</p>
-<p><a href="<?php echo html_escape(url('index/flagged')); ?>">Review Flagged Items</a></p>
+<p><a href="<?php echo html_escape(url('/crowd-ed/index/review')); ?>">Review and/or Lock Edited Items</p>
+<p><a href="<?php echo html_escape(url('/crowd-ed/index/flagged')); ?>">Review Flagged Items</a></p>
 
 <?php 
 echo foot();

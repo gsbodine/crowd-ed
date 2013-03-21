@@ -45,7 +45,7 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         </dl>
         <dl>
             <dt>The document contains more than one author or recipient:</dt>
-            <dd>Click on XXX to add additional author and/or recipient fields. </dd>
+            <dd>Click on <button class="btn btn-small btn-info"><i class="icon-plus-sign"></i> Add another ...</button> to add additional author and/or recipient fields. </dd>
         </dl>
         <dl>
             <dt>A title or name is typed or written in by someone other than the author: </dt>
@@ -81,7 +81,7 @@ jQuery(document).bind('omeka:elementformload', function (event) {
     <div class="span6">
         <div style="text-align:center;"><?php echo link_to_item($text='<i class="icon-arrow-left"></i> return to item display page',$props=array(),$action='show',$item) ?></div>
         <div class="site-title">
-            <h1>Participate <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
+            <h1>Participate<br /> <small> Help us catalog this item!</small><span class="pull-right"><small><a href="#helpModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> Help</a></small></span></h1>
         </div>
         <hr />
         <form method="post" enctype="multipart/form-data" id="crowded-item-form" action="" autocomplete="off">    
@@ -90,12 +90,12 @@ jQuery(document).bind('omeka:elementformload', function (event) {
         <div class="row">
         <?php  
             $itemType = element_form($elements['Dublin Core']['Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $itemType; 
+            echo $itemType;
         ?>
             <div class="btn-group">
         <?php 
             $scriptType = element_form($elements['Item Type Metadata']['Script Type'], $item, $options=array('columnSpan'=>'3'));
-            echo $scriptType; 
+            echo $scriptType;
         ?>  </div>
         </div>
         
@@ -124,20 +124,10 @@ jQuery(document).bind('omeka:elementformload', function (event) {
             
         <hr />
         
-        <div class="row">
-        <?php $itemCreators = $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemCreators;
-        ?>
-        </div>
-        
+        <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
         <hr />
         
-        <div class="row">  
-        <?php // todo: fix this to only do recipient for the right kind of document 
-            $itemRecipients = $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'6'));
-            echo $itemRecipients;
-        ?>
-        </div> 
+        <?php echo $this->personNameElementForm($elements['Item Type Metadata']['Recipient'], $item, $options=array('columnSpan'=>'3')); ?>
         
         <hr />
         

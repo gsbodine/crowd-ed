@@ -7,6 +7,7 @@ Omeka.Elements = {};
 jQuery('document').ready(function ($) {
     
     Omeka.Elements.elementFormRequest = function (fieldDiv, params, elementFormPartialUri, recordType, recordId) {
+
         var elementId = fieldDiv.attr('id').replace(/element-/, '');
         
         fieldDiv.find('input, textarea, select').each(function () {
@@ -26,9 +27,6 @@ jQuery('document').ready(function ($) {
             dataType: 'html',
             data: params,
             success: function (response) {
-                //fieldDiv.find('textarea').each(function () {
-                //    tinyMCE.execCommand('mceRemoveControl', false, this.id);
-                //});
                 fieldDiv.html(response);
                 fieldDiv.trigger('omeka:elementformload');
             }
@@ -69,11 +67,11 @@ jQuery('document').ready(function ($) {
             event.preventDefault();
             var removeButton = $(this);
 
-            if (removeButton.parents(fieldSelector).find(inputBlockSelector).length === 1) {
+            if (removeButton.parents(fieldSelector).find(inputBlockSelector).length == 1) {
                 return;
             }
 
-            if (!confirm('Do you want to delete this input?')) {
+            if (!confirm('Are you sure you want to delete this person\'s information?')) {
                 return;
             }
 

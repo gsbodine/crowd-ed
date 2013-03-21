@@ -22,7 +22,7 @@ class CrowdEd_Controller_Plugin_Security extends Zend_Controller_Plugin_Abstract
                 // to change in the future.
                 $session = new Zend_Session_Namespace;
                 $session->redirect = $request->getPathInfo();
-                $this->_getRedirect()->goto('login', 'participate', 'default');
+                $this->_getRedirect()->goto('login', 'users', 'default');
             }
         }        
     }

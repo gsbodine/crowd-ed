@@ -18,7 +18,7 @@ echo head();
 <div class="row">
     <div class="span9">
         <h3><i class="icon-dashboard"></i> Completion-meter</h3>
-        <p class="lead">The number of documents edited by the community from the entire current collection. Help us move forward!</p>
+        <p class="lead">The number of documents edited by the community from the entire current collection. <strong>Help us move forward!</strong></p>
         <?php echo $this->completionMeter(); ?>
     </div>
     <div class="span3">
@@ -44,6 +44,19 @@ echo head();
         </div>
     </div>
     <div class="span6">
+        
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <div class="well">
+            <h3><i class="icon-heart-empty"></i> Most Favorited Items</h3>
+            <?php 
+                echo $this->favorites()->listMostFavoritedItems($this->_db);
+            ?>
+        </div>
+    </div>
+    <div class="span4">
         
     </div>
 </div>

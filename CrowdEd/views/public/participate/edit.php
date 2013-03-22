@@ -85,10 +85,6 @@ jQuery(document).ready(function($) {
     <div class="span6">
         <p class="lead" style="text-align:center;">Item Identification #: <?php echo metadata($item,array('Dublin Core','Identifier')); ?></p>
         <?php 
-            /* echo files_for_item(
-            array('imageSize'=>'fullsize'),
-            array('class'=>'image','style'=>'text-align:center'), 
-            null);  }*/
             $i = 0;
             foreach ($files as $file) {
                 echo file_image('fullsize',array('id'=>'image-'.$i, 'data-zoom-image'=>'/files/original/'.$file->filename),$file);

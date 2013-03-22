@@ -29,7 +29,19 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $requireTermsOfService = get_option('crowded_require_terms_of_service');
 
         $form = $this->_getForm(array('user'=>$user,'entity'=>$entity));
+        
+        if(Omeka_Captcha::isConfigured() && (get_option('guest_user_recaptcha') == 1)) {
+            $form->addElement('captcha', 'captcha',  array(
+                'class' => 'hidden',
+                'style' => 'display: none;',
+                'label' => "Please verify you're a human",
+                'type' => 'hidden',
+                'captcha' => Omeka_Captcha::getCaptcha()
+            ));
+        }
+        
         $form->setSubmitButtonText(__('Create Account'));
+        $form->getElement('submit')->setOrder(25);
         $this->view->form = $form;
         
         if (current_user()) {

@@ -38,10 +38,12 @@ class CrowdEd_UserController extends GuestUser_UserController {
                 'type' => 'hidden',
                 'captcha' => Omeka_Captcha::getCaptcha()
             ));
+            
+            $form->getElement('captcha')->setOrder(55);
         }
         
         $form->setSubmitButtonText(__('Create Account'));
-        $form->getElement('submit')->setOrder(25);
+        $form->getElement('submit')->setOrder(100);
         $this->view->form = $form;
         
         if (current_user()) {
@@ -142,6 +144,8 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $oldPassword = $form->getElement('current_password');
         $form->addElement($oldPassword);
         
+        $form->getElement('current_password')->setOrder(5);
+        
         $form->addDisplayGroup(
                 array('current_password'),
                 'current-password-group',
@@ -158,6 +162,8 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $form->setDisplayGroupDecorators(array('Description','FormElements','Fieldset'));
         
         $form->setSubmitButtonText('Update Account');
+        $form->getElement('submit')->setOrder(100);
+        
         $form->setDefaults($user->toArray());
         $form->setDefaults($entity->toArray());
         $this->view->form = $form;

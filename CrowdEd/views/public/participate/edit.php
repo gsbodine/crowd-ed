@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
         </dl>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"><i class="icon-remove-sign"></i> Close</button>
     </div>
 </div>
 <div class="row">
@@ -137,6 +137,21 @@ jQuery(document).ready(function($) {
         </div>
             
         <hr />
+        <div id="brownModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="brownModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="brownModalLabel"><i class="icon-question-sign"></i> Unsigned and Brown</h3>
+            </div>
+            <div class="modal-body">
+                Berry and her office staff retained copies of nearly every letter she and the Schools sent. 
+                Most of these are unsigned, but we are confident about their authenticity and about Martha Berry's 
+                role as author. If you’re editing an <em>unsigned and brown</em>, you should enter <strong>Martha Berry</strong> as the <strong>author</strong>.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"><i class="icon-remove-sign"></i> Close</button>
+            </div>
+        </div>
+        <div class="alert alert-warning"><a href="#brownModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> <em>Unsigned and Brown?</em></a></div>
         
         <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
         <hr />

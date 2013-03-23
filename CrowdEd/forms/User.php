@@ -28,6 +28,8 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             )
         ));
         
+        $this->getElement('first_name')->setOrder(10);
+        
         $this->addElement('text','last_name',array(
             'label' => __('Last Name'),
             'description' => $this->_getHelpText('Your last name (surname or family name)'),
@@ -39,6 +41,7 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             )
         ));
         
+        $this->getElement('last_name')->setOrder(15);
         
         $this->addElement('text','institution',array(
             'label' => __('Institution or Affiliation'),
@@ -51,6 +54,7 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             )
         ));
         
+        $this->getElement('institution')->setOrder(20);
         
         $this->addElement('password', 'new_password',
             array(
@@ -86,6 +90,9 @@ class CrowdEd_Form_User extends Omeka_Form_User {
                     )
             )
         );
+        
+        $this->getElement('new_password')->setOrder('40');
+        
         $this->addElement('password', 'new_password_confirm',
                 array(
                         'label'         => 'Password again for match',
@@ -95,17 +102,23 @@ class CrowdEd_Form_User extends Omeka_Form_User {
                 )
         );
         
+        $this->getElement('new_password_confirm')->setOrder('45');
+        
         $this->addElement('checkbox','private', array(
                                   'checked' => $this->_entity->private,
-                                  'label'=>'Make my profile private.',
+                                  'label'=>'No thanks! Please make my profile private.',
                                   'values'=> array(1, 0),
-                                  'class'=>'checkbox')
+                                  'class'=>'checkbox',
+                                  //'description'=>'Check the box below if you do NOT wish your name to be included in citations, community progress listings, or in a public profile page. Don\'t worry, we never publicly display your email address.'
+                                  )
                     );
         $this->getElement('private')->addDecorator('Label', array('class' => 'checkbox inline','placement'=>'APPEND'));
         $this->getElement('private')->addDecorator('HtmlTag',array('tag'=>'span', 'class'=>'privacy-checkbox'));
-       
+        
+        $this->getElement('private')->setOrder(25);
+        
         $this->addDisplayGroup(
-            array('first_name','last_name','institution'),
+            array('first_name','last_name','institution','private'),
             'names-group',
             array('legend'=>'Names for Attribution',
                 'class'=>'user-fieldset',
@@ -127,15 +140,6 @@ class CrowdEd_Form_User extends Omeka_Form_User {
             array('class'=>'user-fieldset',
                 'legend'=>'Password')
         );
-        
-        $this->addDisplayGroup(
-            array('private'),
-            'private-group',
-            array('legend'=>'Profile Privacy Settings',
-                'class'=>'user-fieldset',
-                'description'=>'Check the box below if you do NOT wish your name to be included in citations, community progress listings, or in a public profile page. Don\'t worry, we never publicly display your email address.')
-        );
-        
         
         if (get_option('crowded_terms_of_service')) {
             
@@ -185,7 +189,9 @@ class CrowdEd_Form_User extends Omeka_Form_User {
         }
         
         $this->addElement('submit', 'submit', array('label' => 'Submit','class'=>'btn btn-primary','style'=>'margin-top:1em;'));
-    }
+        $this->getElement('submit')->setOrder(100);
+        
+        }
     
     public function setEntity(Entity $entity) {
         $this->_entity = $entity;

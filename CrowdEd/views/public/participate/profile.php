@@ -26,11 +26,15 @@
 
 <div class="row">
     <div class="span8">
-        <h3><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $this->crowdEditors()->getEditorRank($user,$this->_db); ?></h3>
-        <hr />
+        <?php $ranking = $this->crowdEditors()->getEditorRank($user,$this->_db); 
+            if ($ranking) {
+        ?>
+            <h3><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $ranking ?></h3>
+            <hr />
+            <?php } ?>
         <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
         <?php 
-            $itemList = $this->profile()->getItemsEditedByUser($user,10);
+            $itemList = $this->profile()->displayLastItemsEditedByUser($user,10);
             if ($itemList) : ?>
             <ul class="unstyled">
                 <?php echo $itemList; ?>

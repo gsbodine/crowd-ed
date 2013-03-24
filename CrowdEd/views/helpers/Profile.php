@@ -15,8 +15,8 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         return $this;
     }
     
-    public function displayLastItemsEditedByUser($user,$numberOfItems=5) {
-        $itemList = getItemsEditedByUser($entity_id,$numberOfItems);
+    public function displayLastItemsEditedByUser($user,$limit=5) {
+        $itemList = $this->getItemsEditedByUser($user,$limit);
         $html = '<ul class="unstyled">';
         $html .= $itemList;
         $html .= '</ul>';
@@ -24,7 +24,7 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
     }
 
     public function getItemsEditedByUser($user,$limit=null) {
-        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text-info',array('Dublin Core','Title'),$limit);
+        $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text-info',array('Dublin Core','Title'),$limit,$type='list');
         return $html;
     }
     
@@ -53,16 +53,16 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
     private function _selectUserItems($user,$relationshipName='modified',$icon='icon-circle',$class='label label-inverse',$metadata=array('Dublin Core','Title'),$limit=null,$type='list') {
         $formatter = get_view()->format();
         $entity = new Entity;
-        $entity = $entity->getEntityByUserId($user->id);
+        $entity = $entity->getEntityFromUser($user);
         $select = new Omeka_Db_Select($user->_db);
         $select->from(array('er'=>'entities_relations'),array())
                 ->joinLeft(array('e'=>'entities'), "e.id = er.entity_id", array('er.time'))
-                ->joinLeft(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
+                ->joinInner(array('i'=>'items'), "i.id = er.relation_id",array('item_id'=>'i.id'))
                 ->joinLeft(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
-            ->where("ers.name='$relationshipName' and e.id = '$entity->id' and i.id != null")
+            ->where("ers.name='$relationshipName' and e.id = '$entity->id'")
             ->group('i.id')
             ->order('time DESC')
-            ->limit(0);
+            ->limit($limit);
         $stmt = $select->query()->fetchAll();
         $html = '';
         

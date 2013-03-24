@@ -76,8 +76,6 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
         return $stmt;
     }
 
-
- 
 }
 
 ?>

@@ -281,7 +281,7 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     
     protected function _displayExplanation() {
         $html = ' <a href="#" rel="tooltip" class="tooltipper" title="';
-        $html .= $this->_getFieldDescription() .'"><i class="icon-info-sign"></i></a>';
+        $html .= $this->_getFieldComment() .'"><i class="icon-info-sign"></i></a>';
 
         return $html;
     }

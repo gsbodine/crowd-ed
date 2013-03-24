@@ -23,7 +23,7 @@ echo head();
     </div>
     <div class="span3">
         <div class="well">
-            <h3><i class="icon-trophy"></i> Top Editors </h3>
+            <h3 class="text-center"><i class="icon-trophy"></i> Top Editors </h3>
             <ul class="unstyled">
               <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,9); ?>
             </ul>
@@ -31,7 +31,7 @@ echo head();
     </div>
     <div class="span3">
         <div class="well">
-            <h3><i class="icon-time"></i> Latest Editors</h3>
+            <h3 class="text-center"><i class="icon-time"></i> Latest Editors</h3>
             <ul class="unstyled">
                 <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,9); ?>
             </ul>
@@ -39,13 +39,11 @@ echo head();
     </div>
 </div>
 <div class="row">
-    <div class="span8">
-        <div class="well">
-            <h3><i class="icon-heart-empty"></i> Most Favorited Items</h3>
+    <div class="span6">
+            <h3><i class="icon-heart-empty"></i> Top 5 Community Favorites</h3>
             <?php 
                 echo $this->favorites()->listMostFavoritedItems($this->_db);
             ?>
-        </div>
     </div>
     <div class="span4">
         

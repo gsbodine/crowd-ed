@@ -251,13 +251,15 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
         }
         if ($this->_getFieldLabel() == 'Creator') {
             $label = 'Author(s)';
+            $helpText = $this->_displayExplanation();
         } elseif ($this->_getFieldLabel() == 'Recipient') {
             $label = 'Recipient(s)';
+            $helpText = $this->_displayDescription();
         } else {
             $label = $this->_getFieldLabel();
         }
         $html .=  __($label);
-        $html .= $this->_displayExplanation();
+        $html .= $helpText;
         $html .= '</div>';
         return $html;
     }
@@ -282,6 +284,13 @@ class CrowdEd_View_Helper_PersonNameElementForm extends Omeka_View_Helper_Elemen
     protected function _displayExplanation() {
         $html = ' <a href="#" rel="tooltip" class="tooltipper" title="';
         $html .= $this->_getFieldComment() .'"><i class="icon-info-sign"></i></a>';
+
+        return $html;
+    }
+    
+    protected function _displayDescription() {
+        $html = ' <a href="#" rel="tooltip" class="tooltipper" title="';
+        $html .= $this->_getFieldDescription() .'"><i class="icon-info-sign"></i></a>';
 
         return $html;
     }

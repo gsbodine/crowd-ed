@@ -24,7 +24,7 @@ echo head();
     <div class="span3">
         <div class="well">
             <h3 class="text-center"><i class="icon-trophy"></i> Top Editors </h3>
-            <ul class="unstyled">
+            <ul class="unstyled user-list">
               <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,9); ?>
             </ul>
         </div>
@@ -32,7 +32,7 @@ echo head();
     <div class="span3">
         <div class="well">
             <h3 class="text-center"><i class="icon-time"></i> Latest Editors</h3>
-            <ul class="unstyled">
+            <ul class="unstyled user-list">
                 <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,9); ?>
             </ul>
         </div>

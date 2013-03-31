@@ -10,16 +10,17 @@
 <div class="row">
     <div class="span12">
         <h1><?php echo $this->gravatar($user->email,array('imgSize'=>60)) . ' ' . $user->username; ?> <small>Editor Profile</small></h1>
-        <p class="lead"><strong>
+        <h2>
         <?php 
             echo $user->name;
             if (trim($entity->institution) != '') {
                 echo ' of ' . $entity->institution;
             }
             if ($user->id == current_user()->id) {
-                echo ' <span class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></span></strong></p>';
+                echo ' <small class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></small>';
             }
         ?>
+        </h2>
         <hr />
     </div>
 </div>
@@ -27,12 +28,13 @@
 <div class="row">
     <div class="span8">
         <?php $ranking = $this->crowdEditors()->getEditorRank($user,$this->_db); 
-            if ($ranking) {
+            if ($ranking > 0) {
         ?>
-            <h3><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $ranking ?></h3>
+            <h4><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $ranking ?></h4>
+
             <hr />
             <?php } ?>
-        <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
+        <h4><i class="icon-folder-open-alt"></i> Items Recently Edited</h4>
         <?php 
             $itemList = $this->profile()->displayLastItemsEditedByUser($user,10);
             if ($itemList) : ?>
@@ -61,7 +63,7 @@
     </div>
     <div class="span4">
         <div class="well">
-            <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
+            <h4><i class="icon-heart-empty"></i> Favorite Items</h4>
             <?php 
             $favList = $this->profile()->getUserFavorites($user,$limit=10);
             if ($favList) : ?>

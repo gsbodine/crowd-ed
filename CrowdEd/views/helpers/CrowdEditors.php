@@ -27,6 +27,7 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
     public function getEditorRank($user,$db) {
         $stmt = $this->_getEditorsByVolumeQuery($db);
         $i = 0;
+        $rank = 0;
         while ($row = $stmt->fetch()) {
             $i++;
             if ($row['id'] == $user->id) {

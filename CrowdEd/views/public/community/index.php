@@ -40,13 +40,17 @@ echo head();
 </div>
 <div class="row">
     <div class="span6">
-            <h3><i class="icon-heart-empty"></i> Top 5 Community Favorites</h3>
+        <div class="text-center">
+            <a class="twitter-timeline"  href="https://twitter.com/BerryArchive"  data-widget-id="299012645489614850">Tweets by @BerryArchive</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    
+        </div>
+    </div>
+    <div class="span6">
+            <h3><i class="icon-heart-empty"></i> Top Community Favorites</h3>
             <?php 
                 echo $this->favorites()->listMostFavoritedItems($this->_db);
             ?>
-    </div>
-    <div class="span4">
-        
     </div>
 </div>
 <?php echo foot(); ?>

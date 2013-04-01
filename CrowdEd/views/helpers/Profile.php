@@ -34,6 +34,12 @@ class CrowdEd_View_Helper_Profile extends Zend_View_Helper_Abstract {
         return $itemsCount;
     }
     
+    public function getCountItemsFavoritedByUser($user,$limit=null) {
+        $items = $this->_selectUserItems($user,'favorite','icon-heart-empty','text-info',array('Dublin Core','Title'),$limit,$type='array');
+        $itemsCount = count($items);
+        return $itemsCount;
+    }
+    
     public function getUserEditedItemsAsTable($user,$limit=null) {
         $html = $this->_selectUserItems($user,'modified','icon-ok-circle','text-success',array('Dublin Core','Title'),$limit,$type='table');
         return $html;

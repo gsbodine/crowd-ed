@@ -93,7 +93,7 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
                 ->joinInner(array('u'=>'users'), "u.id = e.user_id", array())
                 ->joinInner(array('er'=>'entities_relations'), "er.entity_id = e.id",array())
                 ->joinInner(array('ers'=>'entity_relationships'), "ers.id = er.relationship_id", array())
-            ->where("(time <> '0000-00-00 00:00:00') and (first_name != '') and (last_name != '') and (u.username != 'sschlitz') and (relation_id = ?)",$item->id)
+            ->where("(time <> '0000-00-00 00:00:00') and (first_name != '') and (last_name != '') and (u.username != 'sschlitz') and (relation_id = ?) and e.private != 1",$item->id)
             ->group('u.username')
             ->order('max(time) DESC');
         $stmt = $select->query();

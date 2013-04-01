@@ -6,37 +6,58 @@
     }
     $entity = new Entity();
     $entity = $entity->getEntityFromUser($user);
+    
+    $itemsEdited = $this->profile()->getCountItemsEditedByUser($user);
 ?>
 <div class="row">
     <div class="span12">
         <h1><?php echo $this->gravatar($user->email,array('imgSize'=>60)) . ' ' . $user->username; ?> <small>Editor Profile</small></h1>
-        <p class="lead"><strong>
+        <h2>
         <?php 
             echo $user->name;
             if (trim($entity->institution) != '') {
                 echo ' of ' . $entity->institution;
             }
             if ($user->id == current_user()->id) {
-                echo ' <span class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></span></strong></p>';
+                echo ' <small class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></small>';
             }
         ?>
+        </h2>
         <hr />
     </div>
 </div>
 
 <div class="row">
     <div class="span8">
-        <h3><i class="icon-trophy"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $this->crowdEditors()->getEditorRank($user,$this->_db); ?></h3>
-        <hr />
-        <h3><i class="icon-folder-open-alt"></i> Items Recently Edited</h3>
+        <?php $ranking = $this->crowdEditors()->getEditorRank($user,$this->_db); 
+            if ($ranking > 0) {
+        ?>
+            <h4><i class="icon-user"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $ranking ?></h4>
+            <div>
         <?php 
-            $itemList = $this->profile()->getItemsEditedByUser($user,10);
+            if ($ranking > 0 && $ranking <= 10) {
+                echo '<span class="badge badge-warning"><i class="icon-trophy"></i> Top 10 Editor</span>';
+            }
+        ?>  </div>
+            <hr />
+            <?php } ?>
+        <h4><i class="icon-folder-open-alt"></i> Items Recently Edited
+        <?php 
+            if ($itemsEdited > 10 && $itemsEdited < 100) {
+                echo '<span class="badge"><i class="icon-edit"></i> 10+ Documents Edited</span>';
+            } else if ($itemsEdited >= 100) {
+                echo '<span class="badge badge-warning"><i class="icon-edit"></i> 100+ Documents Edited</span>';
+            }
+        ?>
+        </h4>
+        <?php
+            $itemList = $this->profile()->displayLastItemsEditedByUser($user,10);
             if ($itemList) : ?>
             <ul class="unstyled">
                 <?php echo $itemList; ?>
             </ul>
             <hr />
-            <p class="text-center"><strong><a href="/participate/edited/user/<?php echo $user->id ?>"><i class="icon-list"></i> 
+            <p class="text-center"><strong><a class="btn btn-info" href="/participate/edited/user/<?php echo $user->id ?>"><i class="icon-list"></i> 
                 <?php if ($user == current_user()) {
                     echo ' List all of your edited items';
                 } else {
@@ -57,7 +78,7 @@
     </div>
     <div class="span4">
         <div class="well">
-            <h3><i class="icon-heart-empty"></i> Favorite Items</h3>
+            <h4><i class="icon-heart-empty"></i> Favorite Items</h4>
             <?php 
             $favList = $this->profile()->getUserFavorites($user,$limit=10);
             if ($favList) : ?>
@@ -65,7 +86,7 @@
                     <?php echo $favList; ?>
                 </ul>
                 <hr />
-                <p class="text-center text-error"><strong><a href="/participate/favorites/user/<?php echo $user->id ?>">
+                <p class="text-center text-error"><strong><a class="btn btn-info" href="/participate/favorites/user/<?php echo $user->id ?>">
                    <?php if ($user == current_user()) {
                        echo '<i class="icon-list"></i> List all of your favorite items';
                    } else {

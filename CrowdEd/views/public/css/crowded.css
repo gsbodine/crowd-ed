@@ -74,5 +74,7 @@ hr.personForm {
     display: inline;
 }
 
-
+ul.user-list > li {
+    margin-bottom: 15px;
+}
 

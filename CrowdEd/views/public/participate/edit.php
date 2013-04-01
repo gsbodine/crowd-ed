@@ -163,7 +163,7 @@ jQuery(document).ready(function($) {
         <div class="row">
             <div class="span3">
                 <div class="row">
-                    <div><label for="tag-search" class="span3"><i class="icon-tags"></i> Add Tags</label></div>  
+                    <div class="span3" style="margin-bottom: .5em;"><label for="tag-search" style="display:inline;"><i class="icon-tags"></i> Add Tags</label> <a href="#" rel="tooltip" class="tooltipper" title="A tag is a keyword or label that describes a document's subject."><i class="icon-info-sign"></i></a></div>  
                 </div>
                 <div class="row">
                     <div class="add-tags span3"><?php 

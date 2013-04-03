@@ -548,7 +548,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             $html .= '<div><p class="alert alert-info"><i class="icon-lock"></i> This item has already been edited and is now locked.</p></div>';
             $user = current_user();
             if ($user && ($user->role == 'admin' || $user->role == 'super')) { // TODO: fix routes
-                $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</p>';
+                $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</strong></p>';
             }  else {
                 $html .= '<p><a href="/participate/edit/'. get_view()->itemEditing()->getRandomUneditedItem(get_view()->_db)->id .'"><strong>How about trying an unedited item?</strong></a></p>';
             }

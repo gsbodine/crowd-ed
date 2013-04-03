@@ -30,6 +30,16 @@
             if (trim($entity->institution) != '') {
                 echo ' of ' . $entity->institution;
             }
+            
+            if ($entity->first_name != '' and $entity->last_name != '') {
+                if ($entity->institution != '') {
+                    echo '<span class="badge badge-inverse"><i class="icon-user gold"></i> Biographer</span>';
+                }
+                else {
+                    echo '<span class="badge badge-inverse"><i class="icon-user silver"></i> Biographer</span>';
+                }
+            }
+            
             if ($user->id == current_user()->id) {
                 echo ' <small class="pull-right"><a href="/user/update-account"><i class="icon-edit"></i> Edit Account Information</a></small>';
             }

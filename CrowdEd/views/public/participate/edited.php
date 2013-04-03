@@ -27,7 +27,7 @@
             <caption><h3><i class="icon-edit"></i> All Edited Items</h3></caption>
             <thead>
                 <tr>
-                    <th width="25%">Thumbnail</th><th width="60%">Item Information</th><th width="15%">Date Made a Favorite</th>
+                    <th width="25%">Thumbnail</th><th width="60%">Document Information</th><th width="15%">Date Edited</th>
                 </tr>
             </thead>
             <tbody>

@@ -143,6 +143,7 @@ jQuery(document).ready(function($) {
                 <h3 id="brownModalLabel"><i class="icon-question-sign"></i> Unsigned and Brown</h3>
             </div>
             <div class="modal-body">
+                <img class="pull-right padded span2" src="<?php echo img('GettingStarted/MBBrownPaper.jpg'); ?>" alt="Unsigned and brown document example" />
                 Berry and her office staff retained copies of nearly every letter she and the Schools sent. 
                 Most of these are unsigned, but we are confident about their authenticity and about Martha Berry's 
                 role as author. If you’re editing an <em>unsigned and brown</em>, you should enter <strong>Martha Berry</strong> as the <strong>author</strong>.
@@ -151,7 +152,7 @@ jQuery(document).ready(function($) {
                 <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"><i class="icon-remove-sign"></i> Close</button>
             </div>
         </div>
-        <div class="alert alert-warning"><a href="#brownModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> <em>Unsigned and Brown?</em></a></div>
+        <div class="alert alert-warning"><a href="#brownModal" role="button" data-toggle="modal" class="text-warning"><i class="icon-question-sign"></i> <em>Is the document unsigned and brown?</em></a></div>
         
         <?php echo $this->personNameElementForm($elements['Dublin Core']['Creator'], $item, $options=array('columnSpan'=>'3')); ?>
         <hr />
@@ -163,7 +164,7 @@ jQuery(document).ready(function($) {
         <div class="row">
             <div class="span3">
                 <div class="row">
-                    <div class="span3" style="margin-bottom: .5em;"><label for="tag-search" style="display:inline;"><i class="icon-tags"></i> Add Tags</label> <a href="#" rel="tooltip" class="tooltipper" title="A tag is a keyword or label that describes a document's subject."><i class="icon-info-sign"></i></a></div>  
+                    <div class="span3" style="margin-bottom: .5em;"><label for="tag-search" style="display:inline;"><i class="icon-tags"></i> Tag Me!</label> <a href="#" rel="tooltip" class="tooltipper" title="A tag is a keyword or label that describes a document's subject."><i class="icon-info-sign"></i></a></div>  
                 </div>
                 <div class="row">
                     <div class="add-tags span3"><?php 

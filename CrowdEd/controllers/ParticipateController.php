@@ -102,9 +102,9 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $id = $this->_request->getParam('id'); 
         $user = $this->_helper->db->getTable('User')->find($id);
         $e = new Entity();
-        $entity = $e->getEntityByUserId($user->id);
+        $entity = $e->getEntityFromUser($user);
         
-        if ($entity->private == 1 && $user != current_user()) {
+        if ($entity->private == 1 && $user != current_user() && current_user()->role != 'super') {
             $this->render('private');
         } else {
             $this->view->assign(compact('user','entity'));

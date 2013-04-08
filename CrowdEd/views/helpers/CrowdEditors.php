@@ -6,8 +6,6 @@
  */
 
 /**
- * Description of CrowdEditors
- *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {

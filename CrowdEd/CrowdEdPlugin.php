@@ -9,6 +9,7 @@
 defined('CROWDED_DIR') or define('CROWDED_DIR',dirname(__FILE__));
 defined('CROWDED_PLUGIN_VERSION') or define('CROWDED_PLUGIN_VERSION', get_plugin_ini(CROWDED_DIR, 'version'));
 defined('CROWDED_USER_ROLE') or define('CROWDED_USER_ROLE','crowd-editor');
+defined('CROWDED_SUPER_ROLE') or define('CROWDED_SUPER_ROLE','crowd-super');
 
 class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
     
@@ -184,6 +185,11 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         $crowdEditor = new Zend_Acl_Role(CROWDED_USER_ROLE);
         $acl->addRole($crowdEditor);
         $acl->allow($crowdEditor,array($participateResource,'Items','Tags','Search')); //todo: refine crowd-editor permissions
+    
+        $crowdSuper = new Zend_Acl_Role(CROWDED_SUPER_ROLE);
+        $acl->addRole($crowdSuper);
+        $acl->allow($crowdSuper,array($participateResource,'Items','Tags','Search')); //todo: refine crowd-super permissions
+        
     }
     
     public function hookAfterSaveItem($args) {
@@ -547,7 +553,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
         } else {
             $html .= '<div><p class="alert alert-info"><i class="icon-lock"></i> This item has already been edited and is now locked.</p></div>';
             $user = current_user();
-            if ($user && ($user->role == 'admin' || $user->role == 'super')) { // TODO: fix routes
+            if ($user && ($user->role == 'admin' || $user->role == 'super' || $user->role == 'crowd-super')) { // TODO: fix routes
                 $html .= '<p><strong>As an administrative user, <a href="/participate/edit/'. $item->id .'">you may still edit this item</a>.</strong></p>';
             }  else {
                 $html .= '<p><a href="/participate/edit/'. get_view()->itemEditing()->getRandomUneditedItem(get_view()->_db)->id .'"><strong>How about trying an unedited item?</strong></a></p>';

@@ -59,7 +59,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
             if ($item->save()) {
                 if ($user->role == 'crowd-editor') {
                     $this->updateEditStatus($item,'Pending');
-                } else if ($user->role == 'admin' || $user->role == 'super') {
+                } else if ($user->role == 'admin' || $user->role == 'super' || $user->role == 'crowd-super') {
                     $this->updateEditStatus($item,'Reviewed');
                 }
                $this->_removePreviousPersonNames($item);

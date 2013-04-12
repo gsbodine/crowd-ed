@@ -1,14 +1,13 @@
 <?php
-queue_js_file('items-browse');
-$pageTitle = __('Review Flagged Items') . ' ' . __('(%s total)', $total_results);
-echo head(array('title' => 'Crowd-Ed: Review Flagged Items'));
-echo flash();
-echo item_search_filters();
+    queue_js_file('items-browse');
+    $pageTitle = __('Review Flagged Items') . ' ' . __('(%s total)', $total_results);
+    echo head(array('title' => 'Crowd-Ed: Review Flagged Items'));
+    echo flash();
+    echo item_search_filters();
 ?>
 
 <?php if ($total_results): ?>
     <?php echo pagination_links(); ?>
-
     <form action="<?php echo html_escape(url('items/batch-edit')); ?>" method="post" accept-charset="utf-8">
         <div class="table-actions batch-edit-option">
             <?php if (is_allowed('Items', 'add')): ?>

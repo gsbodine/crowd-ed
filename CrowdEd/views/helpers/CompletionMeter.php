@@ -24,37 +24,37 @@ class CrowdEd_View_Helper_CompletionMeter {
 ?>
 <div class="row">
         <div class="span2">
-                <p>Finalized Documents</p>
-                <div class="progress progress-striped span1">
+                <p class="text-center">Finalized Documents</p>
+                <div class="progress progress-striped span1 text-center">
                     <div class="bar bar-success" style="width:100%;" ><strong><?php echo $totallyDoneItems; ?></strong></div> 
                 </div>
         </div>
         <div class="span2">
-                <p>Documents Under Review</p>
-                <div class="progress progress-striped span1">
+                <p class="text-center">Under Review</p>
+                <div class="progress progress-striped span1 text-center">
                     <div class="bar bar-warning" style="width:100%;" ><strong><?php echo $potentiallyDoneItems; ?></strong></div>
                 </div>
         </div>
         <div class="span2">
-                <p>Unedited Documents</p>
-                <div class="progress progress-striped span1">
+                <p class="text-center">Unedited Documents</p>
+                <div class="progress progress-striped span1 text-center">
                     <div class="bar bar-danger" style="width:100%;" ><strong><?php echo $totalItems - $potentiallyDoneItems - $totallyDoneItems; ?></strong></div>
                 </div>
         </div>
 </div>
         <?php
             $html = '<div class="row"><div class="span6">';
-            $html .= '<p class="lead">Total Percentage Completion</p>';
+            $html .= '<p class="text-center"><strong>Total Percentage Completion</strong></p>';
             //$html .= '<span class="pull-left">'. $potentiallyDoneItems + $totallyDoneItems .' Edited Documents</span>';
             //$html .= '<span class="pull-right">'. $totalItems .' Total Documents</span>';
-            $html .= '<div class="progress progress-striped active">';
+            $html .= '<div id="berryometer-progress-bar" class="progress progress-striped active">';
             $html .= '<div class="bar bar-success" style="width: '. $totalCompletionPercent .'%;"></div>';
             $html .= '<div class="bar bar-warning" style="width: ' . $partialCompletionPercent . '%;"></div>';
             $html .= '<div class="bar bar-danger" style="width: '. $uneditedPercent .'%;"></div>';
             $html .= '</div></div></div>';
         
         } else {
-            $html = '<div class="random-document"><h4><i class="icon-dashboard"></i> Berryometer</h4>';
+            $html = '<div class="random-document"><h4><a href="/community"><i class="icon-dashboard"></i> Berryometer</a></h4>';
             $html .= '<div class="progress progress-striped active">';
             $html .= '<div class="bar bar-success" style="width: '. $totalCompletionPercent .'%;"></div>';
             $html .= '<div class="bar bar-warning" style="width: ' . $partialCompletionPercent . '%;"></div>';

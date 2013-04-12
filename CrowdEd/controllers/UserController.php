@@ -20,12 +20,15 @@ class CrowdEd_UserController extends GuestUser_UserController {
     }
    
     public function registerAction() {
+        if (current_user()) {
+            $this->_helper->redirector('profile', 'participate');
+        }
         
         $user = new User();
         $entity = new Entity();
         
         $openRegistration = true;
-        $instantAccess = (get_option('guest_user_instant_access') == 'on');
+        $instantAccess = (get_option('guest_user_instant_access') == 1);
         $requireTermsOfService = get_option('crowded_require_terms_of_service');
 
         $form = $this->_getForm(array('user'=>$user,'entity'=>$entity));
@@ -46,10 +49,6 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $form->getElement('submit')->setOrder(100);
         $this->view->form = $form;
         
-        if (current_user()) {
-            $this->_helper->redirector('profile', 'participate');
-        }
-        
         if (!$this->getRequest()->isPost() || !$form->isValid($_POST)) {
             return;
         }		        
@@ -67,19 +66,35 @@ class CrowdEd_UserController extends GuestUser_UserController {
             
             try {
                 if ($user->save()) {
-                    $token = $this->_createToken($user);
-                    $this->_sendConfirmationEmail($user, $token); 
-                    
-                    // entity stuff for crowd-ed -- the main reason for this function override
                     $newUser = $this->_helper->db->getTable('User')->findByEmail($user->email);
                     $entity->user_id = $newUser->id;
                     $entity->save();
                     
-                    $message = "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.";
-                    $this->_helper->flashMessenger($message, 'success');
+                    if ($instantAccess) {
+                        $authAdapter = new Omeka_Auth_Adapter_UserTable($this->_helper->db->getDb());
+                        $authAdapter->setIdentity($user->username)->setCredential($_POST['new_password']);                    
+                        $authResult = $this->_auth->authenticate($authAdapter);
+                        if (!$authResult->isValid()) {
+                            if ($log = $this->_getLog()) {
+                                $ip = $this->getRequest()->getClientIp();
+                                $log->info("Failed login attempt from '$ip'.");
+                            }
+                            $this->_helper->flashMessenger($this->getLoginErrorMessages($authResult), 'error');
+                            return;
+                        }             
+                        $this->_helper->flashMessenger(__("You are now logged in temporarily. Please check your email for a confirmation message. Once you have confirmed your request, you can log in without time limits."));
+                        
+                    }
+                    else if ($openRegistration) {
+                        $message = "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.";
+                        $this->_helper->flashMessenger($message, 'success');
+                    }
+                    
                     $activation = UsersActivations::factory($user);
                     $activation->save();
-                    $this->_helper->redirector('index', 'participate');
+                    
+                    $this->_helper->redirector->gotoUrl('/participate');
+                         
                 }
             } catch (Omeka_Validator_Exception $e) {
                 $this->flashValidationErrors($e);
@@ -173,25 +188,6 @@ class CrowdEd_UserController extends GuestUser_UserController {
         $this->_helper->redirector('profile', 'participate');
     }
     
-  
-    protected function _sendConfirmedEmail($user) {
-        $transport = $this->_getSMTP();
-        $siteTitle = get_option('site_title');
-        
-        $body = "<p><strong>Thanks for joining $siteTitle (MBDA)!</strong></p>";
-        $body .= "<p>Your account is now active, and we hope you'll <a href=\"http://mbda.berry.edu/get-started\">get started</a> and begin researching and editing the collection soon.";
-        
-        $subject = "Registration for $siteTitle";
-        $mail = $this->_getMail($user, $body, $subject);
-        try {
-            $mail->send($transport);
-        } catch (Exception $e) {
-            _log($e);
-            _log($body);
-        }
-
-    }
-    
     protected function _sendAdminNewConfirmedUserEmail($user) {
         $transport = $this->_getSMTP();
         $siteTitle = get_option('site_title');
@@ -211,17 +207,6 @@ class CrowdEd_UserController extends GuestUser_UserController {
    
    
    /* PRIVATE FUNCTIONS */
-    
-    private function _getUserEntityForm(User $user, Entity $entity) {
-        $form = new CrowdEd_Form_UserEntity(array(
-            'user' => $user,
-            'entity' => $entity)
-        );
-        
-        fire_plugin_hook('crowded_user_form', array('form' => $form, 'user' => $user, 'entity' => $entity));
-        
-        return $form;
-     }
      
    protected function _getForm($options) {
         

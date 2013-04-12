@@ -6,8 +6,6 @@
  */
 
 /**
- * Description of CrowdEditors
- *
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
@@ -15,8 +13,8 @@ class CrowdEd_View_Helper_CrowdEditors extends Zend_View_Helper_Abstract {
        return $this;
     }
     
-    public function getEditorsByVolume($db) {
-        $stmt = $this->_getEditorsByVolumeQuery($db);
+    public function getEditorsByVolume($db,$limit=null) {
+        $stmt = $this->_getEditorsByVolumeQuery($db,$limit);
         $html = "";
         while ($row = $stmt->fetch()) {
             $html .= '<li><span class="text-info community-user-link"><strong><a href="/participate/profile/'. $row['id']. '">' . get_view()->gravatar($row['email'],array('imgSize'=>22)) . ' ' . $row['username'] .'</strong></a> (' . $row['counted'] . ' items)</span></li>';

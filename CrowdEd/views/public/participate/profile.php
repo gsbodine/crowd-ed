@@ -16,11 +16,15 @@
         <?php 
             echo $this->gravatar($user->email,array('imgSize'=>60)) . ' ' . $user->username; 
             if ($itemsEdited >= 1 && $itemsEdited < 50) {
-                echo ' <span class="badge badge-inverse"><i class="icon-bookmark bronze"></i> Editor</span>';
+                echo ' <span class="badge badge-inverse"><i class="icon-bookmark bronze"></i> Editor</span> ';
             } else if ($itemsEdited >= 50 && $itemsEdited < 100) {
-                echo ' <span class="badge badge-inverse"><i class="icon-bookmark silver"></i> Scholar</span>';
+                echo ' <span class="badge badge-inverse"><i class="icon-bookmark silver"></i> Scholar</span> ';
             } else if ($itemsEdited >= 50 && $itemsEdited < 100) {
-                echo ' <span class="badge badge-inverse"><i class="icon-bookmark gold"></i> Sage</span>';
+                echo ' <span class="badge badge-inverse"><i class="icon-bookmark gold"></i> Sage</span> ';
+            }
+            
+            if ($user->role == 'crowd-super') {
+                echo '<span class="badge badge-inverse"><i class="icon-fire gold"></i> Editor +</span>';
             }
         ?>
         </h1>

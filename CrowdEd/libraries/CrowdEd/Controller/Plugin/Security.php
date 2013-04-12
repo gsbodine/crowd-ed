@@ -29,7 +29,7 @@ class CrowdEd_Controller_Plugin_Security extends Zend_Controller_Plugin_Abstract
     
     protected function _preventAdminAccess($request) {
         $user = current_user();
-        if ($user and $user->role == CROWDED_USER_ROLE and is_admin_theme()) {
+        if ($user && ($user->role == CROWDED_USER_ROLE || $user->role == CROWDED_SUPER_ROLE) and is_admin_theme()) {
             exit;
         }
     }

@@ -65,6 +65,11 @@ jQuery(document).ready(function($) {
         jQuery("#item-type-search option[label='" + value + "']").remove();
     });
     
-     
+    boxes = $('.well');
+    maxHeight = Math.max.apply(
+      Math, boxes.map(function() {
+        return $(this).height();
+    }).get());
+    boxes.height(maxHeight);
     
 });

@@ -1,7 +1,7 @@
 <?php echo head(); ?>
 <div class="row">
     <div class="span12">
-        <div class="site-title"><h1><i class="icon-group"></i> Participate <small>Help us catalog the collection</small></h1></div>
+        <div class="site-title"><h1>Participate <small>Help us catalog the collection</small></h1></div>
         <hr />
         <?php echo flash(); ?>
     </div>

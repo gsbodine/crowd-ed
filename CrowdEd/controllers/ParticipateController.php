@@ -49,7 +49,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $es = new EditStatus;
         $lockStatus = $es->getLockedStatus($status->edit_status_id);
         if ($lockStatus == 1) {
-            if ($user->role !== 'admin' && $user->role !== 'super' && $user->role !== 'crowd-super') {
+            if ($user->role !== 'admin' && $user->role !== 'super') {
                 $this->_redirectAfterEdit($item);
             }
         }
@@ -102,7 +102,7 @@ class CrowdEd_ParticipateController extends Omeka_Controller_AbstractActionContr
         $id = $this->_request->getParam('id'); 
         $user = $this->_helper->db->getTable('User')->find($id);
         $e = new Entity();
-        $entity = $e->getEntityByUserId($user->id);
+        $entity = $e->getEntityFromUser($user);
         
         if ($entity->private == 1 && $user != current_user() && current_user()->role != 'super') {
             $this->render('private');

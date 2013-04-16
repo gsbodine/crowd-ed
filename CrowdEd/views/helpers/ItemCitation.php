@@ -79,7 +79,7 @@ class CrowdEd_View_Helper_ItemCitation extends Zend_View_Helper_Abstract {
         $users = $this->_getUsersForCitation($item);
         if ($users) {
             foreach ($users as $u) {
-                $html .= '<p><i class="icon-edit"></i> <strong>'. $u['first_name']. ' ' .$u['last_name']. '</strong> (<a href="/participate/profile/id/'. $u['id'] .'">' . $u['username'] .'</a>): '. date("M j, Y - g:i:s a",strtotime($u['time'])) .'</p>';
+                $html .= '<p><i class="icon-edit"></i> <strong>'. $u['first_name']. ' ' .$u['last_name']. '</strong> (<a href="/participate/profile/'. $u['id'] .'">' . $u['username'] .'</a>): '. date("M j, Y - g:i:s a",strtotime($u['time'])) .'</p>';
             }
         } else {
             $html = '<p class="alert alert-warning">No one else has edited this item yet.</p>';

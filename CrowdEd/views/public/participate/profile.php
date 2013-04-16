@@ -26,6 +26,10 @@
             if ($user->role == 'crowd-super') {
                 echo '<span class="badge badge-inverse"><i class="icon-fire gold"></i> Editor +</span>';
             }
+            
+            if ($user->role == 'admin' || $user->role == 'super') {
+                echo '<span class="badge badge-inverse"><i class="icon-certificate lightblue"></i> MBDA</span>';
+            }
         ?>
         </h1>
         <h2>

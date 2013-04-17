@@ -1,7 +1,7 @@
 <?php echo head(); ?>
 <div class="row">
     <div class="span12">
-        <div class="site-title"><h1><i class="icon-group"></i> Participate <small>Help us catalog the collection</small></h1></div>
+        <div class="site-title"><h1>Participate <small>Help us catalog the collection</small></h1></div>
         <hr />
         <?php echo flash(); ?>
     </div>
@@ -10,7 +10,7 @@
 <div class="row">
     <div class="span4" id="participate-become-editor">
         <div class="well">
-            <h3 class="text-center"><i class="icon-user"></i> Become an Editor</h3>
+            <h1 class="text-center"><i class="icon-user"></i> Become an Editor</h3>
             <hr />
         <?php if (current_user()): ?>
             <p class="alert alert-success"><strong><i class="icon-check"></i> Step one: Complete!</strong></p>
@@ -35,6 +35,7 @@
             <h3 class="text-center"><i class="icon-edit"></i> Begin Editing</h3>
             <hr />
             <p><a href="/items/show/<?php echo $this->itemEditing()->getRandomUneditedItem($this->_db)->id; ?>"><strong><i class="icon-question-sign"></i> Edit a randomly-chosen document</strong> that needs editing from the collection</a></p>
+            <p class="alert alert-info">Edit documents, <a href="/badges"><strong>earn badges</strong></a>! <span class="badge badge-inverse"><i class="icon-bookmark bronze"></i> Editor</span></p>
         </div>
     </div>
 </div>

@@ -64,8 +64,10 @@
         ?>
             <h4><i class="icon-user"></i> Editing Rank on <?php echo get_option('site_title'); ?>: #<?php echo $ranking ?></h4>
         <?php 
-            if ($ranking > 0 && $ranking <= 10) {
-                echo '<div><span class="badge badge-inverse"><i class="icon-trophy gold"></i> Top 10 Editor</span></div>';
+            if ($ranking > 0 && $ranking <= 5) {
+                echo '<div><span class="badge badge-inverse"><i class="icon-trophy gold"></i> Top 5 Editor</span></div>';
+            } else if ($ranking > 0 && $ranking <= 10) {
+                echo '<div><span class="badge badge-inverse"><i class="icon-trophy silver"></i> Top 10 Editor</span></div>';
             }
         ?>  
             <hr />
@@ -102,9 +104,9 @@
             <h4><i class="icon-heart-empty"></i> Favorite Items
             <?php 
                 if ($itemsFaved >= 10 && $itemsFaved < 25) {
-                    echo ' <span class="badge badge-inverse"><i class="icon-bookmark silver"></i> Collector</span>';
+                    echo ' <span class="badge badge-inverse"><i class="icon-star-empty silver"></i> Collector</span>';
                 } else if ($itemsFaved >= 25) {
-                    echo ' <span class="badge badge-inverse"><i class="icon-star gold"></i> Archivist</span>';
+                    echo ' <span class="badge badge-inverse"><i class="icon-star-empty gold"></i> Archivist</span>';
                 }
             ?>
             </h4>

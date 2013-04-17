@@ -157,7 +157,7 @@ class CrowdEdPlugin extends Omeka_Plugin_AbstractPlugin {
             $view->addHelperPath(GEOLOCATION_PLUGIN_DIR . '/helpers', 'Geolocation_View_Helper_');
             queue_css_file('geolocation-items-map');
             queue_css_file('geolocation-marker');
-            queue_js_url("http://maps.google.com/maps/api/js?sensor=false");
+            queue_js_url("https://maps.google.com/maps/api/js?sensor=false");
             queue_js_file('map');        
         }
         

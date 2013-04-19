@@ -18,36 +18,36 @@ echo head();
     </div>
 </div>
 <div class="row">
-    <div class="span6">
-        <h3><i class="icon-dashboard"></i> Berryometer</h3>
-        <p class="lead text-center">Number of documents edited by the community</p>
-        <?php echo $this->completionMeter(); ?>
-        <p class="padded"><strong>Be a part of the MBDA community:</strong> <a class="btn btn-success" href="/items/show/<?php echo $this->itemEditing()->getRandomUneditedItem($this->_db)->id; ?>"><i class="icon-edit"></i> Edit a document</a></p>
-    </div>
-    <div class="span3">
-        <div class="well top-list">
-            <h3 class="text-center"><i class="icon-trophy"></i> Top Editors </h3>
-            <ul class="unstyled user-list">
-              <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,9); ?>
-            </ul>
-        </div>
-    </div>
-    <div class="span3">
-        <div class="well top-list">
-            <h3 class="text-center"><i class="icon-time"></i> Latest Editors</h3>
-            <ul class="unstyled user-list">
-                <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,9); ?>
-            </ul>
+    <div class="span12">
+        <div class="row">
+            <div class="span6">
+                <img src="<?php echo img('Community/Berryometer175.jpg'); ?>" alt="" style="border-radius:10px" />
+                <div class="page-header"><h2 class="text-center"><i class="icon-dashboard"></i> Berryometer</h2></div>
+                <p class="lead text-center">Number of documents edited by the community</p>
+                <?php echo $this->completionMeter(); ?>
+                <p class="padded"><strong>Be a part of the MBDA community:</strong> <a class="btn btn-success" href="/items/show/<?php echo $this->itemEditing()->getRandomUneditedItem($this->_db)->id; ?>"><i class="icon-edit"></i> Edit a document</a></p>
+                
+            </div>
+            <div class="span3">
+                <div class="well top-list">
+                    <h3 class="text-center"><i class="icon-trophy"></i> Top Editors </h3>
+                    <ul class="unstyled user-list">
+                      <?php echo $this->crowdEditors()->getEditorsByVolume($this->_db,10); ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="span3">
+                <div class="well top-list">
+                    <h3 class="text-center"><i class="icon-time"></i> Latest Editors</h3>
+                    <ul class="unstyled user-list">
+                        <?php echo $this->crowdEditors()->getMostRecentEditors($this->_db,10); ?>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="span6">
-        <h3><i class="icon-heart-empty"></i> Top Community Favorites</h3>
-        <?php 
-            echo $this->favorites()->listMostFavoritedItems($this->_db);
-        ?>
-    </div>
     <div class="span6">
         <div class="text-center">
             <a class="twitter-timeline"  href="https://twitter.com/BerryArchive"  data-widget-id="299012645489614850">Tweets by @BerryArchive</a>
@@ -55,5 +55,12 @@ echo head();
     
         </div>
     </div>
+    <div class="span6">
+        <h3><i class="icon-heart-empty"></i> Top Community Favorites</h3>
+        <?php 
+            echo $this->favorites()->listMostFavoritedItems($this->_db);
+        ?>
+    </div>
+    
 </div>
 <?php echo foot(); ?>

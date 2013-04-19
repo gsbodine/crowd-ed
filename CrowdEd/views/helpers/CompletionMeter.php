@@ -36,7 +36,7 @@ class CrowdEd_View_Helper_CompletionMeter {
                 </div>
         </div>
         <div class="span2">
-                <p class="text-center">Unedited Documents</p>
+            <p class="text-center"><a href="#" rel="tooltip" class="tooltipper" title="This number will increase as we continue to scan and upload more documents. We estimate that, in total, the collection contains c. 100,000 docs!">Unedited Documents <i class="icon-info-sign"></i></a></p>
                 <div class="progress progress-striped span1 text-center">
                     <div class="bar bar-danger" style="width:100%;" ><strong><?php echo $totalItems - $potentiallyDoneItems - $totallyDoneItems; ?></strong></div>
                 </div>

@@ -19,7 +19,7 @@
                 echo ' <span class="badge badge-inverse"><i class="icon-bookmark bronze"></i> Editor</span> ';
             } else if ($itemsEdited >= 50 && $itemsEdited < 100) {
                 echo ' <span class="badge badge-inverse"><i class="icon-bookmark silver"></i> Scholar</span> ';
-            } else if ($itemsEdited >= 50 && $itemsEdited < 100) {
+            } else if ($itemsEdited >= 100) {
                 echo ' <span class="badge badge-inverse"><i class="icon-bookmark gold"></i> Sage</span> ';
             }
             

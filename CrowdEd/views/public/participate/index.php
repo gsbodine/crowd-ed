@@ -10,7 +10,7 @@
 <div class="row">
     <div class="span4" id="participate-become-editor">
         <div class="well">
-            <h1 class="text-center"><i class="icon-user"></i> Become an Editor</h3>
+            <h3 class="text-center"><i class="icon-user"></i> Become an Editor</h3>
             <hr />
         <?php if (current_user()): ?>
             <p class="alert alert-success"><strong><i class="icon-check"></i> Step one: Complete!</strong></p>
